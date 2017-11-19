@@ -1,4 +1,4 @@
-class AbstractDAO {
+class AbstractDao {
     constructor(mongodb, collectionName) {
         this.db = mongodb;
 
@@ -16,4 +16,4 @@ class AbstractDAO {
     }
 }
 
-module.exports = AbstractDAO;
+module.exports = AbstractDao;

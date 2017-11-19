@@ -1,6 +1,6 @@
 const MongodbPlugin = require('./src/plugin.db');
-const AbstractDAO = require('./src/abstract.dao');
+const AbstractDao = require('./src/abstract.dao');
 
 module.exports = {
-    MongodbPlugin, AbstractDAO,
+    MongodbPlugin, AbstractDao,
 };
