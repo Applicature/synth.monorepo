@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef
 
-const PluginManager = require('../plugin.manager');
+const PluginManager = require('../src/plugin.manager');
 
 // eslint-disable-next-line no-undef
 describe('plugin.manager', () => {
