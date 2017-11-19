@@ -2,6 +2,8 @@ class AbstractDAO {
     constructor(mongodb, collectionName) {
         this.db = mongodb;
 
+        this.id = collectionName;
+
         this.collection = this.db.collection(collectionName);
     }
 

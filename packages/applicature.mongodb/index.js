@@ -1,5 +1,5 @@
-const MongodbPlugin = require('./plugin.db');
-const AbstractDAO = require('./abstract.dao');
+const MongodbPlugin = require('./src/plugin.db');
+const AbstractDAO = require('./src/abstract.dao');
 
 module.exports = {
     MongodbPlugin, AbstractDAO,

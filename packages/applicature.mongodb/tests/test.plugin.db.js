@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 
-const PluginDb = require('../plugin.db');
+const PluginDb = require('../src/plugin.db');
 
 // eslint-disable-next-line no-undef
 describe('plugin.db', () => {
