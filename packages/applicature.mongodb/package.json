@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.com:applicature/multivest.db.git"
+    "url": "git@bitbucket.com:applicature/multivest.mongodb.git"
   },
   "dependencies": {
     "@applicature/multivest.core": "git+ssh://git@bitbucket.org/applicature/multivest.plugin-manager.git",
