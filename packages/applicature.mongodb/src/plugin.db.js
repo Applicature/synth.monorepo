@@ -3,7 +3,6 @@
  * https://github.com/vadimdemedes/mongorito/blob/master/lib/database.js
  */
 
-
 const logger = require('winston');
 const config = require('config');
 
@@ -40,17 +39,6 @@ class MongodbPlugin extends AbstractPlugin {
         this.state = STATE_DISCONNECTED;
     }
 
-    addDao(DaoClass) {
-        if (this.state === STATE_CONNECTED) {
-            const instance = new DaoClass(this.connection);
-
-            this.dao[instance.id] = instance;
-        }
-        else {
-            this.daoClasses.push(DaoClass);
-        }
-    }
-
     init() {
         if (this.connection) {
             return Promise.resolve(this.connection);
@@ -81,6 +69,17 @@ class MongodbPlugin extends AbstractPlugin {
             });
 
         return this.connectionPromise;
+    }
+
+    addDao(DaoClass) {
+        if (this.state === STATE_CONNECTED) {
+            const instance = new DaoClass(this.connection);
+
+            this.dao[instance.id] = instance;
+        }
+        else {
+            this.daoClasses.push(DaoClass);
+        }
     }
 
     getDB() {
