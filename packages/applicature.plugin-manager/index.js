@@ -8,8 +8,10 @@ const AbstractIco = require('./src/services/ico/abstract.ico');
 const MultivestError = require('./src/error');
 
 module.exports = {
-    PluginManager, AbstractPlugin,
-    AbstractJob, AbstractBlockchainListener,
+    PluginManager,
+    AbstractPlugin,
+    AbstractJob,
+    AbstractBlockchainListener,
     AbstractBlockchain,
     AbstractIco,
     MultivestError,
