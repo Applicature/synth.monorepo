@@ -11,6 +11,11 @@ class PluginManager {
         this.launchedPlugins = [];
         this.pluginsRegistry = {};
 
+        this.ico = null;
+
+        this.jobs = {};
+        this.enabledJobs = {};
+
         process.on('unhandledRejection', (err) => {
             logger.error('unhandledRejection', err);
 
@@ -22,6 +27,36 @@ class PluginManager {
 
             throw err;
         });
+    }
+
+    getIco() {
+        return this.ico;
+    }
+
+    setIco(ico) {
+        this.ico = ico;
+    }
+
+    enableJob(jobId, jobExecutor, interval) {
+        if (!Object.prototype.call(this.jobs, jobId)) {
+            throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
+        }
+
+        if (Object.prototype.hasOwnProperty.call(this.enabledJobs, jobId)) {
+            return;
+        }
+
+        const Job = this.jobs[jobId];
+
+        this.enabledJobs[jobId] = new Job(this, jobExecutor);
+
+        jobExecutor.every(interval, jobId);
+
+        this.enabledJobs[jobId] = true;
+    }
+
+    addJob(jobId, job) {
+        this.jobs[jobId] = job;
     }
 
     get(pluginId) {
@@ -49,6 +84,14 @@ class PluginManager {
                     const launchedPlugin = new Plugin(this);
 
                     this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
+
+                    const jobs = launchedPlugin.getJobs();
+
+                    // eslint-disable-next-line no-restricted-syntax
+                    for (const job of jobs) {
+                        // eslint-disable-next-line no-underscore-dangle
+                        this.addJob(job.id, job._class);
+                    }
 
                     this.launchedPlugins.push(launchedPlugin);
                 }

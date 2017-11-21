@@ -15,6 +15,11 @@ class Plugin {
     init() {
 
     }
+
+// eslint-disable-next-line class-methods-use-this
+    getJobs() {
+        return {};
+    }
 }
 
 module.exports = Plugin;
