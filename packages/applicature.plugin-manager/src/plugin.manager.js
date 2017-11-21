@@ -29,7 +29,7 @@ class PluginManager {
             return this.pluginsRegistry[pluginId];
         }
 
-        throw new MultivestError(`Unknown plugin ${pluginId}`);
+        throw new MultivestError(`PluginManager: Unknown plugin ${pluginId}`);
     }
 
     async init() {
@@ -53,7 +53,7 @@ class PluginManager {
                     this.launchedPlugins.push(launchedPlugin);
                 }
                 catch (error) {
-                    logger.error(`Failed to load plugin ${plugin.path}`, error);
+                    logger.error(`PluginManager: Failed to load plugin ${plugin.path}`, error);
 
                     process.exit(1);
                 }
@@ -67,10 +67,10 @@ class PluginManager {
 
             const endTime = new Date().getTime();
 
-            logger.info(`Launched for ${endTime - startTime} ms`);
+            logger.info(`PluginManager: Launched for ${endTime - startTime} ms`);
         }
         catch (error) {
-            logger.error('Failed to launch', error);
+            logger.error('PluginManager: Failed to launch', error);
         }
     }
 }
