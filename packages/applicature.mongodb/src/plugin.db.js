@@ -16,7 +16,7 @@ const STATE_DISCONNECTED = 2;
 
 class MongodbPlugin extends AbstractPlugin {
     constructor(pluginManager) {
-        super(pluginManager);
+        super(pluginManager, 'mongodb');
 
         this.urls = config.get('mongodb.urls');
 
