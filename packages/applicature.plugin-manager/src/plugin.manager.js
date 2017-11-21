@@ -1,5 +1,7 @@
 const logger = require('winston');
 
+const { MultivestError } = require('./error');
+
 class PluginManager {
     constructor(plugins = []) {
         logger.debug('creating PluginManager');
@@ -22,39 +24,47 @@ class PluginManager {
         });
     }
 
-    init() {
+    get(pluginId) {
+        if (Object.prototype.hasOwnProperty.call(this.pluginsRegistry, pluginId)) {
+            return this.pluginsRegistry[pluginId];
+        }
+
+        throw new MultivestError(`Unknown plugin ${pluginId}`);
+    }
+
+    async init() {
         logger.debug('PluginManager init called');
 
         const startTime = new Date().getTime();
 
-// eslint-disable-next-line no-restricted-syntax
-        for (const plugin of this.plugins) {
-            logger.debug(`loading plugin ${plugin.id}`);
+        try {
+            // eslint-disable-next-line no-restricted-syntax
+            for (const plugin of this.plugins) {
+                logger.debug(`loading plugin ${plugin.id}`);
 
-// eslint-disable-next-line import/no-dynamic-require,global-require
-            const LoadedPlugin = require(plugin.path);
+                // eslint-disable-next-line import/no-dynamic-require,global-require
+                const { Plugin } = require(plugin.path);
 
-            const launchedPlugin = new LoadedPlugin(this);
+                const launchedPlugin = new Plugin(this);
 
-            this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
+                this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
 
-            this.launchedPlugins.push(launchedPlugin);
+                this.launchedPlugins.push(launchedPlugin);
+            }
+
+            // eslint-disable-next-line no-restricted-syntax
+            for (const plugin of this.launchedPlugins) {
+                // eslint-disable-next-line no-await-in-loop
+                await plugin.init();
+            }
+
+            const endTime = new Date().getTime();
+
+            logger.info(`Launched for ${endTime - startTime} ms`);
         }
-
-        let promise = Promise.resolve();
-
-// eslint-disable-next-line no-restricted-syntax
-        for (const plugin of this.launchedPlugins) {
-            promise = promise.then(plugin.init);
+        catch (error) {
+            logger.error('Failed to launch', error);
         }
-
-        return promise
-            .then(() => {
-                const endTime = new Date().getTime();
-
-                logger.info(`Launched for ${endTime - startTime} ms`);
-            })
-            .catch(err => logger.error('Failed', err));
     }
 }
 
