@@ -1,6 +1,6 @@
 const logger = require('winston');
 
-const { MultivestError } = require('./error');
+const MultivestError = require('./error');
 
 class PluginManager {
     constructor(plugins = []) {
