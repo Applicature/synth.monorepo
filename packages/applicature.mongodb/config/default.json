@@ -1,7 +1,7 @@
 {
   "multivest": {
     "mongodb": {
-      "urls": "mongodb://localhost/multivest",
+      "url": "mongodb://localhost/multivest",
       "options": null
     }
   }
