@@ -91,7 +91,7 @@ class PluginManager {
                         // eslint-disable-next-line no-restricted-syntax,guard-for-in
                         for (const jobId in Object.keys(jobs)) {
                             // eslint-disable-next-line no-underscore-dangle
-                            this.addJob(jobId, jobs[jobId]._class);
+                            this.addJob(jobId, jobs[jobId]);
                         }
                     }
 
