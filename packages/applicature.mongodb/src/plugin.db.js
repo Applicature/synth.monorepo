@@ -18,9 +18,9 @@ class MongodbPlugin extends AbstractPlugin {
     constructor(pluginManager) {
         super(pluginManager, 'mongodb');
 
-        this.urls = config.get('mongodb.urls');
+        this.urls = config.get('multivest.mongodb.url');
 
-        const options = config.get('mongodb.options');
+        const options = config.get('multivest.mongodb.options');
 
         if (options) {
             this.options = options;
