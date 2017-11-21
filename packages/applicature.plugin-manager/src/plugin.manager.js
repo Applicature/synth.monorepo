@@ -89,7 +89,7 @@ class PluginManager {
 
                     if (jobs) {
                         // eslint-disable-next-line no-restricted-syntax,guard-for-in
-                        for (const jobId in Object.keys(jobs)) {
+                        for (const jobId of Object.keys(jobs)) {
                             // eslint-disable-next-line no-underscore-dangle
                             this.addJob(jobId, jobs[jobId]);
                         }
