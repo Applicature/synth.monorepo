@@ -1,4 +1,5 @@
 const logger = require('winston');
+const BigNumber = require('bignumber.js');
 
 const AbstractJob = require('./abstract.job');
 const MultivestError = require('../error');
@@ -45,7 +46,7 @@ class AbstractBlockchainListener extends AbstractJob {
         }
 
         const processedBlockHeight = job.processedBlockHeight;
-        const processingBlock = processedBlockHeight + 1;
+        const processingBlock = (new BigNumber(processedBlockHeight).add(1)).valueOf();
         const publicBlockHeight = await this.blockchain.getBlockHeight();
 
         await this.processBlocks(job, processingBlock, publicBlockHeight);
