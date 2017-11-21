@@ -46,7 +46,7 @@ class AbstractBlockchainListener extends AbstractJob {
         }
 
         const processedBlockHeight = job.processedBlockHeight;
-        const processingBlock = (new BigNumber(processedBlockHeight).add(1)).valueOf();
+        const processingBlock = (new BigNumber(processedBlockHeight).add(1)).toNumber();
         const publicBlockHeight = await this.blockchain.getBlockHeight();
 
         await this.processBlocks(job, processingBlock, publicBlockHeight);
