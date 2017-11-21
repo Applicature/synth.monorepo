@@ -1,6 +1,7 @@
 class AbstractICO {
-    constructor(symbol) {
+    constructor(symbol, decimals) {
         this.symbol = symbol;
+        this.decimals = decimals;
     }
 
 // eslint-disable-next-line class-methods-use-this,no-unused-vars
@@ -26,6 +27,10 @@ class AbstractICO {
 // eslint-disable-next-line class-methods-use-this
     getSymbol() {
         return this.symbol;
+    }
+
+    getDecimals() {
+        return this.decimals;
     }
 }
 
