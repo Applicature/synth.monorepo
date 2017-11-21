@@ -35,7 +35,7 @@ class AbstractBlockchainListener extends AbstractJob {
     }
 
     async execute() {
-        let job = await this.dao.jobs.getJob(this.getJobId());
+        let job = await this.dao.jobs.getJob(this.jobId);
 
         if (!job) {
             job = await this.dao.jobs.insertJob({
