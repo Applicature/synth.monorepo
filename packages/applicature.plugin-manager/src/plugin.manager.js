@@ -38,7 +38,7 @@ class PluginManager {
     }
 
     enableJob(jobId, jobExecutor, interval) {
-        if (!Object.prototype.call(this.jobs, jobId)) {
+        if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
         }
 
