@@ -6,7 +6,13 @@ class AbstractJob {
         this.jobTitle = jobTitle;
     }
 
-    execute() {}
+    async init() {
+        return Promise.resolve();
+    }
+
+    async execute() {
+        return Promise.resolve();
+    }
 }
 
 module.exports = AbstractJob;

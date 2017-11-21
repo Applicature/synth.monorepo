@@ -4,9 +4,11 @@ const AbstractJob = require('./abstract.job');
 const MultivestError = require('../error');
 
 class AbstractBlockchainListener extends AbstractJob {
-    constructor(jobExecutor, jobId, jobTitle, blockchainService, sinceBlock, minConfirmations = 0) {
+    // eslint-disable-next-line max-len
+    constructor(pluginManager, jobExecutor, jobId, jobTitle, blockchainService, sinceBlock, minConfirmations = 0) {
         super(jobExecutor, jobId, jobTitle);
 
+        this.pluginManager = pluginManager;
         this.blockchain = blockchainService;
 
         this.minConfirmation = minConfirmations;
@@ -28,11 +30,15 @@ class AbstractBlockchainListener extends AbstractJob {
         });
     }
 
+    async init() {
+        this.dao = await this.pluginManager.get('mongodb').getDao();
+    }
+
     async execute() {
-        let job = await this.jobDao.getJob(this.getJobId());
+        let job = await this.dao.jobs.getJob(this.getJobId());
 
         if (!job) {
-            job = await this.jobDao.insertJob({
+            job = await this.dao.jobs.insertJob({
                 job: this.jobId,
                 processedBlockHeight: this.sinceBlock,
             });
@@ -77,7 +83,7 @@ class AbstractBlockchainListener extends AbstractJob {
                 processedBlockTime: block.timestamp,
             });
 
-            this.database.updateJob(this.jobId, {
+            this.dao.jobs.updateJob(this.jobId, {
                 processedBlockHeight: block.number,
                 processedBlockTime: block.timestamp,
             });

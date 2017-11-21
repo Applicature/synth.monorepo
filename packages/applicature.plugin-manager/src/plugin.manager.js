@@ -37,7 +37,7 @@ class PluginManager {
         this.ico = ico;
     }
 
-    enableJob(jobId, jobExecutor, interval) {
+    async enableJob(jobId, jobExecutor, interval) {
         if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
         }
@@ -49,6 +49,8 @@ class PluginManager {
         const Job = this.jobs[jobId];
 
         this.enabledJobs[jobId] = new Job(this, jobExecutor);
+
+        await this.enabledJobs[jobId].init();
 
         jobExecutor.every(interval, jobId);
 
