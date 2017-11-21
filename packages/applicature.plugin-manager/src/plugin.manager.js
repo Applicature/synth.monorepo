@@ -40,16 +40,23 @@ class PluginManager {
         try {
             // eslint-disable-next-line no-restricted-syntax
             for (const plugin of this.plugins) {
-                logger.debug(`loading plugin ${plugin.id}`);
+                logger.debug(`loading plugin ${plugin.path}`);
 
-                // eslint-disable-next-line import/no-dynamic-require,global-require
-                const { Plugin } = require(plugin.path);
+                try {
+                    // eslint-disable-next-line import/no-dynamic-require,global-require
+                    const { Plugin } = require(plugin.path);
 
-                const launchedPlugin = new Plugin(this);
+                    const launchedPlugin = new Plugin(this);
 
-                this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
+                    this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
 
-                this.launchedPlugins.push(launchedPlugin);
+                    this.launchedPlugins.push(launchedPlugin);
+                }
+                catch (error) {
+                    logger.error(`Failed to load plugin ${plugin.path}`, error);
+
+                    process.exit(1);
+                }
             }
 
             // eslint-disable-next-line no-restricted-syntax
