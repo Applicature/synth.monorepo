@@ -1,4 +1,8 @@
 class AbstractICO {
+    constructor(symbol) {
+        this.symbol = symbol;
+    }
+
 // eslint-disable-next-line class-methods-use-this,no-unused-vars
     logContribution(network, uniqId, txHash, amount, params) {
         // add contribution to db
@@ -17,6 +21,11 @@ class AbstractICO {
 // eslint-disable-next-line class-methods-use-this
     getStats() {
         // get stats
+    }
+
+// eslint-disable-next-line class-methods-use-this
+    getSymbol() {
+        return this.symbol;
     }
 }
 
