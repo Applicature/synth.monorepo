@@ -5,7 +5,7 @@ class AbstractKyc {
     }
 
 // eslint-disable-next-line class-methods-use-this,no-unused-vars,max-len
-    validate(userId, firstName, lastName, dateOfBirth, country, state, city, streetAddress, appartament, zipCode, fields) {
+    validate(userId, firstName, lastName, dateOfBirth, country, state, city, streetAddress, apartment, zipCode, fields) {
 
     }
 }
