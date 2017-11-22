@@ -1,5 +1,9 @@
 /* eslint-disable no-unused-vars,class-methods-use-this,no-empty-function */
 class AbstractBlockchain {
+    getNetworkId() {
+
+    }
+
     getHDAddress(index) {
 
     }
