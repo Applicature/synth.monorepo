@@ -63,9 +63,12 @@ class AbstractBlockchainListener extends AbstractJob {
 // eslint-disable-next-line no-await-in-loop
             const block = await this.blockchain.getBlockByHeight(processingBlock);
 
-            if ((publishedBlockHeight - block.number) < this.minConfirmation) {
+            const blockNumber = this.blockchain.getBlockNumber(block);
+            const blockTime = this.blockchain.getBlockTimestamp(block);
+
+            if ((publishedBlockHeight - blockNumber) < this.minConfirmation) {
                 logger.info(`${this.jobTitle}: skipping block, because it has less confirmations than expected`, {
-                    skippingBlock: block.height,
+                    skippingBlock: blockNumber,
                     minConfirmations: this.minConfirmation,
                 });
 
@@ -80,13 +83,13 @@ class AbstractBlockchainListener extends AbstractJob {
             await this.processBlock(block);
 
             logger.info(`${this.jobTitle}: updating job`, {
-                processedBlockHeight: block.number,
-                processedBlockTime: block.timestamp,
+                processedBlockHeight: blockNumber,
+                processedBlockTime: blockTime,
             });
 
             this.dao.jobs.updateJob(this.jobId, {
-                processedBlockHeight: block.number,
-                processedBlockTime: block.timestamp,
+                processedBlockHeight: blockNumber,
+                processedBlockTime: blockTime,
             });
         }
     }
