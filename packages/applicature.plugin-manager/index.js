@@ -6,6 +6,8 @@ const AbstractBlockchain = require('./src/services/blockchain/abstract');
 const AbstractIco = require('./src/services/ico/abstract.ico');
 const AbstractKyc = require('./src/services/kyc/abstract.kyc');
 
+const KycStatus = require('./src/services/constants/kyc.constant');
+
 const MultivestError = require('./src/error');
 
 module.exports = {
@@ -16,5 +18,6 @@ module.exports = {
     AbstractBlockchain,
     AbstractIco,
     AbstractKyc,
+    KycStatus,
     MultivestError,
 };
