@@ -4,6 +4,11 @@ class AbstractICO {
         this.decimals = decimals;
     }
 
+// eslint-disable-next-line no-unused-vars
+    isValidTxTime(time) {
+        // validate if tx is in validity range
+    }
+
 // eslint-disable-next-line class-methods-use-this,no-unused-vars
     logContribution(network, uniqId, txHash, amount, params) {
         // add contribution to db
