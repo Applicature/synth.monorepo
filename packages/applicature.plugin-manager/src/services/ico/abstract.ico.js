@@ -4,7 +4,7 @@ class AbstractICO {
         this.decimals = decimals;
     }
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars,class-methods-use-this
     isValidTxTime(time) {
         // validate if tx is in validity range
     }
