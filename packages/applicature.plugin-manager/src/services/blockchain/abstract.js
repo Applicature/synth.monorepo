@@ -31,6 +31,14 @@ class AbstractBlockchain {
     async getBalance(address, minConf = 1) {
 
     }
+
+    getBlockNumber(block) {
+        return 0;
+    }
+
+    getBlockTimestamp(block) {
+        return 0;
+    }
 }
 
 module.exports = AbstractBlockchain;
