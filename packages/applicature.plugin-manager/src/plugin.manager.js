@@ -12,6 +12,7 @@ class PluginManager {
         this.pluginsRegistry = {};
 
         this.ico = null;
+        this.exchange = null;
 
         this.jobs = {};
         this.enabledJobs = {};
@@ -35,6 +36,14 @@ class PluginManager {
 
     setIco(ico) {
         this.ico = ico;
+    }
+
+    getExchange() {
+        return this.exchange;
+    }
+
+    setExchange(exchange) {
+        this.exchange = exchange;
     }
 
     async enableJob(jobId, jobExecutor, interval) {
