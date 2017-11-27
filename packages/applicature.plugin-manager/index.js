@@ -5,6 +5,7 @@ const AbstractBlockchainListener = require('./src/jobs/abstract.listener');
 const AbstractBlockchain = require('./src/services/blockchain/abstract');
 const AbstractIco = require('./src/services/ico/abstract.ico');
 const AbstractKyc = require('./src/services/kyc/abstract.kyc');
+const CryptService = require('./src/services/crypt/crypt');
 
 const KycStatus = require('./src/services/constants/kyc.constant');
 
@@ -19,5 +20,6 @@ module.exports = {
     AbstractIco,
     AbstractKyc,
     KycStatus,
+    CryptService,
     MultivestError,
 };
