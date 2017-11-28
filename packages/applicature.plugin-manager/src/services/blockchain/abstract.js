@@ -4,6 +4,10 @@ class AbstractBlockchain {
 
     }
 
+    getSymbol() {
+
+    }
+
     getHDAddress(index) {
 
     }
