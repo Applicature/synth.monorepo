@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "mapRoot": "./dist",
+        "typeRoots": [
+            "node_modules/@types",
+            "node_modules/web3-typescript-typings"
+        ]
+    }
+}

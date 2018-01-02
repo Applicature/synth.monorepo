@@ -25,32 +25,19 @@
     "url": "git@bitbucket.org:applicature/multivest.plugin-manager.git"
   },
   "dependencies": {
+    "agenda": "^1.0.3",
     "bignumber.js": "^4.1.0",
     "config": "^1.26.1",
     "winston": "^2.1.1"
   },
   "devDependencies": {
-    "assert": "^1.4.1",
-    "chai": "^4.0.2",
-    "chai-subset": "^1.5.0",
-    "cross-env": "^5.0.3",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^15.0.1",
-    "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
-    "eslint-plugin-node": "^5.0.0",
-    "eslint-plugin-react": "^7.0.1",
-    "eslint-watch": "^3.1.0",
-    "husky": "^0.13.4",
-    "istanbul": "^0.4.5",
-    "lodash.clone": "^4.5.0",
-    "mocha": "^3.4.2",
-    "nodemon": "^1.11.0",
-    "nyc": "^11.0.2",
-    "should": "^10.0.0",
-    "supertest": "^1.2.0",
-    "supertest-as-promised": "^4.0.2",
-    "nsp": "^3.1.0"
+    "@types/agenda": "^1.0.1",
+    "@types/bignumber.js": "^4.0.3",
+    "@types/config": "0.0.33",
+    "@types/mongodb": "^2.2.18",
+    "@types/node": "^8.5.2",
+    "@types/winston": "^2.3.7",
+    "typescript": "^2.6.2",
+    "web3-typescript-typings": "^0.7.2"
   }
 }
