@@ -1,51 +1,28 @@
-abstract class AbstractBlockchain<T> {
-    getNetworkId() {
+import { BigNumber } from 'bignumber.js';
+import { Block, Transaction } from './model';
 
-    }
+export abstract class BlockchainService {
+    abstract getBlockchainId(): string;
 
-    getSymbol() {
+    abstract getSymbol(): string;
 
-    }
+    abstract getHDAddress(index: number): string;
 
-    getHDAddress(index) {
+    abstract isValidAddress(address: string): boolean;
 
-    }
+    abstract async getBlockHeight(): Promise<number>;
 
-    isValidAddress(address) {
+    abstract async getBlockByHeight(blockHeight: number): Promise<Block>;
 
-    }
+    abstract async getTransactionByHash(txHash: string): Promise<Transaction>;
 
-    async getBlockHeight() {
+    abstract async sendTransaction(txData: Transaction): Promise<void>;
 
-    }
+    abstract async sendRawTransaction(txHex: string): Promise<void>;
 
-    async getBlockByHeight(blockHeight) {
+    abstract async getBalance(address: string, minConf: number): Promise<BigNumber>;
 
-    }
+    abstract getBlockNumber(block: Block): number;
 
-    async getTransactionByHash(txHash) {
-
-    }
-
-    async sendTransaction(from, to, amount, fee) {
-
-    }
-
-    async sendRawTransaction(txHex) {
-
-    }
-
-    async getBalance(address, minConf = 1) {
-
-    }
-
-    getBlockNumber(block) {
-        return 0;
-    }
-
-    getBlockTimestamp(block) {
-        return 0;
-    }
+    abstract getBlockTimestamp(block: Block): number;
 }
-
-module.exports = AbstractBlockchain;

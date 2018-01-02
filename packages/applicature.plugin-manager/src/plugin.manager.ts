@@ -1,21 +1,25 @@
 const logger = require('winston');
 
 const MultivestError = require('./error');
+import { Plugin } from './plugin';
+import { Hashtable, Constructable } from './structure';
+import { Job } from './jobs';
+import { ICOServise } from './services/ico';
+import { ExchangeServise } from './services/exchange';
+import * as Agenda from 'agenda';
 
-class PluginManager {
-    constructor(plugins = []) {
+export class PluginManager {
+    private jobs: Hashtable<Job> = {};
+    private enabledJobs: Hashtable<Job> = {};
+
+    private ICOServise: ICOServise = null;
+    private exchangeServise: ExchangeServise = null;
+
+    private launchedPlugins: Plugin[] = [];
+    private pluginsRegistry: Hashtable<Plugin> = {};
+
+    constructor(private plugins: Plugin[] = []) {
         logger.debug('creating PluginManager');
-
-        this.plugins = plugins;
-
-        this.launchedPlugins = [];
-        this.pluginsRegistry = {};
-
-        this.ico = null;
-        this.exchange = null;
-
-        this.jobs = {};
-        this.enabledJobs = {};
 
         process.on('unhandledRejection', (err) => {
             logger.error('unhandledRejection', err);
@@ -31,22 +35,22 @@ class PluginManager {
     }
 
     getIco() {
-        return this.ico;
+        return this.ICOServise;
     }
 
-    setIco(ico) {
-        this.ico = ico;
+    setIco(ico: ICOServise) {
+        this.ICOServise = ico;
     }
 
     getExchange() {
-        return this.exchange;
+        return this.exchangeServise;
     }
 
-    setExchange(exchange) {
-        this.exchange = exchange;
+    setExchange(exchange: ExchangeServise) {
+        this.exchangeServise = exchange;
     }
 
-    async enableJob(jobId, jobExecutor, interval) {
+    async enableJob(jobId: string, jobExecutor: Agenda, interval: string) {
         if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
         }
@@ -55,22 +59,22 @@ class PluginManager {
             return;
         }
 
-        const Job = this.jobs[jobId];
+        const JobConstructor = this.jobs[jobId];
 
-        this.enabledJobs[jobId] = new Job(this, jobExecutor);
+        //this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor);
 
         await this.enabledJobs[jobId].init();
 
         jobExecutor.every(interval, jobId);
 
-        this.enabledJobs[jobId] = true;
+        //this.enabledJobs[jobId] = true;
     }
 
-    addJob(jobId, job) {
+    addJob(jobId: string, job: Job) {
         this.jobs[jobId] = job;
     }
 
-    get(pluginId) {
+    get(pluginId: string) {
         if (Object.prototype.hasOwnProperty.call(this.pluginsRegistry, pluginId)) {
             return this.pluginsRegistry[pluginId];
         }
@@ -84,12 +88,10 @@ class PluginManager {
         const startTime = new Date().getTime();
 
         try {
-            // eslint-disable-next-line no-restricted-syntax
             for (const plugin of this.plugins) {
                 logger.debug(`loading plugin ${plugin.path}`);
 
                 try {
-                    // eslint-disable-next-line import/no-dynamic-require,global-require
                     const { Plugin } = require(plugin.path);
 
                     const launchedPlugin = new Plugin(this);
@@ -99,9 +101,7 @@ class PluginManager {
                     const jobs = launchedPlugin.getJobs();
 
                     if (jobs) {
-                        // eslint-disable-next-line no-restricted-syntax,guard-for-in
                         for (const jobId of Object.keys(jobs)) {
-                            // eslint-disable-next-line no-underscore-dangle
                             this.addJob(jobId, jobs[jobId]);
                         }
                     }
@@ -115,9 +115,7 @@ class PluginManager {
                 }
             }
 
-            // eslint-disable-next-line no-restricted-syntax
             for (const plugin of this.launchedPlugins) {
-                // eslint-disable-next-line no-await-in-loop
                 await plugin.init();
             }
 
