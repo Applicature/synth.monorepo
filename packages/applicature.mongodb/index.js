@@ -1,6 +1,3 @@
-const Plugin = require('./src/plugin.db');
-const AbstractDao = require('./src/abstract.dao');
-
-module.exports = {
-    Plugin, AbstractDao,
-};
+export * from './dist/dao';
+export * from './dist/model';
+export * from './dist/plugin';
