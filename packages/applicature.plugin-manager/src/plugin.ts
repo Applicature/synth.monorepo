@@ -1,16 +1,19 @@
 import { Job } from './jobs';
 import { Hashtable } from './structure';
-import { ICOServise } from './services/ico';
-import { ExchangeServise } from './services/exchange';
+import { PluginManager } from './plugin.manager';
 
-export abstract class Plugin {
+export class Plugin {
     public path: string;
 
-    constructor(private ICOService: ICOServise, private exchangeService: ExchangeServise, private id: number = null) {}
+    constructor(private pluginManager: PluginManager, public id: string = null) {}
 
-    abstract init(): void; 
+    init(): void {} 
 
-    abstract getJobs(): Hashtable<Job>;
+    getJobs(): Hashtable<typeof Job> {
+        return {};
+    };
 
-    abstract getDao(): any;
+    getDao(): Hashtable<any> {
+        return {};
+    }
 }

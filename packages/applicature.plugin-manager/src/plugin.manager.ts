@@ -1,12 +1,11 @@
-const logger = require('winston');
-
-const MultivestError = require('./error');
+import * as Agenda from 'agenda';
+import * as logger from 'winston';
+import { MultivestError } from './error';
 import { Plugin } from './plugin';
 import { Hashtable } from './structure';
 import { Job } from './jobs';
 import { ICOServise } from './services/ico';
 import { ExchangeServise } from './services/exchange';
-import * as Agenda from 'agenda';
 
 export class PluginManager {
     private jobs: Hashtable<typeof Job> = {};
@@ -59,9 +58,9 @@ export class PluginManager {
             return;
         }
 
-        const JobConstructor = this.jobs[jobId] as any;
+        const JobConstructor = this.jobs[jobId] as typeof Job;
 
-        this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor);
+        this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor, jobId);
 
         await this.enabledJobs[jobId].init();
 
@@ -92,9 +91,9 @@ export class PluginManager {
                 logger.debug(`loading plugin ${plugin.path}`);
 
                 try {
-                    const { Plugin } = require(plugin.path);
+                    const PluginConstructor = require(plugin.path).Plugin as typeof Plugin;
 
-                    const launchedPlugin = new Plugin(this);
+                    const launchedPlugin = new PluginConstructor(this);
 
                     this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
 
