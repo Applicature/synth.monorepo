@@ -2,7 +2,7 @@ const logger = require('winston');
 
 const MultivestError = require('./error');
 import { Plugin } from './plugin';
-import { Hashtable, Constructable } from './structure';
+import { Hashtable } from './structure';
 import { Job } from './jobs';
 import { ICOServise } from './services/ico';
 import { ExchangeServise } from './services/exchange';
