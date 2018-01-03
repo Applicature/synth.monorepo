@@ -11,14 +11,7 @@
     "yarn": ">=0.20.3"
   },
   "scripts": {
-    "lint": "esw *.js src config --color",
-    "precommit": "npm run lint ; npm run test ; npm run test:security",
-    "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --ui bdd --reporter spec --colors ./tests/ --recursive",
-    "test:watch": "npm test -- --watch",
-    "test:coverage": "cross-env NODE_ENV=test ./node_modules/.bin/istanbul cover _mocha -- --ui bdd --reporter spec --colors ./tests --recursive",
-    "test:check-coverage": "npm run test:coverage && istanbul check-coverage",
-    "report-coverage": "nyc --reporter=lcov --reporter=text-lcov npm run test",
-    "test:security": "nsp check"
+    "build": "gulp typescript"
   },
   "repository": {
     "type": "git",
@@ -38,6 +31,9 @@
     "@types/mongodb": "^2.2.18",
     "@types/node": "^8.5.2",
     "@types/winston": "^2.3.7",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^2.6.3",
+    "gulp-typescript": "^3.2.3",
     "typescript": "^2.6.2",
     "web3-typescript-typings": "^0.7.2"
   }
