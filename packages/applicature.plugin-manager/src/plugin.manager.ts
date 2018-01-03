@@ -9,7 +9,7 @@ import { ExchangeServise } from './services/exchange';
 import * as Agenda from 'agenda';
 
 export class PluginManager {
-    private jobs: Hashtable<Job> = {};
+    private jobs: Hashtable<typeof Job> = {};
     private enabledJobs: Hashtable<Job> = {};
 
     private ICOServise: ICOServise = null;
@@ -59,18 +59,18 @@ export class PluginManager {
             return;
         }
 
-        const JobConstructor = this.jobs[jobId];
+        const JobConstructor = this.jobs[jobId] as any;
 
-        //this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor);
+        this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor);
 
         await this.enabledJobs[jobId].init();
 
         jobExecutor.every(interval, jobId);
 
-        //this.enabledJobs[jobId] = true;
+        this.enabledJobs[jobId].enabled = true;
     }
 
-    addJob(jobId: string, job: Job) {
+    addJob(jobId: string, job: typeof Job) {
         this.jobs[jobId] = job;
     }
 
