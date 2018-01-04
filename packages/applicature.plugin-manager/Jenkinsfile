@@ -34,12 +34,14 @@ node {
             */
 
             stage('Publish NPM snapshot') {
-              def newVersion = "${buildNumber}"
-              sh "npm version patch --no-git-tag-version && npm publish --tag next"
+              sh "npm publish"
             }
 
+            // @TODO: publish to slack
+
         } catch (e) {
-            // rocketSend channel: 'jenkins', message: 'Fehler'
+            // @TODO: publish to slack
+
             throw e
         }
     }
