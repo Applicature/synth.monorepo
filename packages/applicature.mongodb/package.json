@@ -11,7 +11,7 @@
     "yarn": ">=0.20.3"
   },
   "scripts": {
-    "postinstall": "gulp typescript"
+    "postpublish": "gulp typescript"
   },
   "repository": {
     "type": "git",
