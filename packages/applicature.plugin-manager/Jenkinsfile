@@ -14,6 +14,7 @@ node {
   echo "PATH is $env.PATH"
 
   env.NODEJS_HOME = "${tool 'Node 8.x'}"
+  env.NPM_CONFIG_USERCONFIG = "${ configFile(fileId: 'e7d0b690-a399-4cfe-ae90-4dda6661c1a1') }"
   // on linux / mac
   env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
 
