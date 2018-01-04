@@ -3,7 +3,7 @@ import { Collection, Db, WriteOpResult } from 'mongodb';
 
 export class MongoDBDao<T> {
     private db: Db;
-    private collection: Collection<T>;
+    protected collection: Collection<T>;
 
     constructor(db: Db) {
         this.db = db;
