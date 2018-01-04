@@ -35,7 +35,7 @@ node {
 
             stage('Publish NPM snapshot') {
               def newVersion = "${buildNumber}"
-              sh "npm version minor --no-git-tag-version && npm publish --tag next"
+              sh "npm version patch --no-git-tag-version && npm publish --tag next"
             }
 
         } catch (e) {
