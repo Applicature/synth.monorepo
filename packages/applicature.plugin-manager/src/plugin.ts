@@ -5,7 +5,7 @@ import { PluginManager } from './plugin.manager';
 export class Plugin {
     public path: string;
 
-    constructor(private pluginManager: PluginManager, public id: string = null) {}
+    constructor(protected pluginManager: PluginManager, public id: string = null) {}
 
     init(): void {} 
 
