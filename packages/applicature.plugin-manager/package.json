@@ -1,7 +1,7 @@
 {
   "name": "@applicature/multivest.core",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
   "author": "Andrew Zubko <andrew@applicature.com>",
