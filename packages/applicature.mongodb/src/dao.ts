@@ -1,7 +1,7 @@
-import { Collection, Db, WriteOpResult } from 'mongodb';
+import { Collection, Db, InsertOneWriteOpResult, UpdateWriteOpResult, WriteOpResult } from 'mongodb';
+import { Dao } from '@applicature/multivest.core';
 
-
-export class MongoDBDao<T> {
+export abstract class MongoDBDao<T> implements Dao<T> {
     private db: Db;
     protected collection: Collection<T>;
 
@@ -10,19 +10,35 @@ export class MongoDBDao<T> {
         this.collection = this.db.collection<T>(this.getCollectionName());
     }
 
-    getDaoId(): string {
-        return '';
+    abstract getDaoId(): string;
+
+    abstract getCollectionName(): string;
+
+    abstract getDefaultValue(): T;
+
+    create(needle: Partial<T>) {
+        const fulfilled = Object.assign(this.getDefaultValue(), needle);
+        return this.collection.insert(needle);
     }
 
-    getCollectionName(): string {
-        return '';
+    get(needle: Partial<T>) {
+        return this.collection
+            .findOne(needle);
     }
 
-    get(id: number): Promise<T> {
-        return this.collection.findOne({ _id: id });
+    list(needle: Partial<T>) {
+        return this.collection
+            .find(needle)
+            .toArray();
     }
 
-    remove(id: number): Promise<WriteOpResult> {
-        return this.collection.remove({ _id: id });
+    update(needle: Partial<T>, substitution: Partial<T>) {
+        return this.collection
+            .updateMany(needle, substitution);
+    }
+
+    remove(needle: Partial<T>) {
+        return this.collection
+            .remove(needle);
     }
 }

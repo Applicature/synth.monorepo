@@ -10,14 +10,14 @@ import { ConnectionState } from './model';
 import { MongoDBDao } from './dao';
 import { Plugin, PluginManager, MultivestError, Hashtable } from '@applicature/multivest.core';
 
-export class MongodbPlugin extends Plugin {
+export class MongodbPlugin<CompositeDao> extends Plugin {
     private urls: string;
     private options: MongoClientOptions;
     private connection: Db;
     private connectionPromise: Promise<Db>;
     public state: ConnectionState = ConnectionState.Disconnected;
 
-    public dao: Hashtable<MongoDBDao<any>> = {};
+    public dao: Hashtable<MongoDBDao<CompositeDao>> = {};
     public daoClasses: Array<typeof MongoDBDao> = [];
 
     constructor(pluginManager: PluginManager) {
@@ -33,7 +33,7 @@ export class MongodbPlugin extends Plugin {
         else {
             this.options = {
                 reconnectTries: 10,
-                autoReconnect: true,
+                autoReconnect: true
             };
         }
     }
