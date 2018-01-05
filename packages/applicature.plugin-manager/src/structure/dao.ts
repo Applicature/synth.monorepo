@@ -1,8 +1,8 @@
 export abstract class Dao<T> {
     abstract getId(): string;
-    abstract get(obj: Partial<T>): Promise<T>;
-    abstract list(obj: Partial<T>): Promise<T[]>;
-    abstract update(obj: Partial<T>): Promise<any>;
-    abstract create(obj: T): Promise<any>;
-    abstract remove(obj: Partial<T>): Promise<any>; 
+    abstract get(needle: Partial<T>): Promise<T>;
+    abstract list(needle: Partial<T>): Promise<T[]>;
+    abstract update(needle: Partial<T>, substitution: Partial<T>): Promise<any>;
+    abstract create(needle: T): Promise<any>;
+    abstract remove(needle: Partial<T>): Promise<any>; 
 }
