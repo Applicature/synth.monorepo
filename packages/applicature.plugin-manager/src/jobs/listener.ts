@@ -107,5 +107,3 @@ export class AbstractBlockchainListener extends Job {
     processBlock(block: any) {
     }
 }
-
-module.exports = AbstractBlockchainListener;

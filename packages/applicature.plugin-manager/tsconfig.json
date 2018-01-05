@@ -8,7 +8,6 @@
         "sourceRoot": "",
         "outDir": "./dist",
         "mapRoot": "./dist",
-        "declaration": true,
         "typeRoots": [
             "node_modules/@types",
             "node_modules/web3-typescript-typings"

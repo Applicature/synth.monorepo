@@ -3,8 +3,9 @@ const ts = require('gulp-typescript');
 const sm = require('gulp-sourcemaps');
 
 const tsp = ts.createProject('tsconfig.json');
+const index = ts.createProject('tsconfig.json');
 
-gulp.task('build', ['typescript', 'static']);
+gulp.task('build', ['typescript', 'index']);
 
 gulp.task('typescript', () => {
     return gulp.src([
@@ -14,4 +15,12 @@ gulp.task('typescript', () => {
         .pipe(tsp())
         .pipe(sm.write('.'))
         .pipe(gulp.dest('./dist'));      
+});
+
+gulp.task('index', () => {
+    return gulp.src([
+            'index.ts'
+        ])
+        .pipe(tsp())
+        .pipe(gulp.dest('./'));      
 });

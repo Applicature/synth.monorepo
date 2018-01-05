@@ -1,4 +1,5 @@
 import { BigNumber } from 'bignumber.js'; 
+import { Transaction } from './transaction';
 
 export interface Block {
     height: number;
@@ -19,22 +20,4 @@ export interface BitcoinBlock extends Block {
 
 export interface EthereumBlock extends Block {
 
-}
-
-export interface Transaction {
-    hash: string;
-    blockHash?: string;
-    blockHeight?: number;
-    fee: number;
-    from: Sender[];
-    to: Recipient[];
-}
-
-export interface Sender {
-    address: string;
-}
-
-export interface Recipient {
-    address: string;
-    amount: number;
 }
