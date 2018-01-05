@@ -1,5 +1,5 @@
 export abstract class Dao<T> {
-    abstract getId(): string;
+    abstract getDaoId(): string;
     abstract get(needle: Partial<T>): Promise<T>;
     abstract list(needle: Partial<T>): Promise<T[]>;
     abstract update(needle: Partial<T>, substitution: Partial<T>): Promise<any>;
