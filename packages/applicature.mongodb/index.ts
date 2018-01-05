@@ -1,3 +1,3 @@
-export * from './dist/dao';
-export * from './dist/model';
-export * from './dist/plugin';
+export * from './src/dao';
+export * from './src/model';
+export * from './src/plugin';
