@@ -10,5 +10,6 @@ __export(require("./src/services/exchange"));
 __export(require("./src/services/ico"));
 __export(require("./src/services/kyc"));
 __export(require("./src/error"));
+__export(require("./src/structure"));
 __export(require("./src/plugin"));
 __export(require("./src/plugin.manager"));

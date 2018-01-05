@@ -14,10 +14,10 @@ export class PluginManager {
     private ICOServise: ICOServise = null;
     private exchangeServise: ExchangeServise = null;
 
-    private launchedPlugins: Plugin[] = [];
-    private pluginsRegistry: Hashtable<Plugin> = {};
+    private launchedPlugins: Plugin<any>[] = [];
+    private pluginsRegistry: Hashtable<Plugin<any>> = {};
 
-    constructor(private plugins: Plugin[] = []) {
+    constructor(private plugins: Plugin<any>[] = []) {
         logger.debug('creating PluginManager');
 
         process.on('unhandledRejection', (err) => {
@@ -127,5 +127,3 @@ export class PluginManager {
         }
     }
 }
-
-module.exports = PluginManager;
