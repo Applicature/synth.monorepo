@@ -3,7 +3,10 @@ const ts = require('gulp-typescript');
 const sm = require('gulp-sourcemaps');
 
 const tsp = ts.createProject('tsconfig.json');
-const index = ts.createProject('tsconfig.json');
+const index = ts.createProject({
+    target: "es6",
+    module: "commonjs"
+});
 
 gulp.task('build', ['typescript', 'index']);
 
@@ -19,8 +22,8 @@ gulp.task('typescript', () => {
 
 gulp.task('index', () => {
     return gulp.src([
-            'index.ts'
+            './index.ts'
         ])
-        .pipe(tsp())
+        .pipe(index())
         .pipe(gulp.dest('./'));      
 });
