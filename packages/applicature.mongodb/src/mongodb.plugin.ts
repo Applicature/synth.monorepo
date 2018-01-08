@@ -7,17 +7,17 @@ import { Db, MongoClientOptions, connect } from 'mongodb';
 import * as logger from 'winston';
 import * as config from 'config';
 import { ConnectionState } from './model';
-import { MongoDBDao } from './dao';
-import { Plugin, PluginManager, MultivestError, Hashtable } from '@applicature/multivest.core';
+import { MongoDBDao } from './mongodb.dao';
+import { Dao, CompositeDao, Plugin, PluginManager, MultivestError, Hashtable } from '@applicature/multivest.core';
 
-export class MongodbPlugin<CompositeDao> extends Plugin {
+export class MongodbPlugin<T extends CompositeDao<T>> extends Plugin<T> {
     private urls: string;
     private options: MongoClientOptions;
     private connection: Db;
     private connectionPromise: Promise<Db>;
     public state: ConnectionState = ConnectionState.Disconnected;
 
-    public dao: Hashtable<MongoDBDao<CompositeDao>> = {};
+    public dao: Hashtable<MongoDBDao<T>> = {};
     public daoClasses: Array<typeof MongoDBDao> = [];
 
     constructor(pluginManager: PluginManager) {
