@@ -1,31 +1,46 @@
+import * as Agenda from 'agenda';
 import { Job } from './jobs';
-import { Constructable, Dao, Hashtable } from './structure';
+import { Constructable, CompositeDao, Dao, Hashtable } from './structure';
 import { PluginManager } from './plugin.manager';
 
-export class Plugin<CompositeDao extends Constructable<Dao<CompositeDao>>> {
-    protected daoClasses: Array<typeof Dao>;
-    protected dao: Hashtable<Dao<CompositeDao>>;
+export abstract class Plugin<T extends CompositeDao<T>> {
     public path: string;
+    private jobClasses: Array<typeof Job> = [];
+    private jobs: Hashtable<Job> = {};
+    private daoClasses: Array<typeof Dao> = [];
+    private daos: Hashtable<Dao<T>> = {};
 
-    constructor(protected pluginManager: PluginManager, public id: string = null) {}
+    constructor(protected pluginManager: PluginManager) {}
 
-    init(): void {
-        for (const DaoClass of this.daoClasses) {
-            const DaoConstructor = DaoClass as CompositeDao;
-            const dao = new DaoConstructor();
+    abstract getPluginId(): string;
+
+    invoke(): void {
+        for (const JobClass of this.jobClasses) {
+            const JobConstructor = JobClass as Constructable<Job>;
+            const jobInstance = new JobConstructor(this.pluginManager.jobExecutor);
+            this.jobs[jobInstance.getJobId()] = jobInstance;
         }
-        
-    } 
 
-    getJobs(): Hashtable<typeof Job> {
-        return {};
-    };
-
+        for (const DaoClass of this.daoClasses) {
+            const DaoConstructor = DaoClass as CompositeDao<T>;
+            const daoInstance = new DaoConstructor();
+            this.daos[daoInstance.getDaoId()] = daoInstance;
+        }
+    }
+ 
     registerDao(daoClass: typeof Dao) {
         this.daoClasses.push(daoClass);
     }
 
-    getDao(): Hashtable<Dao<any>> {
-        return this.dao;
+    getDaos() {
+        return this.daos;
+    };
+
+    registerJob(jobClass: typeof Job) {
+        this.jobClasses.push(jobClass);
     }
+
+    getJobs() {
+        return this.jobs;
+    };
 }

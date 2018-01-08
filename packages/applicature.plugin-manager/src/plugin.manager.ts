@@ -8,11 +8,9 @@ import { ICOServise } from './services/ico';
 import { ExchangeServise } from './services/exchange';
 
 export class PluginManager {
-    private jobs: Hashtable<typeof Job> = {};
-    private enabledJobs: Hashtable<Job> = {};
-
-    private ICOServise: ICOServise = null;
-    private exchangeServise: ExchangeServise = null;
+    public ICOServise: ICOServise = null;
+    public exchangeServise: ExchangeServise = null;
+    public jobExecutor: Agenda = null;
 
     private launchedPlugins: Plugin<any>[] = [];
     private pluginsRegistry: Hashtable<Plugin<any>> = {};
@@ -60,7 +58,7 @@ export class PluginManager {
 
         const JobConstructor = this.jobs[jobId] as typeof Job;
 
-        this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor, jobId);
+        this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor);
 
         await this.enabledJobs[jobId].init();
 
@@ -91,9 +89,9 @@ export class PluginManager {
                 logger.debug(`loading plugin ${plugin.path}`);
 
                 try {
-                    const PluginConstructor = require(plugin.path).Plugin as typeof Plugin;
-
-                    const launchedPlugin = new PluginConstructor(this);
+                    const PluginClass = require(plugin.path).Plugin;
+                    const PluginConstructor = PluginClass as typeof Plugin;
+                    const pluginInstance = new PluginConstructor(this);
 
                     this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
 

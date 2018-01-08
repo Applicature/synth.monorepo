@@ -1,16 +1,12 @@
 import { PluginManager } from '../plugin.manager';
 import * as Agenda from 'agenda';
 
-export class Job {
+export abstract class Job {
     public enabled: boolean = false;
 
-    constructor(protected pluginManager: PluginManager, protected jobExecutor: Agenda, protected id: string) {}
+    constructor(protected pluginManager: PluginManager, protected jobExecutor: Agenda) {}
 
-    async init() {
-
-    }
-
-    async execute() {
-        
-    }
+    abstract getJobId(): string;
+    abstract async init(): Promise<void>;
+    abstract async execute(): Promise<void>;
 }
