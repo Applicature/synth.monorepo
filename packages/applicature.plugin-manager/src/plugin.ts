@@ -1,9 +1,9 @@
 import * as Agenda from 'agenda';
 import { Job } from './jobs';
-import { Constructable, CompositeDao, Dao, Hashtable } from './structure';
+import { Constructable, Dao, Hashtable } from './structure';
 import { PluginManager } from './plugin.manager';
 
-export abstract class Plugin<T extends CompositeDao<T>> {
+export abstract class Plugin<T> {
     public path: string;
     private jobClasses: Array<typeof Job> = [];
     private jobs: Hashtable<Job> = {};
@@ -22,7 +22,7 @@ export abstract class Plugin<T extends CompositeDao<T>> {
         }
 
         for (const DaoClass of this.daoClasses) {
-            const DaoConstructor = DaoClass as CompositeDao<T>;
+            const DaoConstructor = DaoClass as Constructable<Dao<T>>;
             const daoInstance = new DaoConstructor();
             this.daos[daoInstance.getDaoId()] = daoInstance;
         }
