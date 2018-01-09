@@ -2,17 +2,18 @@ import * as Agenda from 'agenda';
 import * as logger from 'winston';
 import { MultivestError } from './error';
 import { Plugin } from './plugin';
-import { Constructable, Hashtable } from './structure';
+import { Dao, Constructable, Hashtable } from './structure';
 import { Job } from './jobs';
 import { ICOServise } from './services/ico';
 import { ExchangeServise } from './services/exchange';
 
 export class PluginManager {
-    public ICOServise: ICOServise = null;
-    public exchangeServise: ExchangeServise = null;
-    public jobExecutor: Agenda = null;
+    private ICOServise: ICOServise = null;
+    private exchangeServise: ExchangeServise = null;
 
     private plugins: Hashtable<Plugin<any>> = {};
+    private jobs: Hashtable<Job> = {};
+    private daos: Hashtable<Dao<any>> = {};
 
     constructor(private pluginList: Plugin<any>[] = []) {
         logger.debug('creating PluginManager');
@@ -51,30 +52,19 @@ export class PluginManager {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
         }
 
-        if (Object.prototype.hasOwnProperty.call(this.enabledJobs, jobId)) {
+        if (Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             return;
         }
 
-        const JobConstructor = this.jobs[jobId] as typeof Job;
-
-        this.enabledJobs[jobId] = new JobConstructor(this, jobExecutor);
-
-        await this.enabledJobs[jobId].init();
-
+        await this.jobs[jobId].init();
         jobExecutor.every(interval, jobId);
-
-        this.enabledJobs[jobId].enabled = true;
-    }
-
-    addJob(jobId: string, job: typeof Job) {
-        this.jobs[jobId] = job;
+        this.jobs[jobId].enabled = true;
     }
 
     get(pluginId: string) {
-        if (Object.prototype.hasOwnProperty.call(this.pluginsRegistry, pluginId)) {
-            return this.pluginsRegistry[pluginId];
+        if (Object.prototype.hasOwnProperty.call(this.plugins, pluginId)) {
+            return this.plugins[pluginId];
         }
-
         throw new MultivestError(`PluginManager: Unknown plugin ${pluginId}`);
     }
 
@@ -91,16 +81,7 @@ export class PluginManager {
                     const PluginClass = require(pluginOptions.path).Plugin;
                     const PluginConstructor = PluginClass as Constructable<Plugin<any>>;
                     const pluginInstance = new PluginConstructor(this);
-
                     this.plugins[pluginInstance.getPluginId()] = pluginInstance;
-
-                    const jobs = pluginInstance.getJobs();
-
-                    if (jobs) {
-                        for (const jobId of Object.keys(jobs)) {
-                            this.addJob(jobId, jobs[jobId]);
-                        }
-                    }
                 }
                 catch (error) {
                     logger.error(`PluginManager: Failed to load plugin ${pluginOptions.path}`, error);
@@ -110,7 +91,11 @@ export class PluginManager {
             }
 
             for (const pluginId of Object.keys(this.plugins)) {
-                await this.plugins[pluginId].init();
+                const plugin = this.plugins[pluginId];
+                await plugin.init();
+                plugin.invoke();
+                Object.assign(this.jobs, plugin.getJobs());
+                Object.assign(this.daos, plugin.getDaos());
             }
 
             const endTime = new Date().getTime();
