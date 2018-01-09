@@ -1,3 +1,3 @@
-export * from './src/dao';
+export * from './src/mongodb.dao';
 export * from './src/model';
-export * from './src/plugin';
+export * from './src/mongodb.plugin';
