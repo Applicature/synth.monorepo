@@ -8,20 +8,17 @@ import * as logger from 'winston';
 import * as config from 'config';
 import { ConnectionState } from './model';
 import { MongoDBDao } from './mongodb.dao';
-import { Dao, CompositeDao, Plugin, PluginManager, MultivestError, Hashtable } from '@applicature/multivest.core';
+import { Constructable, Dao, Plugin, PluginManager, MultivestError, Hashtable } from '@applicature/multivest.core';
 
-export class MongodbPlugin<T extends CompositeDao<T>> extends Plugin<T> {
+export class MongodbPlugin extends Plugin<any> {
     private urls: string;
     private options: MongoClientOptions;
     private connection: Db;
     private connectionPromise: Promise<Db>;
     public state: ConnectionState = ConnectionState.Disconnected;
 
-    public dao: Hashtable<MongoDBDao<T>> = {};
-    public daoClasses: Array<typeof MongoDBDao> = [];
-
     constructor(pluginManager: PluginManager) {
-        super(pluginManager, 'mongodb');
+        super(pluginManager);
 
         this.urls = config.get('multivest.mongodb.url');
 
@@ -38,6 +35,10 @@ export class MongodbPlugin<T extends CompositeDao<T>> extends Plugin<T> {
         }
     }
 
+    getPluginId() {
+        return 'mongodb';
+    }
+
     async init() {
         if (this.connection) {
             return Promise.resolve(this.connection);
@@ -47,12 +48,7 @@ export class MongodbPlugin<T extends CompositeDao<T>> extends Plugin<T> {
         this.connectionPromise = connect(this.urls, this.options);
         try {
             this.connection = await this.connectionPromise;
-
-            for (const DaoConstructor of this.daoClasses) {
-                const instance = new DaoConstructor(this.connection);
-
-                this.dao[instance.getDaoId()] = instance;
-            }
+            this.invoke();
         }
         catch (err) {
             logger.error('Failed to connect to mongodb: ', err);
@@ -62,14 +58,14 @@ export class MongodbPlugin<T extends CompositeDao<T>> extends Plugin<T> {
         return this.connectionPromise;
     }
 
-    addDao(DaoConstructor: typeof MongoDBDao) {
+    addDao(DaoConstructor: Constructable<MongoDBDao<any>>) {
         if (this.state === ConnectionState.Connected) {
             const instance = new DaoConstructor(this.connection);
 
-            this.dao[instance.getDaoId()] = instance;
+            this.daos[instance.getDaoId()] = instance;
         }
         else {
-            this.daoClasses.push(DaoConstructor);
+            this.registerDao(DaoConstructor);
         }
     }
 
@@ -94,11 +90,11 @@ export class MongodbPlugin<T extends CompositeDao<T>> extends Plugin<T> {
             return Promise.reject(new Error('Database is disconnected.'));
         }
         else if (this.state === ConnectionState.Connected) {
-            return Promise.resolve(this.dao);
+            return Promise.resolve(this.daos);
         }
         else if (this.state === ConnectionState.Connecting) {
             return this.connectionPromise
-                .then(() => this.dao);
+                .then(() => this.daos);
         }
 
         throw new MultivestError('Unrsolved state');
