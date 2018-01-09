@@ -16,7 +16,7 @@ export abstract class BlockchainService {
 
     abstract async getTransactionByHash(txHash: string): Promise<Transaction>;
 
-    abstract async sendTransaction(txData: Transaction): Promise<void>;
+    abstract async sendTransaction(txData: Transaction): Promise<string>;
 
     abstract async sendRawTransaction(txHex: string): Promise<void>;
 
