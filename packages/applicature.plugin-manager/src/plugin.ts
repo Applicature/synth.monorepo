@@ -5,10 +5,10 @@ import { PluginManager } from './plugin.manager';
 
 export abstract class Plugin<T> {
     public path: string;
-    private jobClasses: Array<typeof Job> = [];
-    private jobs: Hashtable<Job> = {};
-    private daoClasses: Array<typeof Dao> = [];
-    private daos: Hashtable<Dao<T>> = {};
+    protected jobClasses: Array<typeof Job> = [];
+    protected jobs: Hashtable<Job> = {};
+    protected daoClasses: Array<typeof Dao> = [];
+    protected daos: Hashtable<Dao<T>> = {};
 
     constructor(protected pluginManager: PluginManager) {}
 
