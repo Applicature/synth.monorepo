@@ -13,6 +13,7 @@ export abstract class Plugin<T> {
     constructor(protected pluginManager: PluginManager) {}
 
     abstract getPluginId(): string;
+    abstract init(): void;
 
     invoke(): void {
         for (const JobClass of this.jobClasses) {

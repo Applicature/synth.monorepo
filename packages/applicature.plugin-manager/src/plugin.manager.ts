@@ -2,7 +2,7 @@ import * as Agenda from 'agenda';
 import * as logger from 'winston';
 import { MultivestError } from './error';
 import { Plugin } from './plugin';
-import { Hashtable } from './structure';
+import { Constructable, Hashtable } from './structure';
 import { Job } from './jobs';
 import { ICOServise } from './services/ico';
 import { ExchangeServise } from './services/exchange';
@@ -12,10 +12,9 @@ export class PluginManager {
     public exchangeServise: ExchangeServise = null;
     public jobExecutor: Agenda = null;
 
-    private launchedPlugins: Plugin<any>[] = [];
-    private pluginsRegistry: Hashtable<Plugin<any>> = {};
+    private plugins: Hashtable<Plugin<any>> = {};
 
-    constructor(private plugins: Plugin<any>[] = []) {
+    constructor(private pluginList: Plugin<any>[] = []) {
         logger.debug('creating PluginManager');
 
         process.on('unhandledRejection', (err) => {
@@ -85,35 +84,33 @@ export class PluginManager {
         const startTime = new Date().getTime();
 
         try {
-            for (const plugin of this.plugins) {
-                logger.debug(`loading plugin ${plugin.path}`);
+            for (const pluginOptions of this.pluginList) {
+                logger.debug(`loading plugin ${pluginOptions.path}`);
 
                 try {
-                    const PluginClass = require(plugin.path).Plugin;
-                    const PluginConstructor = PluginClass as typeof Plugin;
+                    const PluginClass = require(pluginOptions.path).Plugin;
+                    const PluginConstructor = PluginClass as Constructable<Plugin<any>>;
                     const pluginInstance = new PluginConstructor(this);
 
-                    this.pluginsRegistry[launchedPlugin.id] = launchedPlugin;
+                    this.plugins[pluginInstance.getPluginId()] = pluginInstance;
 
-                    const jobs = launchedPlugin.getJobs();
+                    const jobs = pluginInstance.getJobs();
 
                     if (jobs) {
                         for (const jobId of Object.keys(jobs)) {
                             this.addJob(jobId, jobs[jobId]);
                         }
                     }
-
-                    this.launchedPlugins.push(launchedPlugin);
                 }
                 catch (error) {
-                    logger.error(`PluginManager: Failed to load plugin ${plugin.path}`, error);
+                    logger.error(`PluginManager: Failed to load plugin ${pluginOptions.path}`, error);
 
                     process.exit(1);
                 }
             }
 
-            for (const plugin of this.launchedPlugins) {
-                await plugin.init();
+            for (const pluginId of Object.keys(this.plugins)) {
+                await this.plugins[pluginId].init();
             }
 
             const endTime = new Date().getTime();
