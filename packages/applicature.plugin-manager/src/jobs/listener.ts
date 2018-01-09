@@ -5,21 +5,23 @@ import { Job } from './index';
 import { PluginManager } from '../plugin.manager';
 import { BlockchainService } from '../services/blockchain';
 
-export class AbstractBlockchainListener extends Job {
-    public blockchainService: BlockchainService;
-    public sinceBlock: number;
-    public minConfirmation: number;
+export abstract class AbstractBlockchainListener extends Job {
     public dao: any;
 
-    constructor(pluginManager: PluginManager, jobExecutor: Agenda, id: string, blockchainService: BlockchainService, sinceBlock: number, minConfirmation = 0) {
-        super(pluginManager, jobExecutor, id);
+    constructor(
+        pluginManager: PluginManager, 
+        jobExecutor: Agenda, 
+        protected id: string, 
+        protected blockchainService: BlockchainService, 
+        protected sinceBlock: number, 
+        protected minConfirmation = 0
+    ) {
+        super(pluginManager, jobExecutor);
 
-        this.blockchainService = blockchainService;
-        this.sinceBlock = sinceBlock;
-        this.minConfirmation = minConfirmation;
+        const jobId = this.getJobId();
 
-        jobExecutor.define(this.id, async (job, done) => {
-            logger.info(`${this.id}: executing job`);
+        jobExecutor.define(jobId, async (job, done) => {
+            logger.info(`${jobId}: executing job`);
 
             try {
                 await this.execute();
@@ -27,7 +29,7 @@ export class AbstractBlockchainListener extends Job {
                 done();
             }
             catch (err) {
-                logger.error(`${this.id} failed to process blocks`, err);
+                logger.error(`${jobId} failed to process blocks`, err);
 
                 done(err);
             }
@@ -35,7 +37,7 @@ export class AbstractBlockchainListener extends Job {
     }
 
     async init() {
-        this.dao = await this.pluginManager.get('mongodb').getDao();
+        this.dao = await this.pluginManager.get('mongodb').getDaos();
     }
 
     async execute() {
