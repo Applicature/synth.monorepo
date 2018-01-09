@@ -5,7 +5,7 @@ import { Job } from './index';
 import { PluginManager } from '../plugin.manager';
 import { BlockchainService } from '../services/blockchain';
 
-export abstract class AbstractBlockchainListener extends Job {
+export abstract class BlockchainListener extends Job {
     public dao: any;
 
     constructor(
@@ -76,8 +76,8 @@ export abstract class AbstractBlockchainListener extends Job {
 
             const block = await this.blockchainService.getBlockByHeight(processingBlock);
 
-            const blockNumber = this.blockchainService.getBlockNumber(block);
-            const blockTime = this.blockchainService.getBlockTimestamp(block);
+            const blockNumber = block.height;
+            const blockTime = block.time;
 
             if ((publishedBlockHeight - blockNumber) < this.minConfirmation) {
                 logger.info(`${this.id}: skipping block, because it has less confirmations than expected`, {

@@ -21,8 +21,4 @@ export abstract class BlockchainService {
     abstract async sendRawTransaction(txHex: string): Promise<void>;
 
     abstract async getBalance(address: string, minConf: number): Promise<BigNumber>;
-
-    abstract getBlockNumber(block: Block): number;
-
-    abstract getBlockTimestamp(block: Block): number;
 }
