@@ -1,12 +1,12 @@
 export interface Contribution {
-    uniqId: number; 
+    uniqId: string; 
     txHash: string; 
     amount: number; 
     params: string;
 }
 
 export interface ExternalContribution {
-    uniqId: number;
+    uniqId: string;
     parentTx: string; 
     icoAddressId: string; 
     userAddress: string; 
