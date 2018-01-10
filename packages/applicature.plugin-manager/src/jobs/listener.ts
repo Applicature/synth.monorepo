@@ -4,9 +4,10 @@ import { BigNumber } from 'bignumber.js';
 import { Job } from './index';
 import { PluginManager } from '../plugin.manager';
 import { BlockchainService } from '../services/blockchain';
+import { Dao, Hashtable } from '../structure';
 
 export abstract class BlockchainListener extends Job {
-    public dao: any;
+    public dao: Hashtable<Dao<any>>;
 
     constructor(
         pluginManager: PluginManager, 
@@ -40,12 +41,12 @@ export abstract class BlockchainListener extends Job {
 
     async execute() {
         const jobId = this.getJobId();
-        let job = await this.dao.jobs.getJob(jobId);
+        let job = await this.dao.jobs.get({job: jobId});
 
         if (!job) {
-            job = await this.dao.jobs.insertJob({
+            job = await this.dao.jobs.create({
                 job: jobId,
-                processedBlockHeight: this.sinceBlock,
+                processedBlockHeight: this.sinceBlock
             });
         }
 
@@ -99,7 +100,7 @@ export abstract class BlockchainListener extends Job {
                 processedBlockTime: blockTime,
             });
 
-            this.dao.jobs.updateJob(jobId, {
+            this.dao.jobs.update({ job: jobId }, {
                 processedBlockHeight: blockNumber,
                 processedBlockTime: blockTime,
             });
