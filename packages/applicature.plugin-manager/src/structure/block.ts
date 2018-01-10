@@ -8,16 +8,8 @@ export interface Block {
     difficulty?: number;
     nonce: any;
     size: number;
-    time: Date;
+    time: number;
     network: string;
     fee: BigNumber;
     transactions: Transaction[];
-}
-
-export interface BitcoinBlock extends Block {
-
-}
-
-export interface EthereumBlock extends Block {
-
 }
