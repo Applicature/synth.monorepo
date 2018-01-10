@@ -16,9 +16,10 @@ export abstract class Plugin<T> {
     abstract init(): void;
 
     invoke(): void {
+        const jobExecutor = this.pluginManager.getExecutor();
         for (const JobClass of this.jobClasses) {
             const JobConstructor = JobClass as Constructable<Job>;
-            const jobInstance = new JobConstructor(this.pluginManager.jobExecutor);
+            const jobInstance = new JobConstructor(jobExecutor);
             this.jobs[jobInstance.getJobId()] = jobInstance;
         }
 

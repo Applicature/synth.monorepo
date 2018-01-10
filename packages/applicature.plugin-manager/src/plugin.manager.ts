@@ -10,6 +10,7 @@ import { ExchangeServise } from './services/exchange';
 export class PluginManager {
     private ICOServise: ICOServise = null;
     private exchangeServise: ExchangeServise = null;
+    private jobExecutor: Agenda = null;
 
     private plugins: Hashtable<Plugin<any>> = {};
     private jobs: Hashtable<Job> = {};
@@ -47,7 +48,15 @@ export class PluginManager {
         this.exchangeServise = exchange;
     }
 
-    async enableJob(jobId: string, jobExecutor: Agenda, interval: string) {
+    setExecutor(agenda: Agenda) {
+        this.jobExecutor = agenda;
+    }
+
+    getExecutor() {
+        return this.jobExecutor;
+    }
+
+    async enableJob(jobId: string, interval: string) {
         if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
         }
@@ -57,7 +66,7 @@ export class PluginManager {
         }
 
         await this.jobs[jobId].init();
-        jobExecutor.every(interval, jobId);
+        this.jobExecutor.every(interval, jobId);
         this.jobs[jobId].enabled = true;
     }
 
