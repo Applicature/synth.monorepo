@@ -6,9 +6,9 @@ export abstract class ICOServise {
 
     abstract isValidTxTime(time: number): boolean;
 
-    abstract logContribution(contribution: Contribution): Promise<Contribution>;
+    abstract logContribution(contribution: Contribution): Promise<any>;
 
-    abstract handleExternalContribution(contribution: ExternalContribution): Promise<ExternalContribution>;
+    abstract handleExternalContribution(contribution: ExternalContribution): Promise<any>;
 
     abstract listContributions(address: string): Promise<Contribution[]>;
 
