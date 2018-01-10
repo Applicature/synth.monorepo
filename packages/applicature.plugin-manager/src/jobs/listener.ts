@@ -10,17 +10,15 @@ export abstract class BlockchainListener extends Job {
 
     constructor(
         pluginManager: PluginManager, 
-        jobExecutor: Agenda, 
-        protected id: string, 
         protected blockchainService: BlockchainService, 
         protected sinceBlock: number, 
         protected minConfirmation = 0
     ) {
-        super(pluginManager, jobExecutor);
+        super(pluginManager, pluginManager.getExecutor());
 
         const jobId = this.getJobId();
 
-        jobExecutor.define(jobId, async (job, done) => {
+        this.jobExecutor.define(jobId, async (job, done) => {
             logger.info(`${jobId}: executing job`);
 
             try {
@@ -41,11 +39,12 @@ export abstract class BlockchainListener extends Job {
     }
 
     async execute() {
-        let job = await this.dao.jobs.getJob(this.id);
+        const jobId = this.getJobId();
+        let job = await this.dao.jobs.getJob(jobId);
 
         if (!job) {
             job = await this.dao.jobs.insertJob({
-                job: this.id,
+                job: jobId,
                 processedBlockHeight: this.sinceBlock,
             });
         }
@@ -67,7 +66,8 @@ export abstract class BlockchainListener extends Job {
     }
 
     async processBlocks(job: Job, processSinceBlock: number, publishedBlockHeight: number) {
-        logger.info(`${this.id}: processing blocks`, {
+        const jobId = this.getJobId();
+        logger.info(`${jobId}: processing blocks`, {
             processSinceBlock,
             publishedBlockHeight,
         });
@@ -80,7 +80,7 @@ export abstract class BlockchainListener extends Job {
             const blockTime = block.time;
 
             if ((publishedBlockHeight - blockNumber) < this.minConfirmation) {
-                logger.info(`${this.id}: skipping block, because it has less confirmations than expected`, {
+                logger.info(`${jobId}: skipping block, because it has less confirmations than expected`, {
                     skippingBlock: blockNumber,
                     minConfirmations: this.minConfirmation,
                 });
@@ -88,18 +88,18 @@ export abstract class BlockchainListener extends Job {
                 break;
             }
 
-            logger.info(`${this.id}: processing block`, {
+            logger.info(`${jobId}: processing block`, {
                 block: processingBlock,
             });
 
             await this.processBlock(block);
 
-            logger.info(`${this.id}: updating job`, {
+            logger.info(`${jobId}: updating job`, {
                 processedBlockHeight: blockNumber,
                 processedBlockTime: blockTime,
             });
 
-            this.dao.jobs.updateJob(this.id, {
+            this.dao.jobs.updateJob(jobId, {
                 processedBlockHeight: blockNumber,
                 processedBlockTime: blockTime,
             });
