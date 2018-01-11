@@ -4,7 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./src/jobs"));
-__export(require("./src/services/blockchain"));
 __export(require("./src/services/crypt"));
 __export(require("./src/services/exchange"));
 __export(require("./src/services/ico"));
