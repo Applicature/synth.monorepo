@@ -12,7 +12,7 @@ gulp.task('build', ['typescript', 'index']);
 
 gulp.task('typescript', () => {
     return gulp.src([
-            'src/**/*.ts'
+            './src/**/*.ts'
         ])
         .pipe(sm.init())
         .pipe(tsp())

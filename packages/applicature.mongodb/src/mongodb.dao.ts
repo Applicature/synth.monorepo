@@ -18,7 +18,9 @@ export abstract class MongoDBDao<T> implements Dao<T> {
 
     create(needle: Partial<T>) {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
-        return this.collection.insert(needle);
+        return this.collection
+            .insert(needle)
+            .then(() => needle);
     }
 
     get(needle: Partial<T>) {
@@ -34,11 +36,13 @@ export abstract class MongoDBDao<T> implements Dao<T> {
 
     update(needle: Partial<T>, substitution: Partial<T>) {
         return this.collection
-            .updateMany(needle, substitution);
+            .updateMany(needle, substitution)
+            .then(() => needle);
     }
 
     remove(needle: Partial<T>) {
         return this.collection
-            .remove(needle);
+            .remove(needle)
+            .then(() => needle);
     }
 }

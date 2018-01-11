@@ -65,7 +65,7 @@ export class MongodbPlugin extends Plugin<any> {
             this.daos[instance.getDaoId()] = instance;
         }
         else {
-            this.registerDao(DaoConstructor);
+            this.registerDao(DaoConstructor as typeof Dao);
         }
     }
 
