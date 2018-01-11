@@ -10,7 +10,6 @@ export interface ExternalContribution {
     parentTx: string; 
     icoAddressId: string; 
     userAddress: string; 
-    tokens: string; 
     status: string; 
     at: number;
 }
