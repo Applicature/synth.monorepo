@@ -37,6 +37,18 @@ export class PluginManager {
         return this.jobExecutor;
     }
 
+    getJob(jobId: string) {
+        return this.jobs[jobId];
+    }
+
+    getDao(daoId: string) {
+        return this.daos[daoId];
+    }
+
+    getService(serviceId: string) {
+        return this.services[serviceId];
+    }
+
     async enableJob(jobId: string, interval: string) {
         if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
