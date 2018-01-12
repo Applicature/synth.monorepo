@@ -1,5 +1,3 @@
-import { Constructable } from './system';
-
 export abstract class Dao<T> {
     abstract getDaoId(): string;
     abstract get(needle: Partial<T>): Promise<T>;

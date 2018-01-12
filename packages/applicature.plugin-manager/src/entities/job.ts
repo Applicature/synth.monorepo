@@ -7,7 +7,7 @@ export abstract class Job {
     public enabled: boolean = false;
 
     constructor(protected pluginManager: PluginManager) {
-        this.jobExecutor = this.pluginManager.getExecutor();
+        this.jobExecutor = this.pluginManager.getJobExecutor();
         this.jobExecutor.define(this.getJobId(), async (job, done) => {
             logger.info(`${this.getJobId()}: executing job`);
 

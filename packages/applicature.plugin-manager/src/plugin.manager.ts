@@ -2,19 +2,16 @@ import * as Agenda from 'agenda';
 import * as logger from 'winston';
 import { MultivestError } from './error';
 import { Plugin } from './plugin';
-import { Dao, Constructable, Hashtable } from './structure';
-import { Job } from './jobs';
-import { ICOServise } from './services/ico';
-import { ExchangeServise } from './services/exchange';
+import { Constructable, Hashtable } from './structure';
+import { Dao, Job, Service } from './entities';
 
 export class PluginManager {
-    private ICOServise: ICOServise = null;
-    private exchangeServise: ExchangeServise = null;
     private jobExecutor: Agenda = null;
 
     private plugins: Hashtable<Plugin<any>> = {};
     private jobs: Hashtable<Job> = {};
     private daos: Hashtable<Dao<any>> = {};
+    private services: Hashtable<Service> = {};
 
     constructor(private pluginList: Plugin<any>[] = []) {
         logger.debug('creating PluginManager');
@@ -32,27 +29,11 @@ export class PluginManager {
         });
     }
 
-    getIco() {
-        return this.ICOServise;
-    }
-
-    setIco(ico: ICOServise) {
-        this.ICOServise = ico;
-    }
-
-    getExchange() {
-        return this.exchangeServise;
-    }
-
-    setExchange(exchange: ExchangeServise) {
-        this.exchangeServise = exchange;
-    }
-
-    setExecutor(agenda: Agenda) {
+    setJobExecutor(agenda: Agenda) {
         this.jobExecutor = agenda;
     }
 
-    getExecutor() {
+    getJobExecutor() {
         return this.jobExecutor;
     }
 
@@ -105,6 +86,7 @@ export class PluginManager {
                 plugin.invoke();
                 Object.assign(this.jobs, plugin.getJobs());
                 Object.assign(this.daos, plugin.getDaos());
+                Object.assign(this.services, plugin.getServices());
             }
 
             const endTime = new Date().getTime();
