@@ -3,9 +3,9 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./src/entities"));
-__export(require("./src/services/crypt"));
-__export(require("./src/services/kyc"));
-__export(require("./src/error"));
-__export(require("./src/plugin"));
-__export(require("./src/plugin.manager"));
+__export(require("./dist/entities"));
+__export(require("./dist/services/crypt"));
+__export(require("./dist/services/kyc"));
+__export(require("./dist/error"));
+__export(require("./dist/plugin"));
+__export(require("./dist/plugin.manager"));

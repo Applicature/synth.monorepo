@@ -1,9 +1,10 @@
 import * as Agenda from 'agenda';
 import * as logger from 'winston';
+import { Dao, Job, Service } from './entities';
 import { MultivestError } from './error';
+import { PluginOptions } from './model';
 import { Plugin } from './plugin';
 import { Constructable, Hashtable } from './structure';
-import { Dao, Job, Service } from './entities';
 
 export class PluginManager {
     private jobExecutor: Agenda = null;
@@ -13,7 +14,7 @@ export class PluginManager {
     private daos: Hashtable<Dao<any>> = {};
     private services: Hashtable<Service> = {};
 
-    constructor(private pluginList: Plugin<any>[] = []) {
+    constructor(private pluginList: Array<PluginOptions> = []) {
         logger.debug('creating PluginManager');
 
         process.on('unhandledRejection', (err) => {
@@ -29,27 +30,27 @@ export class PluginManager {
         });
     }
 
-    setJobExecutor(agenda: Agenda) {
+    public setJobExecutor(agenda: Agenda) {
         this.jobExecutor = agenda;
     }
 
-    getJobExecutor() {
+    public getJobExecutor() {
         return this.jobExecutor;
     }
 
-    getJob(jobId: string) {
+    public getJob(jobId: string) {
         return this.jobs[jobId];
     }
 
-    getDao(daoId: string) {
+    public getDao(daoId: string) {
         return this.daos[daoId];
     }
 
-    getService(serviceId: string) {
+    public getService(serviceId: string) {
         return this.services[serviceId];
     }
 
-    async enableJob(jobId: string, interval: string) {
+    public async enableJob(jobId: string, interval: string) {
         if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
         }
@@ -63,14 +64,14 @@ export class PluginManager {
         this.jobs[jobId].enabled = true;
     }
 
-    get(pluginId: string) {
+    public get(pluginId: string) {
         if (Object.prototype.hasOwnProperty.call(this.plugins, pluginId)) {
             return this.plugins[pluginId];
         }
         throw new MultivestError(`PluginManager: Unknown plugin ${pluginId}`);
     }
 
-    async init() {
+    public async init() {
         logger.debug('PluginManager init called');
 
         const startTime = new Date().getTime();

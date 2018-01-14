@@ -1,3 +1,3 @@
 export abstract class Service {
-    abstract getServiceId(): string;
+    public abstract getServiceId(): string;
 }

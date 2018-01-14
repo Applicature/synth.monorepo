@@ -1,4 +1,4 @@
-import { get as getConfig } from 'config'; 
+import { get as getConfig } from 'config';
 import { createCipher, createDecipher, createHash } from 'crypto';
 
 export function encrypt(text: string): string {

@@ -1,7 +1,7 @@
 import * as Agenda from 'agenda';
 import { Dao, Job, Service } from './entities';
-import { Constructable, Hashtable } from './structure';
 import { PluginManager } from './plugin.manager';
+import { Constructable, Hashtable } from './structure';
 
 export abstract class Plugin<T> {
     public path: string;
@@ -13,10 +13,10 @@ export abstract class Plugin<T> {
 
     constructor(protected pluginManager: PluginManager) {}
 
-    abstract getPluginId(): string;
-    abstract init(): void;
+    public abstract getPluginId(): string;
+    public abstract init(): void;
 
-    invoke(): void {
+    public invoke(): void {
         for (const JobClass of this.jobClasses) {
             const JobConstructor = JobClass as Constructable<Job>;
             const jobInstance = new JobConstructor();
@@ -29,28 +29,28 @@ export abstract class Plugin<T> {
             this.daos[daoInstance.getDaoId()] = daoInstance;
         }
     }
- 
-    registerDao(daoClass: typeof Dao) {
+
+    public registerDao(daoClass: typeof Dao) {
         this.daoClasses.push(daoClass);
     }
 
-    getDaos() {
+    public getDaos() {
         return this.daos;
     }
 
-    registerJob(jobClass: typeof Job) {
+    public registerJob(jobClass: typeof Job) {
         this.jobClasses.push(jobClass);
     }
 
-    getJobs() {
+    public getJobs() {
         return this.jobs;
     }
 
-    registerService(service: Service) {
+    public registerService(service: Service) {
         this.services[service.getServiceId()] = service;
     }
 
-    getServices() {
+    public getServices() {
         return this.services;
     }
 }

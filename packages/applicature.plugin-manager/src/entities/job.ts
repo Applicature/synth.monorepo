@@ -1,10 +1,10 @@
-import * as logger from 'winston';
 import * as Agenda from 'agenda';
+import * as logger from 'winston';
 import { PluginManager } from '../plugin.manager';
 
 export abstract class Job {
-    protected jobExecutor: Agenda;
     public enabled: boolean = false;
+    protected jobExecutor: Agenda;
 
     constructor(protected pluginManager: PluginManager) {
         this.jobExecutor = this.pluginManager.getJobExecutor();
@@ -23,7 +23,7 @@ export abstract class Job {
         });
     }
 
-    abstract getJobId(): string;
-    abstract async init(): Promise<void>;
-    abstract async execute(): Promise<void>;
+    public abstract getJobId(): string;
+    public abstract async init(): Promise<void>;
+    public abstract async execute(): Promise<void>;
 }

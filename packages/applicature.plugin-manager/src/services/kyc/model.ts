@@ -2,5 +2,5 @@ export enum KYCStatus {
     ACCEPTED,
     DECLINED,
     REVIEW,
-    IN_PROGRESS
-};
+    IN_PROGRESS,
+}

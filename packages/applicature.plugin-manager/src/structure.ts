@@ -3,5 +3,5 @@ export interface Hashtable<T> {
 }
 
 export interface Constructable<T> {
-    new(...args: any[]): T;
+    new(...args: Array<any>): T;
 }

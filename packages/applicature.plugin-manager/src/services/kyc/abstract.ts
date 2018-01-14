@@ -6,5 +6,5 @@ export abstract class KYCService<T> {
 
     constructor(private pluginManager: PluginManager, private id: number) {}
 
-    abstract validate(data: T): boolean;
+    public abstract validate(data: T): boolean;
 }

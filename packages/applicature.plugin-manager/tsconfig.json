@@ -5,12 +5,8 @@
         "noImplicitAny": true,
         "removeComments": true,
         "sourceMap": true,
+        "declaration": true,
         "sourceRoot": "",
-        "outDir": "./dist",
-        "mapRoot": "./dist",
-        "typeRoots": [
-            "node_modules/@types",
-            "node_modules/web3-typescript-typings"
-        ]
+        "outDir": "./dist"
     }
 }
