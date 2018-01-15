@@ -5,10 +5,12 @@ import { PluginManager } from '../plugin.manager';
 export abstract class Job {
     public enabled: boolean = false;
     protected jobExecutor: Agenda;
+    protected job: Agenda.Job;
 
     constructor(protected pluginManager: PluginManager) {
         this.jobExecutor = this.pluginManager.getJobExecutor();
         this.jobExecutor.define(this.getJobId(), async (job, done) => {
+            this.job = job;
             logger.info(`${this.getJobId()}: executing job`);
 
             try {
