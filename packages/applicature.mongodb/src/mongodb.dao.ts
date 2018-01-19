@@ -19,7 +19,13 @@ export abstract class MongoDBDao<T> implements Dao<T> {
     create(needle: Partial<T>) {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
         return this.collection
-            .insert(needle)
+            .insertOne(needle)
+            .then(() => needle);
+    }
+
+    fill(needle: Array<Partial<T>>) {
+        return this.collection
+            .insertMany(needle)
             .then(() => needle);
     }
 
