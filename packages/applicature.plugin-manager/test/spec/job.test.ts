@@ -1,6 +1,5 @@
 
-import { Job } from '../../index';
-import { PluginManager } from '../../index';
+import { Job } from '../../src/entities/job';
 
 class EmptyJob extends Job {
     public getJobId() {
@@ -17,7 +16,7 @@ class EmptyJob extends Job {
 } 
 
 
-it('should create job', () => {
+it('should create job', async () => {
     const defineMock = jest.fn();
     const jobExecutorMock = { define: defineMock };
 
@@ -26,6 +25,7 @@ it('should create job', () => {
     };
     const job = new EmptyJob(pluginManagerMock);
     expect(job.getJobId()).toBe('empty.job');
+    expect(job.enabled).toBeFalsy();
     expect(defineMock.mock.calls.length).toBe(1);
 
     const jobCallback = defineMock.mock.calls[0][1];
@@ -34,11 +34,17 @@ it('should create job', () => {
     const doneCallback = jest.fn();
     job.execute = jest.fn();
 
-    return jobCallback({}, doneCallback)
-    .then(() => {
-        expect(job.execute.mock.calls.length).toBe(1);
-        expect(doneCallback.mock.calls.length).toBe(1);
+    await jobCallback({}, doneCallback);
+    expect(job.execute.mock.calls.length).toBe(1);
+    expect(doneCallback.mock.calls.length).toBe(1);
+
+    doneCallback.mockClear();
+    job.execute.mockImplementationOnce(() => {
+        throw new Error('test error');
     });
+    await jobCallback({}, doneCallback);
+    expect(doneCallback.mock.calls.length).toBe(1);
+
 
 })
 
