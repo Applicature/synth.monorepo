@@ -25,4 +25,8 @@ export class TestDao extends Dao<void> {
     remove() {
         return Promise.resolve();
     }
+
+    fill() {
+        return Promise.resolve([]);
+    }
 }
