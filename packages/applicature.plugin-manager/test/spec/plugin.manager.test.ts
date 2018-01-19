@@ -1,5 +1,14 @@
 
+import { PluginManager } from '../../src/plugin.manager';
 
-it('should work', () => {
-    expect(2).toBe(2);
-})
+describe('plugin manager', () => {
+    let pluginManager: PluginManager;
+
+    beforeEach(() => {
+        pluginManager = new PluginManager();
+    });
+
+    it('should init plugin manager', () => {
+        pluginManager.init();
+    });
+});
