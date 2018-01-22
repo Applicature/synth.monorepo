@@ -1,7 +1,21 @@
 import { Plugin } from '../../src/plugin';
 import { TestJob } from './job';
+import { TestDao } from './dao';
 
-export class TestPlugin extends Plugin<void> {
+export class EmptyPlugin extends Plugin<void> {
+
+    getPluginId() {
+        return 'empty.plugin';
+    }
+
+    init() {}
+}
+
+
+class TestPlugin extends Plugin<void> {
+
+    protected jobClasses = [ TestJob ];
+    protected daoClasses = [ TestDao ];
 
     getPluginId() {
         return 'test.plugin';
@@ -10,17 +24,5 @@ export class TestPlugin extends Plugin<void> {
     init() {}
 }
 
-
-class TestPluginWithJob extends Plugin<void> {
-
-    jobClasses: [ TestJob ];
-
-    getPluginId() {
-        return 'test.plugin.with.job';
-    }
-
-    init() {}
-}
-
-export { TestPluginWithJob as Plugin };
+export { TestPlugin as Plugin };
 

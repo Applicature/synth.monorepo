@@ -1,17 +1,17 @@
 
 import { Plugin } from '../../src/plugin';
 import { TestJob } from '../mocks/job';
-import { TestPlugin } from '../mocks/plugin';
+import { EmptyPlugin } from '../mocks/plugin';
 import { TestDao } from '../mocks/dao';
 import { TestService } from '../mocks/service';
 import { PluginManagerMock } from '../mocks/plugin.manager';
 
 describe('plugin', () => {
 
-    let plugin: Plugin;
+    let plugin: Plugin<void>;
     beforeEach(() => {
         const pluginManagerMock = new PluginManagerMock(jest.fn());
-        plugin = new TestPlugin(pluginManagerMock);
+        plugin = new EmptyPlugin(pluginManagerMock);
     })
 
     it('should create plugin', () => {});
