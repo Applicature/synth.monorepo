@@ -1,32 +1,31 @@
 import { Dao } from '../../src/entities/dao';
 
-
 export class TestDao extends Dao<void> {
-    getDaoId() {
+    public getDaoId() {
         return 'test.dao';
     }
 
-    get() {
+    public get() {
         return Promise.resolve();
     }
 
-    list() {
+    public list() {
         return Promise.resolve([]);
     }
 
-    update() {
+    public update() {
         return Promise.resolve();
     }
 
-    create() {
+    public create() {
         return Promise.resolve();
     }
 
-    remove() {
+    public remove() {
         return Promise.resolve();
     }
 
-    fill() {
+    public fill() {
         return Promise.resolve([]);
     }
 }

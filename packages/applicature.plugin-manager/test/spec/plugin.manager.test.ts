@@ -1,6 +1,6 @@
 
-import { PluginManager } from '../../src/plugin.manager';
 import { MultivestError } from '../../src/error';
+import { PluginManager } from '../../src/plugin.manager';
 
 describe('plugin manager', () => {
 
@@ -11,13 +11,13 @@ describe('plugin manager', () => {
 
     it('should init plugin manager with one plugin', async () => {
         const pluginManager = new PluginManager([{
-            path: '../test/mocks/plugin'
+            path: '../test/mocks/plugin',
         }]);
         const jobExecutor: any = {
             define: jest.fn(),
             every: jest.fn(),
         };
-        pluginManager.setJobExecutor(jobExecutor)
+        pluginManager.setJobExecutor(jobExecutor);
         expect(pluginManager.getJobExecutor()).toBe(jobExecutor);
         await pluginManager.init();
         expect(jobExecutor.define).toHaveBeenCalledTimes(1);
@@ -58,6 +58,6 @@ describe('plugin manager', () => {
         } catch (err) {
             expect(err).toBeInstanceOf(MultivestError);
         }
-    })
+    });
 
 });

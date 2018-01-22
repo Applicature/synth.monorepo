@@ -1,10 +1,10 @@
 
 import { Plugin } from '../../src/plugin';
-import { TestJob } from '../mocks/job';
-import { EmptyPlugin } from '../mocks/plugin';
 import { TestDao } from '../mocks/dao';
-import { TestService } from '../mocks/service';
+import { EmptyPlugin } from '../mocks/empty.plugin';
+import { TestJob } from '../mocks/job';
 import { PluginManagerMock } from '../mocks/plugin.manager';
+import { TestService } from '../mocks/service';
 
 describe('plugin', () => {
 
@@ -12,10 +12,8 @@ describe('plugin', () => {
     beforeEach(() => {
         const pluginManagerMock = new PluginManagerMock(jest.fn());
         plugin = new EmptyPlugin(pluginManagerMock);
-    })
+    });
 
-    it('should create plugin', () => {});
-    
     it('should add job', () => {
         plugin.registerJob(TestJob);
         plugin.invoke();

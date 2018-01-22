@@ -1,14 +1,14 @@
-import { 
-    encrypt,
+import {
     decrypt,
-    encryptBuffer,
     decryptBuffer,
+    encrypt,
+    encryptBuffer,
     sha256,
 } from '../../src/services/crypt';
 
 describe('crypt', () => {
 
-    it('should encrypt string', () =>  {
+    it('should encrypt string', () => {
         const text = 'test string';
         const encrypted = encrypt(text);
         expect(encrypted).toBeTruthy();
@@ -39,4 +39,4 @@ describe('crypt', () => {
         const hash = sha256(text);
         expect(hash).toBe('1VecRt/MfxggcBPmW0Tky04sIpj0rEV7qPgnQ/Mekws=');
     });
-})
+});

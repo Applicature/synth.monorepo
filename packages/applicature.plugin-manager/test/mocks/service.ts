@@ -1,7 +1,7 @@
 import { Service } from '../../src/entities/service';
 
 export class TestService extends Service {
-    getServiceId() {
+    public getServiceId() {
         return 'test.service';
     }
 }

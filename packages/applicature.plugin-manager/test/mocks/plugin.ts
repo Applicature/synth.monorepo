@@ -1,28 +1,19 @@
 import { Plugin } from '../../src/plugin';
-import { TestJob } from './job';
 import { TestDao } from './dao';
-
-export class EmptyPlugin extends Plugin<void> {
-
-    getPluginId() {
-        return 'empty.plugin';
-    }
-
-    init() {}
-}
-
+import { TestJob } from './job';
 
 class TestPlugin extends Plugin<void> {
 
     protected jobClasses = [ TestJob ];
     protected daoClasses = [ TestDao ];
 
-    getPluginId() {
+    public getPluginId() {
         return 'test.plugin';
     }
 
-    init() {}
+    public init() {
+        return;
+    }
 }
 
 export { TestPlugin as Plugin };
-

@@ -12,4 +12,4 @@ export class TestJob extends Job {
     public execute() {
         return Promise.resolve();
     }
-} 
+}
