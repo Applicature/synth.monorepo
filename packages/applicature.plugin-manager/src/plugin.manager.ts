@@ -55,7 +55,7 @@ export class PluginManager {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
         }
 
-        if (Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
+        if (this.jobs[jobId].enabled) {
             return;
         }
 
