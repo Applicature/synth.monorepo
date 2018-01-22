@@ -1,1 +1,6 @@
-{}
+{
+    "crypt": {
+        "algo": "aes192",
+        "secret": "testsecret"
+    }
+}
