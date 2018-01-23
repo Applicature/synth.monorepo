@@ -5,7 +5,6 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./dist/entities"));
 __export(require("./dist/services/crypt"));
-__export(require("./dist/services/kyc"));
 __export(require("./dist/error"));
 __export(require("./dist/plugin"));
 __export(require("./dist/plugin.manager"));
