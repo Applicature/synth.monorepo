@@ -21,10 +21,10 @@ describe('plugin', () => {
         expect(jobs['test.job']).toBeInstanceOf(TestJob);
     });
     
-    it('should add dao', () => {
+    it('should add dao', async () => {
         plugin.registerDao(TestDao);
         plugin.invoke();
-        const daos = plugin.getDaos();
+        const daos = await plugin.getDaos();
         expect(daos['test.dao']).toBeInstanceOf(TestDao);
     });
     
