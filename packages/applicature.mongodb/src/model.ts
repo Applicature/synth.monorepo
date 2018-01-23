@@ -1,5 +1,9 @@
 export enum ConnectionState {
     Connected,
     Connecting,
-    Disconnected
+    Disconnected,
+}
+
+export interface MongoScheme {
+    _id?: string;
 }

@@ -3,19 +3,19 @@
  * https://github.com/vadimdemedes/mongorito/blob/master/lib/database.js
  */
 
-import { Db, MongoClientOptions, connect } from 'mongodb';
-import * as logger from 'winston';
+import { Constructable, Dao, Hashtable, MultivestError, Plugin, PluginManager } from '@applicature/multivest.core';
 import * as config from 'config';
+import { connect, Db, MongoClientOptions } from 'mongodb';
+import * as logger from 'winston';
 import { ConnectionState } from './model';
 import { MongoDBDao } from './mongodb.dao';
-import { Constructable, Dao, Plugin, PluginManager, MultivestError, Hashtable } from '@applicature/multivest.core';
 
-export class MongodbPlugin extends Plugin<any> {
-    private urls: string;
-    private options: MongoClientOptions;
-    private connection: Db;
-    private connectionPromise: Promise<Db>;
+class MongodbPlugin extends Plugin<any> {
     public state: ConnectionState = ConnectionState.Disconnected;
+    protected connection: Db;
+    protected connectionPromise: Promise<Db>;
+    protected urls: string;
+    protected options: MongoClientOptions;
 
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
@@ -29,26 +29,26 @@ export class MongodbPlugin extends Plugin<any> {
         }
         else {
             this.options = {
+                autoReconnect: true,
                 reconnectTries: 10,
-                autoReconnect: true
             };
         }
     }
 
-    getPluginId() {
+    public getPluginId() {
         return 'mongodb';
     }
 
-    async init() {
+    public async init() {
         if (this.connection) {
             return Promise.resolve(this.connection);
         }
 
         this.state = ConnectionState.Connecting;
-        this.connectionPromise = connect(this.urls, this.options);
+        this.connectionPromise = this.initConnection();
         try {
             this.connection = await this.connectionPromise;
-            this.invoke();
+            this.state = ConnectionState.Connected;
         }
         catch (err) {
             logger.error('Failed to connect to mongodb: ', err);
@@ -58,7 +58,7 @@ export class MongodbPlugin extends Plugin<any> {
         return this.connectionPromise;
     }
 
-    addDao(DaoConstructor: Constructable<MongoDBDao<any>>) {
+    public addDao(DaoConstructor: Constructable<MongoDBDao<any>>) {
         if (this.state === ConnectionState.Connected) {
             const instance = new DaoConstructor(this.connection);
 
@@ -69,9 +69,9 @@ export class MongodbPlugin extends Plugin<any> {
         }
     }
 
-    getDB() {
+    public getDB() {
         if (this.state === ConnectionState.Disconnected) {
-            return Promise.reject(new Error('Database is disconnected.'));
+            return Promise.reject(new MultivestError('Database is disconnected.'));
         }
 
         if (this.state === ConnectionState.Connected) {
@@ -85,9 +85,9 @@ export class MongodbPlugin extends Plugin<any> {
         throw new MultivestError('Unrsolved state');
     }
 
-    getDao() {
+    public getDaos() {
         if (this.state === ConnectionState.Disconnected) {
-            return Promise.reject(new Error('Database is disconnected.'));
+            return Promise.reject(new MultivestError('Database is disconnected.'));
         }
         else if (this.state === ConnectionState.Connected) {
             return Promise.resolve(this.daos);
@@ -100,7 +100,7 @@ export class MongodbPlugin extends Plugin<any> {
         throw new MultivestError('Unrsolved state');
     }
 
-    disconnect() {
+    public disconnect() {
         return this.getDB()
             .then((db) => {
                 db.close();
@@ -108,7 +108,17 @@ export class MongodbPlugin extends Plugin<any> {
             });
     }
 
-    isConnected() {
+    public isConnected() {
         return this.state === ConnectionState.Connected;
     }
+
+    protected initConnection() {
+        return connect(this.urls, this.options);
+    }
+
+    protected invokeDao(DaoConstructor: Constructable<Dao<any>>) {
+        return new DaoConstructor(this.connection);
+    }
 }
+
+export { MongodbPlugin as Plugin };

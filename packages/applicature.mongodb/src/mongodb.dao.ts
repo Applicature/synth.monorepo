@@ -1,52 +1,52 @@
-import { Collection, Db, InsertOneWriteOpResult, UpdateWriteOpResult, WriteOpResult } from 'mongodb';
 import { Dao } from '@applicature/multivest.core';
+import { Collection, Db } from 'mongodb';
 
 export abstract class MongoDBDao<T> implements Dao<T> {
-    private db: Db;
     protected collection: Collection<T>;
+    private db: Db;
 
     constructor(db: Db) {
         this.db = db;
         this.collection = this.db.collection<T>(this.getCollectionName());
     }
 
-    abstract getDaoId(): string;
+    public abstract getDaoId(): string;
 
-    abstract getCollectionName(): string;
+    public abstract getCollectionName(): string;
 
-    abstract getDefaultValue(): T;
+    public abstract getDefaultValue(): T;
 
-    create(needle: Partial<T>) {
+    public create(needle: Partial<T>) {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
         return this.collection
             .insertOne(needle)
-            .then(() => needle);
+            .then<T>((result) => result.ops[0]);
     }
 
-    fill(needle: Array<Partial<T>>) {
+    public fill(needle: Array<Partial<T>>) {
         return this.collection
             .insertMany(needle)
-            .then(() => needle);
+            .then<Array<T>>((result) => result.ops);
     }
 
-    get(needle: Partial<T>) {
+    public get(needle: Partial<T>) {
         return this.collection
             .findOne(needle);
     }
 
-    list(needle: Partial<T>) {
+    public list(needle: Partial<T>) {
         return this.collection
             .find(needle)
             .toArray();
     }
 
-    update(needle: Partial<T>, substitution: Partial<T> | {$set: Partial<T>}) {
+    public update(needle: Partial<T>, substitution: Partial<T> | {$set: Partial<T>}) {
         return this.collection
             .updateMany(needle, substitution)
             .then(() => needle);
     }
 
-    remove(needle: Partial<T>) {
+    public remove(needle: Partial<T>) {
         return this.collection
             .remove(needle)
             .then(() => needle);

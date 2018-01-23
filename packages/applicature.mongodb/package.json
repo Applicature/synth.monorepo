@@ -11,7 +11,11 @@
     "yarn": ">=0.20.3"
   },
   "scripts": {
-    "postpublish": "gulp typescript"
+    "build": "gulp clean && gulp build",
+    "lint": "gulp lint",
+    "test": "jest",
+    "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
+    "test:ci": "jest --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -26,12 +30,35 @@
   "devDependencies": {
     "@types/agenda": "^1.0.1",
     "@types/config": "0.0.33",
+    "@types/jest": "^22.0.1",
     "@types/mongodb": "^2.2.18",
     "@types/node": "^8.5.2",
     "@types/winston": "^2.3.7",
     "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
     "gulp-sourcemaps": "^2.6.3",
+    "gulp-tslint": "^8.1.2",
     "gulp-typescript": "^3.2.3",
+    "jest": "^22.1.4",
+    "jest-junit": "^3.4.1",
+    "mongo-mock": "^3.0.0",
+    "ts-jest": "^22.0.1",
+    "tslint": "^5.9.1",
     "typescript": "^2.6.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/.*?\\.d\\.ts$",
+      "<rootDir>/.*?\\.mock\\.ts$"
+    ]
   }
 }
