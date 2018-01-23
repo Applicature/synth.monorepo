@@ -10,7 +10,7 @@ describe('plugin', () => {
 
     let plugin: Plugin<void>;
     beforeEach(() => {
-        const pluginManagerMock = new PluginManagerMock(jest.fn());
+        const pluginManagerMock: any = new PluginManagerMock(jest.fn());
         plugin = new EmptyPlugin(pluginManagerMock);
     });
 
@@ -18,20 +18,20 @@ describe('plugin', () => {
         plugin.registerJob(TestJob);
         plugin.invoke();
         const jobs = plugin.getJobs();
-        expect(jobs['test.job'] instanceof TestJob).toBeTruthy();
+        expect(jobs['test.job']).toBeInstanceOf(TestJob);
     });
     
     it('should add dao', () => {
         plugin.registerDao(TestDao);
         plugin.invoke();
         const daos = plugin.getDaos();
-        expect(daos['test.dao'] instanceof TestDao).toBeTruthy();
+        expect(daos['test.dao']).toBeInstanceOf(TestDao);
     });
     
     it('should register service', () => {
-        const testService = new TestService();
-        plugin.registerService(testService);
+        plugin.registerService(TestService);
+        plugin.invoke();
         const services = plugin.getServices();
-        expect(services['test.service']).toBe(testService);
+        expect(services['test.service']).toBeInstanceOf(TestService);
     });
 });

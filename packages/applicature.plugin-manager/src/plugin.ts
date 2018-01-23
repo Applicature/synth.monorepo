@@ -9,6 +9,7 @@ export abstract class Plugin<T> {
     protected jobs: Hashtable<Job> = {};
     protected daoClasses: Array<typeof Dao> = [];
     protected daos: Hashtable<Dao<T>> = {};
+    protected serviceClasses: Array<typeof Service> = [];
     protected services: Hashtable<Service> = {};
 
     constructor(protected pluginManager: PluginManager) {}
@@ -28,6 +29,12 @@ export abstract class Plugin<T> {
             const daoInstance = new DaoConstructor();
             this.daos[daoInstance.getDaoId()] = daoInstance;
         }
+
+        for (const ServiceClass of this.serviceClasses) {
+            const ServiceConstructor = ServiceClass as Constructable<Service>;
+            const serviceInstance = new ServiceConstructor(this.pluginManager);
+            this.services[serviceInstance.getServiceId()] = serviceInstance;
+        }
     }
 
     public registerDao(daoClass: typeof Dao) {
@@ -46,8 +53,8 @@ export abstract class Plugin<T> {
         return this.jobs;
     }
 
-    public registerService(service: Service) {
-        this.services[service.getServiceId()] = service;
+    public registerService(serviceClass: typeof Service) {
+        this.serviceClasses.push(serviceClass);
     }
 
     public getServices() {
