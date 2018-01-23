@@ -26,7 +26,7 @@ export abstract class Plugin<T> {
 
         for (const DaoClass of this.daoClasses) {
             const DaoConstructor = DaoClass as Constructable<Dao<T>>;
-            const daoInstance = new DaoConstructor();
+            const daoInstance = this.invokeDao(DaoConstructor);
             this.daos[daoInstance.getDaoId()] = daoInstance;
         }
 
@@ -59,5 +59,9 @@ export abstract class Plugin<T> {
 
     public getServices() {
         return this.services;
+    }
+
+    protected invokeDao(DaoConstructor: Constructable<Dao<T>>) {
+        return new DaoConstructor();
     }
 }
