@@ -9,7 +9,7 @@
   "scripts": {
     "build": "gulp build",
     "lint": "gulp lint",
-    "test": "NODE_ENV=test jest --no-cache --json --outputFile=jest-output.json",
+    "test": "jest",
     "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
     "test:ci": "jest --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts"
   },
