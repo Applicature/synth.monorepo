@@ -9,19 +9,52 @@
   "scripts": {
     "build": "gulp build",
     "lint": "gulp lint",
-    "test": "nyc mocha",
-    "test:coverage": "nyc report"
+    "test": "NODE_ENV=test jest --no-cache --json --outputFile=jest-output.json",
+    "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
+    "test:ci": "jest --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts"
   },
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:applicature/multivest.web.git"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/.*?\\.d\\.ts$"
+    ]
+  },
   "dependencies": {
-    "config": "^1.26.1",
+    "compression": "^1.7.1",
+    "config": "^1.29.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "helmet": "^3.9.0",
+    "http-status": "^1.0.1",
+    "method-override": "^2.3.10",
+    "morgan": "^1.9.0",
     "winston": "^2.1.1"
   },
   "devDependencies": {
+    "@types/compression": "0.0.35",
     "@types/config": "0.0.33",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/cors": "^2.8.3",
+    "@types/express": "^4.11.0",
+    "@types/helmet": "0.0.37",
+    "@types/http-status": "^0.2.30",
+    "@types/jest": "^22.0.1",
+    "@types/method-override": "0.0.31",
+    "@types/morgan": "^1.7.35",
     "@types/node": "^8.5.2",
     "@types/winston": "^2.3.7",
     "chai": "^4.1.2",
@@ -30,7 +63,9 @@
     "gulp-sourcemaps": "^2.6.3",
     "gulp-tslint": "^8.1.2",
     "gulp-typescript": "^3.2.3",
-    "nyc": "^11.4.1",
+    "jest": "^22.1.4",
+    "jest-junit": "^3.4.1",
+    "ts-jest": "^22.0.1",
     "tslint": "^5.9.1",
     "typescript": "^2.6.2"
   }

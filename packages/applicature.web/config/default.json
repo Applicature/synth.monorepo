@@ -1,0 +1,10 @@
+{
+  "listen": {
+    "port": 3000
+  },
+  "middleware": {
+    "bodyParserJson": {
+      "limit": "100m"
+    }
+  }
+}
