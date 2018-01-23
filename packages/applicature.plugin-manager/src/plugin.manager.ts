@@ -98,7 +98,7 @@ export class PluginManager {
                 await plugin.init();
                 plugin.invoke();
                 Object.assign(this.jobs, plugin.getJobs());
-                Object.assign(this.daos, plugin.getDaos());
+                Object.assign(this.daos, await plugin.getDaos());
                 Object.assign(this.services, plugin.getServices());
             }
 
