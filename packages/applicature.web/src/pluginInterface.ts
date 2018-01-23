@@ -1,8 +1,9 @@
-import * as express from 'express'
+import * as express from 'express';
 export interface IWeb {
     addRouter(id: string, Router: express.Router): void;
     enableRouter(id: string): void;
     startServer(): void;
+    closeServer(): void;
 }
 
 export interface IExpressMiddlewareConfig {

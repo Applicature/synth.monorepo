@@ -11,11 +11,13 @@ import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
 import { Hashtable } from './structure';
+import { Plugin, PluginManager } from '@applicature/multivest.core';
 
-export class Web implements IWeb {
+export class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
     private app: express.Application;
     private config: any;
+    private httpServer: http.Server;
     private routes: Hashtable<express.Router> = {};
     private pluginMiddlewareConfig: IExpressMiddlewareConfig = {
         bodyParserJson: {
@@ -28,8 +30,8 @@ export class Web implements IWeb {
         helmet: {},
         methodOverride: '',
     };
-
-    constructor(pluginConfig: any, serverApp: express.Application) {
+    constructor(pluginManager: PluginManager, pluginConfig: any, serverApp: express.Application) {
+        super(pluginManager);
         this.config = pluginConfig;
         this.app = serverApp;
         process.on('unhandledRejection', (err) => {
@@ -51,16 +53,27 @@ export class Web implements IWeb {
         this.app.use(this.getRouter(id));
     }
 
+    public getPluginId(): string {
+        return 'web';
+    }
+    public init(): void {
+
+    }
+
     public startServer() {
 
         this.middleware();
 
         // listen on port listen.port
         const listenPort = this.config.get('listen.port');
-        const httpServer = new http.Server(this.app);
-        httpServer.listen(listenPort, () => {
+        this.httpServer = new http.Server(this.app);
+        this.httpServer.listen(listenPort, () => {
             winston.info(`server started on port ${listenPort}`);
         });
+    }
+
+    public closeServer() {
+        this.httpServer.close();
     }
 
     private getRouter(id: string) {

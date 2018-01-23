@@ -1,1 +1,1 @@
-export * from './src/web';
+export * from './src/plugin.web';
