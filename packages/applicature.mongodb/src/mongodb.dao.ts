@@ -40,15 +40,15 @@ export abstract class MongoDBDao<T> implements Dao<T> {
             .toArray();
     }
 
-    public update(needle: Partial<T>, substitution: Partial<T> | {$set: Partial<T>}) {
+    public update(needle: Partial<T>, substitution: Partial<T>) {
         return this.collection
-            .updateMany(needle, substitution)
+            .updateMany(needle, { $set: substitution })
             .then(() => needle);
     }
 
     public remove(needle: Partial<T>) {
         return this.collection
-            .remove(needle)
+            .deleteMany(needle)
             .then(() => needle);
     }
 }
