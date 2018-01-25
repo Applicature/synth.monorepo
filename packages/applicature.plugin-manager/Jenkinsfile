@@ -37,8 +37,9 @@ node {
               sh "npm publish"
             }
 
-            // @TODO: publish to slack
+            // @TODO: display coverage report
 
+            slackSend(color: 'good', message: 'Message from Jenkins')
         } catch (e) {
             // @TODO: publish to slack
 
