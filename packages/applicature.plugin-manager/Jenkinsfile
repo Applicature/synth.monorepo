@@ -42,7 +42,7 @@ node {
             slackSend(color: 'good', message: 'Message from Jenkins')
         } catch (e) {
             // @TODO: publish to slack
-            slackSend(color: 'bad', message: 'Message from Jenkins')
+            slackSend(color: 'bad', message: 'Build failed', channel: '@oleksiy.tkachenko')
 
             throw e
         }
