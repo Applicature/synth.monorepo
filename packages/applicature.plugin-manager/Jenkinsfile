@@ -157,9 +157,9 @@ node {
                 ])
             }
 
-            // stage('Publish NPM snapshot') {
-            //     sh "npm publish"
-            // }
+            stage('Publish NPM snapshot') {
+                sh "npm publish"
+            }
 
             buildSucceeded = true
             slack()
