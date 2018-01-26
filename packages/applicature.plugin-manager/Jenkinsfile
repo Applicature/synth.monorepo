@@ -142,11 +142,6 @@ node {
                 step([$class: 'JUnitResultArchiver', testResults: 'coverage/junit.xml'])
             }
 
-            stage('debug') {
-              sh "ls -l"
-              sh "ls -l coverage"
-            }
-
             stage('Report Clover results') {
                 step([
                     $class: 'CloverPublisher',
