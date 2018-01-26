@@ -25,7 +25,7 @@ def slack = {
                 fields: [
                     {
                         title: "Branch",
-                        value: "${env.GIT_BRANCH}",
+                        value: "${branch}",
                         short: true
                     },
                     {
