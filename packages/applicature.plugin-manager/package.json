@@ -58,6 +58,9 @@
       "tsx",
       "js"
     ],
-    "coveragePathIgnorePatterns": ["<rootDir>/.*?\\.d\\.ts$"]
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/.*?\\.d\\.ts$"
+    ],
+    "coverageReporters": ["json", "lcov", "text", "cobertura"]
   }
 }
