@@ -61,6 +61,6 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/.*?\\.d\\.ts$"
     ],
-    "coverageReporters": ["json", "lcov", "text", "cobertura"]
+    "coverageReporters": ["json", "lcov", "text"]
   }
 }
