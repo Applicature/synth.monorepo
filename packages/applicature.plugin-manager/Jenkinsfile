@@ -131,10 +131,8 @@ node {
                 try {
                     sh "npm run test:ci"
                 } catch (e) {
-                    buildSucceeded = false
-                    throw e
-                } finally {
                     junit 'coverage/junit.xml'
+                    throw e
                 }
             }
 
@@ -162,12 +160,12 @@ node {
             }
 
             buildSucceeded = true
-            slack()
 
         } catch (e) {
             buildSucceeded = false
-            slack()
             throw e
+        } finally {
+            slack()
         }
     }
 }
