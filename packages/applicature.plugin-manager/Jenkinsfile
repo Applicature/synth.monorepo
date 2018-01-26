@@ -133,12 +133,12 @@ node {
                     buildSucceeded = false
                     throw e
                 } finally {
-                    junit 'junit.xml'
+                    junit 'coverage/junit.xml'
                 }
             }
 
             stage('Report Junit results') {
-                step([$class: 'JUnitResultArchiver', testResults: 'junit.xml'])
+                step([$class: 'JUnitResultArchiver', testResults: 'coverage/junit.xml'])
             }
 
             stage('Report Clover results') {

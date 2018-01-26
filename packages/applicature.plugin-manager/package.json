@@ -61,5 +61,8 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/.*?\\.d\\.ts$"
     ]
-  }
+  },
+  "jest-junit": { 
+    "output": "./coverage/junit.xml" 
+  } 
 }
