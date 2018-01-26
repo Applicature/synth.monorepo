@@ -1,8 +1,51 @@
+import hudson.tasks.test.AbstractTestResultAction
+import hudson.tasks.junit.CaseResult
+
 properties properties: [
     [$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', numToKeepStr: '10']],
 ]
 
 def buildSucceeded = true
+def failed = 0
+
+@NonCPS
+def getTestSummary = { ->
+    def testResultAction = currentBuild.rawBuild.getAction(AbstractTestResultAction.class)
+    def summary = ""
+
+    if (testResultAction != null) {
+        total = testResultAction.getTotalCount()
+        failed = testResultAction.getFailCount()
+        skipped = testResultAction.getSkipCount()
+
+        summary = "Passed: " + (total - failed - skipped)
+        summary = summary + (", Failed: " + failed)
+        summary = summary + (", Skipped: " + skipped)
+    } else {
+        summary = "No tests found"
+    }
+    return summary
+}
+
+@NonCPS
+def getFailedTests = { ->
+    def testResultAction = currentBuild.rawBuild.getAction(AbstractTestResultAction.class)
+    def failedTestsString = "```"
+
+    if (testResultAction != null) {
+        def failedTests = testResultAction.getFailedTests()
+        
+        if (failedTests.size() > 9) {
+            failedTests = failedTests.subList(0, 8)
+        }
+
+        for(CaseResult cr : failedTests) {
+            failedTestsString = failedTestsString + "${cr.getFullDisplayName()}:\n${cr.getErrorDetails()}\n\n"
+        }
+        failedTestsString = failedTestsString + "```"
+    }
+    return failedTestsString
+}
 
 def slack = {
     def buildStatus = buildSucceeded ? "succeeded" : "failed"
@@ -11,6 +54,17 @@ def slack = {
     def author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an' ${commit}").trim()
     def lastCommitMessage = sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
     def branch = sh(returnStdout: true, script: 'git log -n 1 --pretty=%D HEAD').trim().split(' ')[1]
+    def testSummary = getTestSummary()
+
+    def failedMessage = ""
+    if (failed > 0) {
+        failedMessage = """
+            [
+                title: "Failed tests",
+                color: "${buildColor}"
+            ]
+        """
+    }
     
     slackSend(
         message: "",
@@ -29,12 +83,18 @@ def slack = {
                         short: true
                     },
                     {
+                        title: "Test results",
+                        value: "${testSummary}",
+                        short: true
+                    },
+                    {
                         title: "Last commit",
                         value: "${lastCommitMessage}",
                         short: true
                     },
                 ]
             } 
+            ${failedMessage}
         ]"""
     )
 }
