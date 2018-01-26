@@ -4,9 +4,9 @@ import { PluginManager } from '../../src/plugin.manager';
 
 describe('plugin manager', () => {
 
-    // it('should fail', () => {
-    //     expect(1).toBe(2);
-    // });
+    it('should fail', () => {
+        expect(1).toBe(2);
+    });
 
     it('should init empty plugin manager', () => {
         const pluginManager = new PluginManager();
