@@ -71,7 +71,7 @@ def slack = {
     
     slackSend(
         message: "",
-        channel: '@oleksiy.tkachenko',
+        channel: '#dev-multivestcore-ci',
         attachments: """[ 
             {
                 title: "${env.JOB_NAME}, build #${env.BUILD_NUMBER}",
@@ -134,12 +134,12 @@ node {
                     buildSucceeded = false
                     throw e
                 } finally {
-                    junit 'junit.xml'
+                    junit 'coverage/junit.xml'
                 }
             }
 
             stage('Report Junit results') {
-                step([$class: 'JUnitResultArchiver', testResults: 'junit.xml'])
+                step([$class: 'JUnitResultArchiver', testResults: 'coverage/junit.xml'])
             }
 
             stage('debug') {
