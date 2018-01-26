@@ -2,6 +2,43 @@ properties properties: [
     [$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', numToKeepStr: '10']],
 ]
 
+def buildSucceeded = true
+
+def slack = {
+    def buildStatus = buildSucceeded ? "succeeded" : "failed"
+    def buildColor = buildSucceeded ? "good" : "bad"
+    def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
+    def author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an' ${commit}").trim()
+    def lastCommitMessage = sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
+    def branch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+    
+    slackSend(
+        message: "",
+        channel: '@oleksiy.tkachenko',
+        attachments: """[ 
+            {
+                title: "${env.JOB_NAME}, build #${env.BUILD_NUMBER}",
+                author_name: "${author}",
+                text: "Build ${buildStatus}",
+                color: "${buildColor}",
+                title_link: "${env.BUILD_URL}",
+                fields: [
+                    {
+                        title: "Branch",
+                        value: "${lastCommitMessage}",
+                        short: true
+                    },
+                    {
+                        title: "Last commit",
+                        value: "${lastCommitMessage}",
+                        short: true
+                    },
+                ]
+            } 
+        ]"""
+    )
+}
+
 node {
     def buildNumber = env.BUILD_NUMBER
     def workspace = env.WORKSPACE
@@ -18,7 +55,6 @@ node {
 
         try {
             stage('Checkout') {
-              checkout scm
             }
 
             stage('Build') {
@@ -26,27 +62,21 @@ node {
               sh "npm run build"
             }
 
-            /*
             stage('Test') {
-              sh "npm run test && npm run e2e"
-              junit 'target/test-reports/TEST*.xml'
+              sh "npm run test:ci"
+              junit 'junit.xml'
             }
-            */
 
             stage('Publish NPM snapshot') {
               sh "npm publish"
             }
 
-            // @TODO: display coverage report
+            buildSucceeded = true
+            slack()
 
         } catch (e) {
-            // @TODO: publish to slack
-            slackSend(
-                color: 'bad',
-                message: "Build #${env.BUILD_NUMBER} failed for ${env.JOB_NAME} (<${env.BUILD_URL}|Open>)",
-                channel: '@oleksiy.tkachenko'
-                )
-
+            buildSucceeded = false
+            slack()
             throw e
         }
     }
