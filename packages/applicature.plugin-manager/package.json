@@ -15,7 +15,7 @@
     "lint": "gulp lint",
     "test": "jest",
     "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
-    "test:ci": "jest --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts"
+    "test:ci": "jest --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts --coverage --collectCoverageFrom=*/**/*.ts"
   },
   "repository": {
     "type": "git",
