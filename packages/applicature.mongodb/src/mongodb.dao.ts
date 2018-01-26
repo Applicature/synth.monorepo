@@ -2,7 +2,7 @@ import { Dao, Hashtable } from '@applicature/multivest.core';
 import { BigNumber } from 'bignumber.js';
 import { Collection, Db, Decimal128 } from 'mongodb';
 
-export abstract class MongoDBDao<T> implements Dao<T> {
+export abstract class MongoDBDao<T> extends Dao<T> {
 
     public static parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
         if (typeof data !== 'object') {
@@ -23,18 +23,18 @@ export abstract class MongoDBDao<T> implements Dao<T> {
 
         const keys = Object.keys(data);
 
-        if (keys.length) {
-            return keys.reduce((prev, curr) => {
+        return keys.reduce((prev, curr) => {
                 prev[curr] = MongoDBDao.parseDecimals(type, data[curr]);
                 return prev;
             },
-            {} as Hashtable<any>);
-        }
+            {} as Hashtable<any>
+        );
     }
 
     protected collection: Collection<T>;
 
     constructor(db: Db) {
+        super();
         this.collection = db.collection<T>(this.getCollectionName());
     }
 

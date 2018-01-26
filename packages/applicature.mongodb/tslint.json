@@ -5,6 +5,14 @@
         "interface-name": false,
         "no-trailing-whitespace": [true, "ignore-blank-lines"],
         "one-line": false,
-        "quotemark": [true, "single"]
+        "quotemark": [true, "single"],
+        "trailing-comma": [
+            true,
+            {
+                "multiline": {
+                    "functions": "never"
+                }
+            }
+        ]
     }
 }
