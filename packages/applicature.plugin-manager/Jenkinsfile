@@ -40,11 +40,11 @@ def getFailedTests = { ->
         }
 
         for(CaseResult cr : failedTests) {
-            failedTestsString = failedTestsString + "${cr.getFullDisplayName()}:\n${cr.getErrorDetails()}\n\n"
+            failedTestsString = failedTestsString + "${cr.getDisplayName()}:\n${cr.getErrorStackTrace()}\n\n"
         }
         failedTestsString = failedTestsString + "```"
     }
-    return failedTestsString
+    return failedTestsString.replaceAll("\\n", "\\\\n")
 }
 
 def slack = {
