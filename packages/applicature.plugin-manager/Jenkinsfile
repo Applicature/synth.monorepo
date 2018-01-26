@@ -113,6 +113,10 @@ node {
     echo "build URL is $buildUrl"
     echo "build Number is $buildNumber"
 
+    stage('Checkout') {
+        checkout scm
+    }
+
     nodejs(configId: '661cf31b-bdac-4946-bf6d-251593378980', nodeJSInstallationName: 'Node 8.x') {
         sh 'node --version'
         sh 'npm --version'
@@ -139,6 +143,11 @@ node {
 
             stage('Report Junit results') {
                 step([$class: 'JUnitResultArchiver', testResults: 'junit.xml'])
+            }
+
+            stage('debug') {
+              sh "ls -l"
+              sh "ls -l coverage"
             }
 
             stage('Report Clover results') {
