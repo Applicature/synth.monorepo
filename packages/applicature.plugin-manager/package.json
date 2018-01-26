@@ -15,7 +15,7 @@
     "lint": "gulp lint",
     "test": "jest",
     "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
-    "test:ci": "jest --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts --coverage --collectCoverageFrom=*/**/*.ts"
+    "test:ci": "jest --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -60,7 +60,6 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/.*?\\.d\\.ts$"
-    ],
-    "coverageReporters": ["json", "lcov", "text"]
+    ]
   }
 }
