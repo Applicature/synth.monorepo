@@ -136,24 +136,24 @@ node {
                 }
             }
 
-            stage('Report Junit results') {
-                step([$class: 'JUnitResultArchiver', testResults: 'junit.xml'])
-            }
+            // stage('Report Junit results') {
+            //     step([$class: 'JUnitResultArchiver', testResults: 'junit.xml'])
+            // }
             
-            stage('Report Cobertura results') {
-                step([
-                    $class: 'CoberturaPublisher', 
-                    autoUpdateHealth: false, 
-                    autoUpdateStability: false, 
-                    coberturaReportFile: '**/junit.xml', 
-                    failUnhealthy: false, 
-                    failUnstable: false, 
-                    maxNumberOfBuilds: 0, 
-                    onlyStable: false, 
-                    sourceEncoding: 'ASCII', 
-                    zoomCoverageChart: false
-                ])
-            }
+            // stage('Report Cobertura results') {
+            //     step([
+            //         $class: 'CoberturaPublisher', 
+            //         autoUpdateHealth: false, 
+            //         autoUpdateStability: false, 
+            //         coberturaReportFile: '**/junit.xml', 
+            //         failUnhealthy: false, 
+            //         failUnstable: false, 
+            //         maxNumberOfBuilds: 0, 
+            //         onlyStable: false, 
+            //         sourceEncoding: 'ASCII', 
+            //         zoomCoverageChart: false
+            //     ])
+            // }
 
             // stage('Publish NPM snapshot') {
             //   sh "npm publish"
