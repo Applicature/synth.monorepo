@@ -152,6 +152,23 @@ node {
                     failingTarget: [methodCoverage: 0, conditionalCoverage: 0, statementCoverage: 0]     // optional, default is none
                 ])
             }
+            
+            stage('Report Cobertura results') {
+                step([
+                    $class: 'CoberturaPublisher',
+                    autoUpdateHealth: false,
+                    autoUpdateStability: false,
+                    coberturaReportFile: 'coverage/cobertura-coverage.xml',
+                    failUnhealthy: false,
+                    failUnstable: false,
+                    maxNumberOfBuilds: 0,
+                    onlyStable: false,
+                    sourceEncoding: 'ASCII',
+                    zoomCoverageChart: false
+                ])
+            }
+
+
 
             // stage('Publish NPM snapshot') {
             //   sh "npm publish"

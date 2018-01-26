@@ -60,7 +60,8 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/.*?\\.d\\.ts$"
-    ]
+    ],
+    "coverageReporters": ["json", "lcov", "text", "clover", "cobertura"]
   },
   "jest-junit": { 
     "output": "./coverage/junit.xml" 
