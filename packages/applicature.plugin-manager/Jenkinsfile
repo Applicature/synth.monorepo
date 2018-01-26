@@ -130,9 +130,10 @@ node {
                 try {
                     sh "npm run test:ci"
                 } catch (e) {
-                    junit 'junit.xml'
                     buildSucceeded = false
                     throw e
+                } finally {
+                    junit 'junit.xml'
                 }
             }
 
