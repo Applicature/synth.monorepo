@@ -7,6 +7,7 @@ properties properties: [
 
 def buildSucceeded = true
 def failed = 0
+def npmPublishFailed = false
 
 @NonCPS
 def getTestSummary = { ->
@@ -65,7 +66,17 @@ def slack = {
                 color: "${buildColor}",
                 text: "${failedTests}",
                 "mrkdwn_in": ["text"],
-            }
+            },
+        """
+    }
+
+    def npmPublishMessage = ""
+    if (npmPublishFailed) {
+        npmPublishMessage = """
+            {
+                title: "npm publish failed",
+                color: "bad"
+            },
         """
     }
     
@@ -99,6 +110,7 @@ def slack = {
                 ]
             },
             ${failedMessage}
+            ${npmPublishMessage}
         ]"""
     )
 }
@@ -156,7 +168,11 @@ node {
             }
 
             stage('Publish NPM snapshot') {
-                sh "npm publish"
+                try {
+                    sh "npm publish"
+                } catch (e) {
+                    npmPublishFailed = true
+                }
             }
 
             buildSucceeded = true
