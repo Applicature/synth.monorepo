@@ -1,5 +1,5 @@
 {
-  "name": "multivest.web",
+  "name": "@applicature/multivest.web",
   "version": "0.0.1",
   "description": "Web Plugin",
   "engines": {
