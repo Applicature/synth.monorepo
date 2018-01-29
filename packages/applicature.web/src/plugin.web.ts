@@ -34,15 +34,6 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         super(pluginManager);
         this.config = pluginConfig;
         this.app = serverApp;
-        process.on('unhandledRejection', (err) => {
-            winston.error('unhandledRejection', err);
-            throw err;
-        });
-
-        process.on('uncaughtException', (err) => {
-            winston.error('uncaughtException', err);
-            throw err;
-        });
     }
 
     public addRouter(id: string, Router: express.Router) {
@@ -81,7 +72,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     // Configure Express middleware.
-    private margeMiddlewareConfiguration(): void {
+    private mergeMiddlewareConfiguration(): void {
         this.pluginMiddlewareConfig = {
             ...this.pluginMiddlewareConfig,
             ...this.config.get('middleware'),
@@ -90,7 +81,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
 
     // Run configuration methods on the Express instance
     private middleware(): void {
-        this.margeMiddlewareConfiguration();
+        this.mergeMiddlewareConfiguration();
         // parse body params and attache them to req.body
         this.app.use(bodyParser.json(this.pluginMiddlewareConfig.bodyParserJson));
         this.app.use(bodyParser.urlencoded(this.pluginMiddlewareConfig.bodyParserUrlencoded));
