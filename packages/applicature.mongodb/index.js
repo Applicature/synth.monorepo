@@ -1,6 +1,8 @@
-const Plugin = require('./src/plugin.db');
-const AbstractDao = require('./src/abstract.dao');
-
-module.exports = {
-    Plugin, AbstractDao,
-};
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./dist/mongodb.dao"));
+__export(require("./dist/model"));
+__export(require("./dist/mongodb.plugin"));
