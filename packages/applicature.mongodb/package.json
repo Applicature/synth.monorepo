@@ -24,7 +24,7 @@
     "url": "git@bitbucket.com:applicature/multivest.mongodb.git"
   },
   "dependencies": {
-    "@applicature/multivest.core": "^0.1.5",
+    "@applicature/multivest.core": "^0.1.6",
     "config": "^1.26.1",
     "jest-cli": "^22.1.4",
     "mongodb": "^2.2.28",
