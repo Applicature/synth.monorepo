@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.core",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
@@ -54,7 +54,8 @@
   "files": [
     "dist/",
     "src/",
-    "index.d.ts"
+    "index.d.ts",
+    "index.js"
   ],
   "jest": {
     "transform": {
