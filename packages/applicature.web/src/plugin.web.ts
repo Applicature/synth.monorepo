@@ -1,4 +1,4 @@
-import { Plugin, PluginManager } from '@applicature/multivest.core';
+import { MultivestError, Plugin, PluginManager } from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -103,10 +103,10 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         // enable CORS - Cross Origin Resource Sharing
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
         // error handler, send stacktrace only during development
-        this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) =>
-            res.status(err.status ? err.status : 500).json({
-                // message: err.isPublic ? err.message : httpStatus[err.status],
-                // stack: config.env && config.env === 'development' ? err.stack : {},
+        this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
+            res.status(err.params.status ? err.params.status : 500).json({
+                message: err.message,
+                stack: this.config.env && this.config.env === 'development' ? err.stack : {},
             }),
         );
 
