@@ -136,6 +136,7 @@ node {
 
             stage('Build') {
               sh "npm install"
+              sh "for d in node_modules/@applicature/*; do ( cd $d && npm run build ); done"
               sh "npm run build"
             }
 
