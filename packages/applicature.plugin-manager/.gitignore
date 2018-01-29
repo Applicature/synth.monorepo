@@ -3,6 +3,7 @@
 *.iml
 *.ipr
 *.iws
+*.DS_Store
 node_modules
 logs/*.log
 npm-debug.log
