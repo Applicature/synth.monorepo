@@ -1,3 +1,4 @@
+import { Plugin, PluginManager } from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -11,7 +12,6 @@ import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
 import { Hashtable } from './structure';
-import { Plugin, PluginManager } from '@applicature/multivest.core';
 
 export class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
@@ -57,7 +57,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         return 'web';
     }
     public init(): void {
-
+        return;
     }
 
     public startServer() {
