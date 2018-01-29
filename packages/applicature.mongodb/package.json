@@ -11,11 +11,13 @@
     "yarn": ">=0.20.3"
   },
   "scripts": {
-    "build": "gulp clean && gulp build",
-    "lint": "gulp lint",
+    "build": "gulp build",
+    "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
+    "precommit": "npm run lint ; npm run test:coverage ; npm run test:security",
     "test": "jest",
     "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
-    "test:ci": "jest --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts"
+    "test:ci": "jest --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts",
+    "test:security": "nsp check"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
   "dependencies": {
     "@applicature/multivest.core": "git+ssh://git@bitbucket.org/applicature/multivest.plugin-manager.git#typescriptification",
     "config": "^1.26.1",
+    "jest-cli": "^22.1.4",
     "mongodb": "^2.2.28",
     "winston": "^2.1.1"
   },
@@ -39,9 +42,11 @@
     "gulp-sourcemaps": "^2.6.3",
     "gulp-tslint": "^8.1.2",
     "gulp-typescript": "^3.2.3",
+    "husky": "^0.14.3",
     "jest": "^22.1.4",
     "jest-junit": "^3.4.1",
     "mongo-mock": "^3.0.0",
+    "nsp": "^3.1.0",
     "ts-jest": "^22.0.1",
     "tslint": "^5.9.1",
     "typescript": "^2.6.2"
@@ -57,8 +62,17 @@
       "js"
     ],
     "coveragePathIgnorePatterns": [
-      "<rootDir>/.*?\\.d\\.ts$",
-      "<rootDir>/.*?\\.mock\\.ts$"
+      "<rootDir>/.*?\\.d\\.ts$"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover",
+      "cobertura"
     ]
+  },
+  "jest-junit": {
+    "output": "./coverage/junit.xml"
   }
 }
