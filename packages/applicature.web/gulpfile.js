@@ -22,13 +22,3 @@ gulp.task('clean', () =>
         ])
         .pipe(cl())     
 );
-
-gulp.task('lint', () =>
-    gulp.src([
-            './src/**/*.ts'
-        ])
-        .pipe(lint({
-            formatter: 'stylish'
-        }))
-        .pipe(lint.report())
-);
