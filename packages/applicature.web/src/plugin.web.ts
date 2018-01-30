@@ -1,3 +1,4 @@
+import { MultivestError, Plugin, PluginManager } from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -11,7 +12,6 @@ import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
 import { Hashtable } from './structure';
-import { Plugin, PluginManager } from '@applicature/multivest.core';
 
 export class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
@@ -34,15 +34,6 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         super(pluginManager);
         this.config = pluginConfig;
         this.app = serverApp;
-        process.on('unhandledRejection', (err) => {
-            winston.error('unhandledRejection', err);
-            throw err;
-        });
-
-        process.on('uncaughtException', (err) => {
-            winston.error('uncaughtException', err);
-            throw err;
-        });
     }
 
     public addRouter(id: string, Router: express.Router) {
@@ -57,7 +48,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         return 'web';
     }
     public init(): void {
-
+        return;
     }
 
     public startServer() {
@@ -81,7 +72,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     // Configure Express middleware.
-    private margeMiddlewareConfiguration(): void {
+    private mergeMiddlewareConfiguration(): void {
         this.pluginMiddlewareConfig = {
             ...this.pluginMiddlewareConfig,
             ...this.config.get('middleware'),
@@ -90,7 +81,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
 
     // Run configuration methods on the Express instance
     private middleware(): void {
-        this.margeMiddlewareConfiguration();
+        this.mergeMiddlewareConfiguration();
         // parse body params and attache them to req.body
         this.app.use(bodyParser.json(this.pluginMiddlewareConfig.bodyParserJson));
         this.app.use(bodyParser.urlencoded(this.pluginMiddlewareConfig.bodyParserUrlencoded));
@@ -103,10 +94,10 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         // enable CORS - Cross Origin Resource Sharing
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
         // error handler, send stacktrace only during development
-        this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) =>
-            res.status(err.status ? err.status : 500).json({
-                // message: err.isPublic ? err.message : httpStatus[err.status],
-                // stack: config.env && config.env === 'development' ? err.stack : {},
+        this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
+            res.status(err.params.status ? err.params.status : 500).json({
+                message: err.message,
+                stack: this.config.env && this.config.env === 'development' ? err.stack : {},
             }),
         );
 
