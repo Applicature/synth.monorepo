@@ -1,11 +1,12 @@
 .idea
+.vscode
 *.iml
 *.ipr
 *.iws
+*.DS_Store
 node_modules
 logs/*.log
 npm-debug.log
 coverage
 .nyc_output
 dist
-coverage
