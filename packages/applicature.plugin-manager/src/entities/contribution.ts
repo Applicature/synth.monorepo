@@ -3,6 +3,7 @@ import { Hashtable } from '../structure';
 
 export interface Contribution {
     blockchain: string;
+    symbol: string;
     txHash: string;
     amount: BigNumber;
     params: Hashtable<any>;
