@@ -72,6 +72,13 @@ export abstract class MongoDBDao<T> extends Dao<T> {
             .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
 
+    public aggregate(aggregateQuery: any): Promise<Array<any>> {
+        return this.collection
+            .aggregate(aggregateQuery)
+            .toArray()
+            .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
+    }
+
     public update(needle: Partial<T>, substitution: Partial<T>) {
         const parsed = MongoDBDao.parseDecimals('toMongo', substitution);
         return this.collection
