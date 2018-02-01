@@ -6,4 +6,6 @@ export abstract class ValidationAbstractService extends Service {
     public abstract getValidation(actionId: any): any;
 
     public abstract validate(actionId: string, data: any): any;
+
+    public abstract requestValidation(actionId: string): any;
 }

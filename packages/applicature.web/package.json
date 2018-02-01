@@ -30,6 +30,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "express-validation": "^1.0.2",
     "helmet": "^3.9.0",
     "http-status": "^1.0.1",
     "joi": "^13.1.1",

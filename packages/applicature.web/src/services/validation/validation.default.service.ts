@@ -1,4 +1,6 @@
 import {PluginManager, Service} from '@applicature/multivest.core';
+import {NextFunction, Request, Response} from 'express';
+import * as validation from 'express-validation';
 import * as joi from 'joi';
 import { Hashtable } from './structure';
 import { ValidationAbstractService } from './validation.abstract.service';
@@ -18,5 +20,10 @@ export class ValidationDefaultService extends ValidationAbstractService {
     }
     public validate(actionId: string, data: any): any {
         return joi.validate(data, joi.object().keys(this.validationSchemas[actionId]));
+    }
+    public requestValidation(actionId: string): any {
+        return (req: Request, res: Response, next: NextFunction) => {
+            return validation(this.getValidation(actionId)) (req, res, next);
+        };
     }
 }
