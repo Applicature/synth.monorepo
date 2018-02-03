@@ -10,8 +10,10 @@
     "npm": ">=2.15.11",
     "yarn": ">=0.20.3"
   },
+  "main": "dist/index.js",
+  "types" : "dist/index.d.ts",
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
     "precommit": "npm run lint ; npm run test:coverage ; npm run test:security",
     "test": "jest",
@@ -57,9 +59,7 @@
   },
   "files": [
     "dist/",
-    "src/",
-    "index.d.ts",
-    "index.js"
+    "src/"
   ],
   "jest": {
     "transform": {
@@ -72,7 +72,8 @@
       "js"
     ],
     "coveragePathIgnorePatterns": [
-      "<rootDir>/.*?\\.d\\.ts$"
+      "<rootDir>/.*?\\.d\\.ts$",
+      "<rootDir>/.*?\\.mock\\.ts$"
     ],
     "coverageReporters": [
       "json",
