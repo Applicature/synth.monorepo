@@ -1,4 +1,4 @@
-import { MultivestError, Plugin, PluginManager } from '@applicature/multivest.core';
+import { MultivestError, Plugin, PluginManager, Hashtable } from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -11,7 +11,6 @@ import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
-import { Hashtable } from './structure';
 
 export class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance

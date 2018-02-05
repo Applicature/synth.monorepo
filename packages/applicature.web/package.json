@@ -19,6 +19,8 @@
     "test:ci": "jest --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts",
     "test:security": "nsp check"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:applicature/multivest.web.git"
