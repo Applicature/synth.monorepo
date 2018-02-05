@@ -21,7 +21,7 @@ describe('AuthDefaultService', () => {
         const service = new ValidationDefaultService(pluginManager);
         const validationScheme = {username: joi.string().alphanum().min(3).max(30).required()};
         const actionId = 'createUser';
-        service.setValidation(actionId, validationScheme);
+        servi-ce.setValidation(actionId, validationScheme);
         service.setValidation(actionId, {password: joi.string().min(3).max(20).required()});
         const result = service.validate(actionId, {username: 'user', password: 'password'});
         expect(result).toHaveProperty('error', null);

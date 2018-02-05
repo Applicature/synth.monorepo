@@ -11,8 +11,9 @@ import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
+import {ValidationDefaultService} from './validation/validation.default.service';
 
-export class WebPlugin extends Plugin<void> implements IWeb {
+class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
     private app: express.Application;
     private config: any;
@@ -47,7 +48,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         return 'web';
     }
     public init(): void {
-        return;
+        this.serviceClasses.push(ValidationDefaultService);
     }
 
     public startServer() {
@@ -102,3 +103,5 @@ export class WebPlugin extends Plugin<void> implements IWeb {
 
     }
 }
+
+export {WebPlugin as Plugin};
