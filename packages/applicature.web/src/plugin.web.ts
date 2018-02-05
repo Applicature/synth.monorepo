@@ -11,7 +11,7 @@ import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
-import {ValidationDefaultService} from './validation/validation.default.service';
+import {ValidationDefaultService} from './services/validation/validation.default.service';
 
 class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
