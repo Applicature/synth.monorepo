@@ -7,6 +7,7 @@ import { Constructable, Dao, Hashtable, MultivestError, Plugin, PluginManager } 
 import * as config from 'config';
 import { connect, Db, MongoClientOptions } from 'mongodb';
 import * as logger from 'winston';
+import { Errors } from './errors';
 import { ConnectionState } from './model';
 import { MongoDBDao } from './mongodb.dao';
 
@@ -71,7 +72,7 @@ class MongodbPlugin extends Plugin<any> {
 
     public getDB() {
         if (this.state === ConnectionState.Disconnected) {
-            return Promise.reject(new MultivestError('Database is disconnected.'));
+            return Promise.reject(new MultivestError(Errors.NO_CONNECTION));
         }
 
         if (this.state === ConnectionState.Connected) {
@@ -82,12 +83,12 @@ class MongodbPlugin extends Plugin<any> {
             return this.connectionPromise;
         }
 
-        throw new MultivestError('Unrsolved state');
+        throw new MultivestError(Errors.UNRESOLVED_STATE);
     }
 
     public getDaos() {
         if (this.state === ConnectionState.Disconnected) {
-            return Promise.reject(new MultivestError('Database is disconnected.'));
+            return Promise.reject(new MultivestError(Errors.NO_CONNECTION));
         }
         else if (this.state === ConnectionState.Connected) {
             return Promise.resolve(this.daos);
@@ -97,13 +98,13 @@ class MongodbPlugin extends Plugin<any> {
                 .then(() => this.daos);
         }
 
-        throw new MultivestError('Unrsolved state');
+        throw new MultivestError(Errors.UNRESOLVED_STATE);
     }
 
     public async getDao(daoId: string) {
         const daoInstances = await this.getDaos();
         return daoInstances[daoId];
-        throw new MultivestError('DAO_NOT_FOUND');
+        throw new MultivestError(Errors.DAO_NOT_FOUND);
     }
 
     public disconnect() {
