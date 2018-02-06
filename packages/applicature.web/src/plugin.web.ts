@@ -17,6 +17,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     private config: any;
     private httpServer: http.Server;
     private routes: Hashtable<express.Router> = {};
+    private toEnable: Array<string> = [];
     private pluginMiddlewareConfig: IExpressMiddlewareConfig = {
         bodyParserJson: {
             limit: '50mb',
@@ -39,7 +40,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     public enableRouter(id: string) {
-        this.app.use(this.getRouter(id));
+        this.toEnable.push(id);
     }
 
     public getPluginId(): string {
@@ -50,8 +51,11 @@ class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     public startServer() {
-
+        const self = this;
         this.middleware();
+        this.toEnable.forEach((id: string) => {
+            self.app.use(this.getRouter(id));
+        });
 
         // listen on port listen.port
         const listenPort = this.config.get('listen.port');
