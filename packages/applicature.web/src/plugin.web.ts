@@ -51,10 +51,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     public startServer() {
-        const self = this;
         this.middleware();
         this.toEnable.forEach((id: string) => {
-            self.app.use(this.getRouter(id));
+            this.app.use(this.getRouter(id));
         });
 
         // listen on port listen.port
