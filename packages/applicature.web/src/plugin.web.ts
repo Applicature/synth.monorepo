@@ -93,7 +93,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
         // error handler, send stacktrace only during development
         this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
-            res.status(err.params.status ? err.params.status : 500).json({
+            res.status(err.status ? err.status : 500).json({
                 message: err.message,
                 stack: this.config.env && this.config.env === 'development' ? err.stack : {},
             }),
