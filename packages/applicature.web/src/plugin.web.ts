@@ -1,4 +1,4 @@
-import { MultivestError, Plugin, PluginManager } from '@applicature/multivest.core';
+import { MultivestError, Plugin, PluginManager, Hashtable } from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -11,9 +11,9 @@ import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
-import { Hashtable } from './structure';
+import {ValidationDefaultService} from './services/validation/validation.default.service';
 
-export class WebPlugin extends Plugin<void> implements IWeb {
+class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
     private app: express.Application;
     private config: any;
@@ -48,7 +48,7 @@ export class WebPlugin extends Plugin<void> implements IWeb {
         return 'web';
     }
     public init(): void {
-        return;
+        this.serviceClasses.push(ValidationDefaultService);
     }
 
     public startServer() {
@@ -103,3 +103,5 @@ export class WebPlugin extends Plugin<void> implements IWeb {
 
     }
 }
+
+export {WebPlugin as Plugin};

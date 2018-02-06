@@ -1,8 +1,7 @@
-import {PluginManager, Service} from '@applicature/multivest.core';
+import { Hashtable } from '@applicature/multivest.core';
 import {NextFunction, Request, Response} from 'express';
 import * as validation from 'express-validation';
 import * as joi from 'joi';
-import { Hashtable } from './structure';
 import { ValidationAbstractService } from './validation.abstract.service';
 
 export class ValidationDefaultService extends ValidationAbstractService {
