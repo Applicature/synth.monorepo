@@ -1,4 +1,4 @@
-import { MultivestError, Plugin, PluginManager, Hashtable } from '@applicature/multivest.core';
+import { Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -6,9 +6,7 @@ import * as cors from 'cors';
 import * as express from 'express';
 import * as helmet from 'helmet';
 import * as http from 'http';
-import * as httpStatus from 'http-status';
 import * as methodOverride from 'method-override';
-import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
 import {ValidationDefaultService} from './services/validation/validation.default.service';

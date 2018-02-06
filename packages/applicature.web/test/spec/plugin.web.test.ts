@@ -1,7 +1,7 @@
 import * as config from 'config';
 import * as express from 'express';
 
-import { WebPlugin } from '../../src/plugin.web';
+import { Plugin as WebPlugin } from '../../src/plugin.web';
 import { PluginManagerMock } from '../mocks/plugin.manager';
 
 describe('Web Plugin', () => {
