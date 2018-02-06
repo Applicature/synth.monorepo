@@ -1,6 +1,6 @@
 import { PluginManager, Service } from '@applicature/multivest.core';
 
-export abstract class EmailService<UserData> extends Service {
+export abstract class EmailService extends Service {
 
     constructor(pluginManager: PluginManager, private id: number) {
         super(pluginManager);
