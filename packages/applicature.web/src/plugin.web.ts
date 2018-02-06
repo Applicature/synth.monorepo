@@ -1,4 +1,4 @@
-import { MultivestError, Plugin, PluginManager, Hashtable } from '@applicature/multivest.core';
+import { Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -6,9 +6,7 @@ import * as cors from 'cors';
 import * as express from 'express';
 import * as helmet from 'helmet';
 import * as http from 'http';
-import * as httpStatus from 'http-status';
 import * as methodOverride from 'method-override';
-import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
 import {ValidationDefaultService} from './services/validation/validation.default.service';
@@ -19,6 +17,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     private config: any;
     private httpServer: http.Server;
     private routes: Hashtable<express.Router> = {};
+    private toEnable: Array<string> = [];
     private pluginMiddlewareConfig: IExpressMiddlewareConfig = {
         bodyParserJson: {
             limit: '50mb',
@@ -41,7 +40,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     public enableRouter(id: string) {
-        this.app.use(this.getRouter(id));
+        this.toEnable.push(id);
     }
 
     public getPluginId(): string {
@@ -52,8 +51,10 @@ class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     public startServer() {
-
         this.middleware();
+        this.toEnable.forEach((id: string) => {
+            this.app.use(this.getRouter(id));
+        });
 
         // listen on port listen.port
         const listenPort = this.config.get('listen.port');
@@ -95,7 +96,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
         // error handler, send stacktrace only during development
         this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
-            res.status(err.params.status ? err.params.status : 500).json({
+            res.status(err.status ? err.status : 500).json({
                 message: err.message,
                 stack: this.config.env && this.config.env === 'development' ? err.stack : {},
             }),
