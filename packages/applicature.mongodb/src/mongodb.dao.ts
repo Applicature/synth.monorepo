@@ -5,7 +5,7 @@ import { Collection, Db, Decimal128 } from 'mongodb';
 export abstract class MongoDBDao<T> extends Dao<T> {
 
     public static parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
-        if (typeof data !== 'object' && data) {
+        if (typeof data !== 'object' || !data) {
             return data;
         }
 
