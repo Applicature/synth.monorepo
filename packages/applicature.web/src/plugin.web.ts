@@ -49,6 +49,10 @@ class WebPlugin extends Plugin<void> implements IWeb {
         this.serviceClasses.push(ValidationDefaultService);
     }
 
+    public getApp(): express.Application {
+        return this.app;
+    }
+
     public startServer() {
         this.middleware();
         this.toEnable.forEach((id: string) => {
