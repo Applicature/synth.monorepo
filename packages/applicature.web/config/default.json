@@ -1,10 +1,12 @@
 {
-  "listen": {
-    "port": 3000
-  },
-  "middleware": {
-    "bodyParserJson": {
-      "limit": "100m"
+  "multivest": {
+    "web": {
+      "middleware": {
+        "bodyParserJson": {
+          "limit": "100m"
+        }
+      },
+      "port": 3001
     }
   }
 }

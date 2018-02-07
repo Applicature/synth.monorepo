@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.web",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "license": "UNLICENSED",
   "description": "Web Plugin",
@@ -11,7 +11,7 @@
     "yarn": ">=0.20.3"
   },
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
     "precommit": "npm run lint ; npm run test:coverage ; npm run test:security",
     "test": "jest",
@@ -70,9 +70,7 @@
   },
   "files": [
     "dist/",
-    "src/",
-    "index.d.ts",
-    "index.js"
+    "src/"
   ],
   "jest": {
     "transform": {
@@ -82,10 +80,13 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
-      "js"
+      "js",
+      "json",
+      "node"
     ],
     "coveragePathIgnorePatterns": [
-      "<rootDir>/.*?\\.d\\.ts$"
+      "<rootDir>/.*?\\.d\\.ts$",
+      "<rootDir>/.*?\\.mock\\.ts$"
     ],
     "coverageReporters": [
       "json",
