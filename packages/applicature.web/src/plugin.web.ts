@@ -29,7 +29,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         helmet: {},
         methodOverride: '',
     };
-    constructor(pluginManager: PluginManager, serverApp: express.Application) {
+    constructor(pluginManager: PluginManager) {
         super(pluginManager);
         this.app = express();
     }
