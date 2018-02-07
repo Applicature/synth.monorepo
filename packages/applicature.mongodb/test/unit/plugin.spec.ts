@@ -75,4 +75,12 @@ describe('plugin dao actions', () => {
         const daos = await plugin.getDaos();
         expect(Object.prototype.hasOwnProperty.call(daos, 'test.dao')).toBeTruthy();
     });
+
+    it('should get one dao', async () => {
+        plugin.addDao(TestDao);
+        await plugin.init();
+        plugin.invoke();
+        const dao = await plugin.getDao('test.dao');
+        expect(dao).toBeInstanceOf(TestDao);
+    });
 });
