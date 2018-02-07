@@ -10,7 +10,8 @@ export interface emailOpts {
     to: string;
     subject: string;
     templateId: string;
-    attachments?: object[]
+    attachments?: object[];
+    data: object;
 }
 
 export interface templatesStorage {
@@ -28,4 +29,8 @@ export abstract class EmailService extends Service {
     public abstract getTemplate(templateId: string): emailTemplates;
 
     public abstract sendEmail(emailOpts: emailOpts): Promise<any>;
+
+    public getServiceId(): string {
+        return 'email.abstract.service'
+    }
 }
