@@ -1,6 +1,7 @@
 import { Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
+import * as config from 'config';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
@@ -14,7 +15,6 @@ import {ValidationDefaultService} from './services/validation/validation.default
 class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
     private app: express.Application;
-    private config: any;
     private httpServer: http.Server;
     private routes: Hashtable<express.Router> = {};
     private toEnable: Array<string> = [];
@@ -29,10 +29,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
         helmet: {},
         methodOverride: '',
     };
-    constructor(pluginManager: PluginManager, pluginConfig: any, serverApp: express.Application) {
+    constructor(pluginManager: PluginManager, serverApp: express.Application) {
         super(pluginManager);
-        this.config = pluginConfig;
-        this.app = serverApp;
+        this.app = express();
     }
 
     public addRouter(id: string, Router: express.Router) {
@@ -60,12 +59,12 @@ class WebPlugin extends Plugin<void> implements IWeb {
         this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
             res.status(err.status ? err.status : 500).json({
                 message: err.message,
-                stack: this.config.env && this.config.env === 'development' ? err.stack : {},
+                stack: config.get('env') && config.get('env') === 'development' ? err.stack : {},
             }),
         );
 
         // listen on port listen.port
-        const listenPort = this.config.get('listen.port');
+        const listenPort = config.get('multivest.web.port');
         this.httpServer = new http.Server(this.app);
         this.httpServer.listen(listenPort, () => {
             winston.info(`server started on port ${listenPort}`);
@@ -84,7 +83,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     private mergeMiddlewareConfiguration(): void {
         this.pluginMiddlewareConfig = {
             ...this.pluginMiddlewareConfig,
-            ...this.config.get('middleware'),
+            ...config.get('multivest.web.middleware'),
         };
     }
 
