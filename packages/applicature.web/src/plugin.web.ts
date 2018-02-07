@@ -56,6 +56,14 @@ class WebPlugin extends Plugin<void> implements IWeb {
             this.app.use(this.getRouter(id));
         });
 
+        // error handler, send stacktrace only during development
+        this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
+            res.status(err.status ? err.status : 500).json({
+                message: err.message,
+                stack: this.config.env && this.config.env === 'development' ? err.stack : {},
+            }),
+        );
+
         // listen on port listen.port
         const listenPort = this.config.get('listen.port');
         this.httpServer = new http.Server(this.app);
@@ -94,14 +102,6 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
         // enable CORS - Cross Origin Resource Sharing
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
-        // error handler, send stacktrace only during development
-        this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
-            res.status(err.status ? err.status : 500).json({
-                message: err.message,
-                stack: this.config.env && this.config.env === 'development' ? err.stack : {},
-            }),
-        );
-
     }
 }
 
