@@ -1,11 +1,11 @@
 import { PluginManager, Service } from '@applicature/multivest.core';
 
-export interface emailTemplates {
+export interface EmailTemplates {
     plainTemplate: string;
     HTMLTemplate?: string;
 }
 
-export interface emailOpts {
+export interface EmailOpts {
     from: string;
     to: string;
     subject: string;
@@ -15,7 +15,7 @@ export interface emailOpts {
 }
 
 export interface templatesStorage {
-    [key: string]: emailTemplates
+    [key: string]: EmailTemplates
 }
 
 export abstract class EmailService extends Service {
@@ -24,11 +24,11 @@ export abstract class EmailService extends Service {
         super(pluginManager);
     }
 
-    public abstract setTemplate(templateId: string, emailTemplates: emailTemplates): emailTemplates;
+    public abstract setTemplate(templateId: string, emailTemplates: EmailTemplates): EmailTemplates;
 
-    public abstract getTemplate(templateId: string): emailTemplates;
+    public abstract getTemplate(templateId: string): EmailTemplates;
 
-    public abstract sendEmail(emailOpts: emailOpts): Promise<any>;
+    public abstract sendEmail(emailOpts: EmailOpts): Promise<any>;
 
     public getServiceId(): string {
         return 'email.abstract.service'
