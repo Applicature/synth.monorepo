@@ -101,12 +101,11 @@ class MongodbPlugin extends Plugin<any> {
         throw new MultivestError(Errors.UNRESOLVED_STATE);
     }
 
-    public async getDao(daoId: string) {
-        const daoInstances = await this.getDaos();
-        if (!daoInstances[daoId]) {
+    public getDao(daoId: string) {
+        if (!this.daos[daoId]) {
             throw new MultivestError(Errors.DAO_NOT_FOUND);
         }
-        return daoInstances[daoId];
+        return this.daos[daoId];
     }
 
     public disconnect() {
