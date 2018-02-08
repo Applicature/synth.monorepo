@@ -41,7 +41,7 @@ export abstract class Plugin<T> {
         this.daoClasses.push(daoClass);
     }
 
-    public async getDaos() {
+    public getDaos() {
         return this.daos;
     }
 
