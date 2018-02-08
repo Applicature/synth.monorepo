@@ -1,4 +1,10 @@
 {
   "logPath": "./logs",
-  "plugins": []
+  "plugins": [],
+  "templates": {
+    "path": {
+      "partials": [],
+      "templates": []
+    }
+  }
 }

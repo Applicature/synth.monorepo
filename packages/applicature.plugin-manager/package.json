@@ -11,7 +11,7 @@
     "yarn": ">=0.20.3"
   },
   "main": "dist/index.js",
-  "types" : "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
@@ -32,12 +32,14 @@
     "agenda": "^1.0.3",
     "bignumber.js": "^4.1.0",
     "config": "^1.26.1",
+    "handlebars": "^4.0.11",
     "winston": "^2.1.1"
   },
   "devDependencies": {
     "@types/agenda": "^1.0.1",
     "@types/bignumber.js": "^4.0.3",
     "@types/config": "0.0.33",
+    "@types/handlebars": "^4.0.36",
     "@types/jest": "^22.0.1",
     "@types/mongodb": "^2.2.18",
     "@types/node": "^8.5.2",
