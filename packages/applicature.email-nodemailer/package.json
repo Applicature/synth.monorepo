@@ -26,7 +26,9 @@
     "url": "git@bitbucket.org:applicature/multivest.email.nodemailer.git"
   },
   "dependencies": {
+    "@applicature/multivest.email.abstract": "0.1.0",
     "config": "^1.26.1",
+    "nodemailer": "^4.4.2",
     "winston": "^2.1.1"
   },
   "devDependencies": {
