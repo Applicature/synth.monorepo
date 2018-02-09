@@ -6,7 +6,7 @@ import { EmailService } from '@applicature/multivest.email.abstract';
 
 import * as config from 'config';
 
-class NodeMailerEmailService extends EmailService {
+export class NodeMailerEmailService extends EmailService {
     private transporter: any;
 
     constructor(pluginManager: PluginManager) {

@@ -1,5 +1,5 @@
 {
-    "mail": {
+    "email": {
         "nodemailer": {
             "host": "smtp.ethereal.email",
             "port": 587,
