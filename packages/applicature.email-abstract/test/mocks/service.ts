@@ -7,8 +7,8 @@ export class TestService extends EmailService<string> {
 
     public async sendEmail(message: string, addressee: string): Promise<any> {
         return {
-            status: 'sent',
             addressee: addressee,
-        }
+            status: 'sent',
+        };
     }
 }
