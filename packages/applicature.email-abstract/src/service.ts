@@ -10,6 +10,9 @@ export interface EmailOpts {
     to: string;
     cc?: Array<string>;
     bcc?: Array<string>;
+    replyTo?: string;
+    inReplyTo?: string;
+    messageId?: string;
     headers?: Hashtable<string>;
     subject: string;
     body: EmailBodies;
