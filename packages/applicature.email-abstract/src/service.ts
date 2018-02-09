@@ -25,6 +25,6 @@ export abstract class EmailService extends Service {
     public abstract sendEmail(emailOpts: EmailOpts): Promise<any>;
 
     public getServiceId(): string {
-        return 'email.abstract.service';
+        return 'email.sender';
     }
 }
