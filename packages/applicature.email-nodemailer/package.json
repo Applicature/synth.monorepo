@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.email.nodemailer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "license": "UNLICENSED",
   "description": "Nodemailer Email Plugin",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@applicature/multivest.core": "^0.1.10",
-    "@applicature/multivest.email.abstract": "^0.1.4",
+    "@applicature/multivest.email.abstract": "^0.1.5",
     "config": "^1.26.1",
     "nodemailer": "^4.4.2",
     "winston": "^2.1.1"
