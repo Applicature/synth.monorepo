@@ -18,7 +18,7 @@ export interface EmailOpts {
 
 export abstract class EmailService extends Service {
 
-    constructor(pluginManager: PluginManager, private id: number) {
+    constructor(pluginManager: PluginManager) {
         super(pluginManager);
     }
 
