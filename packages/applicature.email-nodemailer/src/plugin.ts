@@ -1,7 +1,7 @@
 import { Plugin } from '@applicature/multivest.core';
 import { NodeMailerEmailService } from './service';
 
-class NodemailerEmailPlugin extends Plugin<any> {
+class NodeMailerEmailPlugin extends Plugin<any> {
 
     public getPluginId() {
         return 'email.nodemailer';
@@ -13,4 +13,4 @@ class NodemailerEmailPlugin extends Plugin<any> {
     }
 }
 
-export { NodemailerEmailPlugin as Plugin };
+export { NodeMailerEmailPlugin as Plugin };
