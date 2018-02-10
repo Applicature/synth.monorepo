@@ -15,10 +15,6 @@ export class NodeMailerEmailService extends EmailService {
         this.transporter = nodemailer.createTransport(config.get('email.nodemailer'));
     }
 
-    public getServiceId() {
-        return 'nodemailer.email.service';
-    }
-
     public sendEmail(emailOpts: EmailOpts): Promise<any> {
         const mail = {
             from: emailOpts.from,
