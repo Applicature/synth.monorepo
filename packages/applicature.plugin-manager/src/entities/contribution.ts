@@ -8,6 +8,7 @@ export interface Contribution {
     amount: BigNumber;
     params: Hashtable<any>;
     userAddress: string;
+    userId?: string;
 }
 
 export interface ExternalContribution extends Contribution {
