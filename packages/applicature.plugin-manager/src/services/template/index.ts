@@ -17,7 +17,7 @@ function walkSync(parentDir: string, directory: string, filelist: Array<Array<st
             filelist = walkSync(parentDir, directory + file + '/', filelist);
         }
         else {
-            filelist.push([directory, file]);
+            filelist.push([parentDir, directory, file]);
         }
     });
 
@@ -59,7 +59,7 @@ export class TemplateService extends Service {
         }
 
         for (const file of partialsFiles) {
-            const content = await this.getContent(file[0], file[1]);
+            const content = await this.getContent(file[0] + '/' + file[1], file[2]);
 
             registerPartial(file[1], content);
         }
@@ -73,7 +73,7 @@ export class TemplateService extends Service {
         }
 
         for (const file of templatesFiles) {
-            const content = await this.getContent(file[0], file[1]);
+            const content = await this.getContent(file[0] + '/' +  file[1], file[2]);
 
             const compiledTemplate = compile(content);
 
