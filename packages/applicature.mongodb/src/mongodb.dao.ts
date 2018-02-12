@@ -9,6 +9,10 @@ export abstract class MongoDBDao<T> extends Dao<T> {
             return data;
         }
 
+        if (data instanceof Date) {
+            return data;
+        }
+
         if (Array.isArray(data)) {
             return data.map((item) => MongoDBDao.parseDecimals(type, item));
         }
