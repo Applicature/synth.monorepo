@@ -61,7 +61,7 @@ export class TemplateService extends Service {
         for (const file of partialsFiles) {
             const content = await this.getContent(file[0] + '/' + file[1], file[2]);
 
-            registerPartial(file[1], content);
+            registerPartial(file[2], content);
         }
 
         const templatePaths = getConfig('templates.path.templates') as Array<string>;
@@ -77,7 +77,7 @@ export class TemplateService extends Service {
 
             const compiledTemplate = compile(content);
 
-            this.compiledTemplates[file[1]] = compiledTemplate;
+            this.compiledTemplates[file[2]] = compiledTemplate;
         }
     }
 

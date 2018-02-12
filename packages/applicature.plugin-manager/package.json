@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.core",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
