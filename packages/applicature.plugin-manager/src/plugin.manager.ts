@@ -46,6 +46,10 @@ export class PluginManager {
         return this.daos[daoId];
     }
 
+    public registerService(service: Service) {
+        this.services[service.getServiceId()] = service;
+    }
+
     public getService(serviceId: string) {
         return this.services[serviceId];
     }
