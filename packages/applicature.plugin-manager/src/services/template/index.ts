@@ -31,6 +31,9 @@ export class TemplateService extends Service {
 
     constructor(protected pluginManager: PluginManager) {
         super(pluginManager);
+
+        this.compiledTemplates = {};
+        this.helpersRegistry = {};
     }
 
     public getServiceId(): string {
