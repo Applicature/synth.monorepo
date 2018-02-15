@@ -38,13 +38,13 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         this.collection = db.collection<T>(this.getCollectionName());
     }
 
-    public abstract getDaoId(): string;
+    protected abstract getDaoId(): string;
 
-    public abstract getCollectionName(): string;
+    protected abstract getCollectionName(): string;
 
-    public abstract getDefaultValue(): T;
+    protected abstract getDefaultValue(): T;
 
-    public create(needle: Partial<T>) {
+    protected create(needle: Partial<T>) {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
         const parsed = MongoDBDao.parseDecimals('toMongo', fulfilled);
         return this.collection
@@ -52,34 +52,34 @@ export abstract class MongoDBDao<T> extends Dao<T> {
             .then<T>((result) => result.ops[0]);
     }
 
-    public fill(needle: Array<Partial<T>>) {
+    protected fill(needle: Array<Partial<T>>) {
         const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
             .insertMany(parsed)
             .then<Array<T>>((result) => result.ops);
     }
 
-    public get(needle: Partial<T>) {
+    protected get(needle: Partial<T>) {
         return this.collection
             .findOne(needle)
             .then((item) => MongoDBDao.parseDecimals('fromMongo', item) as T);
     }
 
-    public list(needle: Partial<T>) {
+    protected list(needle: Partial<T>) {
         return this.collection
             .find(needle)
             .toArray()
             .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
 
-    public update(needle: Partial<T>, substitution: Partial<T>) {
+    protected update(needle: Partial<T>, substitution: Partial<T>) {
         const parsed = MongoDBDao.parseDecimals('toMongo', substitution);
         return this.collection
             .updateMany(needle, { $set: parsed })
             .then(() => needle);
     }
 
-    public remove(needle: Partial<T>) {
+    protected remove(needle: Partial<T>) {
         return this.collection
             .deleteMany(needle)
             .then(() => needle);
