@@ -1,11 +1,15 @@
 import { Dao, Hashtable } from '@applicature/multivest.core';
 import { BigNumber } from 'bignumber.js';
-import { Collection, Db, Decimal128 } from 'mongodb';
+import { Collection, Db, Decimal128, ObjectID } from 'mongodb';
 
 export abstract class MongoDBDao<T> extends Dao<T> {
 
     public static parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
         if (typeof data !== 'object' || !data) {
+            return data;
+        }
+
+        if (data instanceof ObjectID) {
             return data;
         }
 
