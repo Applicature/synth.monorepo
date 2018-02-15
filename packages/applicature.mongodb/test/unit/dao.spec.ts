@@ -44,7 +44,6 @@ describe('dao data accessing', () => {
         const list = await dao.list({});
         expect(list.length).toEqual(1);
     });
-
 });
 
 describe('parseDecimals()', () => {

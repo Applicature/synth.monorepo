@@ -1,11 +1,19 @@
 import { Dao, Hashtable } from '@applicature/multivest.core';
 import { BigNumber } from 'bignumber.js';
-import { Collection, Db, Decimal128 } from 'mongodb';
+import { Collection, Db, Decimal128, ObjectID } from 'mongodb';
 
 export abstract class MongoDBDao<T> extends Dao<T> {
 
     public static parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
-        if (typeof data !== 'object') {
+        if (typeof data !== 'object' || !data) {
+            return data;
+        }
+
+        if (data instanceof ObjectID) {
+            return data;
+        }
+
+        if (data instanceof Date) {
             return data;
         }
 
@@ -68,6 +76,13 @@ export abstract class MongoDBDao<T> extends Dao<T> {
     protected list(needle: Partial<T>) {
         return this.collection
             .find(needle)
+            .toArray()
+            .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
+    }
+
+    protected aggregate(aggregateQuery: any): Promise<Array<any>> {
+        return this.collection
+            .aggregate(aggregateQuery)
             .toArray()
             .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
