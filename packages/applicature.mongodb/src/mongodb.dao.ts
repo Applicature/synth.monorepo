@@ -10,7 +10,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         }
 
         if (type === 'fromMongo' && data instanceof ObjectID) {
-            return data.toString();
+            return data;
         }
 
         if (data instanceof Date) {
