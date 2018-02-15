@@ -73,11 +73,24 @@ export abstract class MongoDBDao<T> extends Dao<T> {
             .then((item) => MongoDBDao.parseDecimals('fromMongo', item) as T);
     }
 
+    protected getRaw(query: Hashtable) {
+        return this.collection
+            .findOne(query)
+            .then((item) => MongoDBDao.parseDecimals('fromMongo', item) as T);
+    }
+
     public list(needle: Partial<T>) {
         return this.collection
             .find(needle)
             .toArray()
             .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
+    }
+
+    protected listRaw(query: Hashtable) {
+        return this.collection
+            .find(query)
+            .toArray()
+            .then((_list) => MongoDBDao.parseDecimals('fromMongo', _list) as Array<T>);
     }
 
     public aggregate(aggregateQuery: any): Promise<Array<any>> {
@@ -94,9 +107,22 @@ export abstract class MongoDBDao<T> extends Dao<T> {
             .then(() => needle);
     }
 
+    public updateRaw(query: Hashtable, update: Hashtable) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', query);
+        return this.collection
+            .updateMany(query, update)
+            .then(() => {});
+    }
+
     public remove(needle: Partial<T>) {
         return this.collection
             .deleteMany(needle)
             .then(() => needle);
+    }
+
+    public removeRaw(query: Hashtable) {
+        return this.collection
+            .deleteMany(query)
+            .then(() => {});
     }
 }
