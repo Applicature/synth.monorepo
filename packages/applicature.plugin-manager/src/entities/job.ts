@@ -28,4 +28,16 @@ export abstract class Job {
     public abstract getJobId(): string;
     public abstract async init(): Promise<void>;
     public abstract async execute(): Promise<void>;
+
+    public async touch(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.job.touch((err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
 }
