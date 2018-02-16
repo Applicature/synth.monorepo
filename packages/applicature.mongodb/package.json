@@ -29,6 +29,7 @@
     "config": "^1.26.1",
     "jest-cli": "^22.1.4",
     "mongodb": "^2.2.28",
+    "uuid": "^3.2.1",
     "winston": "^2.1.1"
   },
   "files": [
@@ -43,6 +44,7 @@
     "@types/jest": "^22.0.1",
     "@types/mongodb": "^2.2.18",
     "@types/node": "^8.5.2",
+    "@types/uuid": "^3.4.3",
     "@types/winston": "^2.3.7",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",

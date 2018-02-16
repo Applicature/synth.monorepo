@@ -1,6 +1,7 @@
 import { Dao, Hashtable } from '@applicature/multivest.core';
 import { BigNumber } from 'bignumber.js';
 import { Collection, Db, Decimal128, ObjectID } from 'mongodb';
+import { v1 as generateId } from 'uuid';
 
 export abstract class MongoDBDao<T> extends Dao<T> {
 
@@ -55,6 +56,9 @@ export abstract class MongoDBDao<T> extends Dao<T> {
     protected create(needle: Partial<T>) {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
         const parsed = MongoDBDao.parseDecimals('toMongo', fulfilled);
+        if (!Object.prototype.hasOwnProperty.call(parsed, 'id')) {
+            parsed.id = generateId();
+        }
         return this.collection
             .insertOne(parsed)
             .then<T>((result) => result.ops[0]);
