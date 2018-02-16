@@ -6,4 +6,5 @@ export enum ConnectionState {
 
 export interface MongoScheme {
     _id?: string;
+    id: string;
 }
