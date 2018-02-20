@@ -80,13 +80,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
             .then(() => ({}));
     }
 
-    protected abstract getDaoId(): string;
-
-    protected abstract getCollectionName(): string;
-
-    protected abstract getDefaultValue(): T;
-
-    protected create(needle: Partial<T>) {
+    public create(needle: Partial<T>) {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
         const parsed = MongoDBDao.parseDecimals('toMongo', fulfilled);
         if (!Object.prototype.hasOwnProperty.call(parsed, 'id')) {
@@ -97,12 +91,18 @@ export abstract class MongoDBDao<T> extends Dao<T> {
             .then<T>((result) => result.ops[0]);
     }
 
-    protected fill(needle: Array<Partial<T>>) {
+    public fill(needle: Array<Partial<T>>) {
         const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
             .insertMany(parsed)
             .then<Array<T>>((result) => result.ops);
     }
+
+    protected abstract getDaoId(): string;
+
+    protected abstract getCollectionName(): string;
+
+    protected abstract getDefaultValue(): T;
 
     protected get(needle: Partial<T>) {
         return this.collection
