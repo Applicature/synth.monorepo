@@ -92,14 +92,14 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         }
         return this.collection
             .insertOne(parsed)
-            .then<T>((result: any) => result.ops[0]);
+            .then<T>((result: any) => MongoDBDao.parseDecimals('toMongo', result.ops[0]));
     }
 
     public fill(needle: Array<Partial<T>>) {
         const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
             .insertMany(parsed)
-            .then<Array<T>>((result: any) => result.ops);
+            .then<Array<T>>((result: any) => MongoDBDao.parseDecimals('toMongo', result.ops));
     }
 
     protected abstract getDaoId(): string;
