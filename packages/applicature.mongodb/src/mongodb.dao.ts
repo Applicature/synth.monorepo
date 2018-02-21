@@ -48,8 +48,9 @@ export abstract class MongoDBDao<T> extends Dao<T> {
     }
 
     public list(needle: Partial<T>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
-            .find(needle)
+            .find(parsed)
             .toArray()
             .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
@@ -64,19 +65,21 @@ export abstract class MongoDBDao<T> extends Dao<T> {
     public updateRaw(query: Hashtable<any>, update: Hashtable<any>) {
         const parsed = MongoDBDao.parseDecimals('toMongo', query);
         return this.collection
-            .updateMany(query, update)
+            .updateMany(parsed, update)
             .then(() => ({}));
     }
 
     public remove(needle: Partial<T>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
-            .deleteMany(needle)
+            .deleteMany(parsed)
             .then(() => needle);
     }
 
     public removeRaw(query: Hashtable<any>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', query);
         return this.collection
-            .deleteMany(query)
+            .deleteMany(parsed)
             .then(() => ({}));
     }
 
@@ -111,8 +114,9 @@ export abstract class MongoDBDao<T> extends Dao<T> {
     }
 
     protected getRaw(query: Hashtable<any>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', query);
         return this.collection
-            .findOne(query)
+            .findOne(parsed)
             .then((item) => MongoDBDao.parseDecimals('fromMongo', item) as T);
     }
 
@@ -124,8 +128,9 @@ export abstract class MongoDBDao<T> extends Dao<T> {
     }
 
     protected listRaw(query: Hashtable<any>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', query);
         return this.collection
-            .find(query)
+            .find(parsed)
             .toArray()
             .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
