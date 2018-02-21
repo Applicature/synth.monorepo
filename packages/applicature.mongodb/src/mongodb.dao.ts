@@ -1,6 +1,7 @@
 import { Dao, Hashtable } from '@applicature/multivest.core';
 import { BigNumber } from 'bignumber.js';
 import { Collection, Db, Decimal128, ObjectID } from 'mongodb';
+import { v1 as generateId } from 'uuid';
 
 export abstract class MongoDBDao<T> extends Dao<T> {
 
@@ -14,6 +15,10 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         }
 
         if (data instanceof Date) {
+            return data;
+        }
+
+        if (data instanceof RegExp) {
             return data;
         }
 
@@ -46,83 +51,95 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         this.collection = db.collection<T>(this.getCollectionName());
     }
 
-    public abstract getDaoId(): string;
-
-    public abstract getCollectionName(): string;
-
-    public abstract getDefaultValue(): T;
-
-    public create(needle: Partial<T>) {
-        const fulfilled = Object.assign(this.getDefaultValue(), needle);
-        const parsed = MongoDBDao.parseDecimals('toMongo', fulfilled);
-        return this.collection
-            .insertOne(parsed)
-            .then<T>((result) => result.ops[0]);
-    }
-
-    public fill(needle: Array<Partial<T>>) {
+    public list(needle: Partial<T>) {
         const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
-            .insertMany(parsed)
-            .then<Array<T>>((result) => result.ops);
-    }
-
-    public get(needle: Partial<T>) {
-        return this.collection
-            .findOne(needle)
-            .then((item) => MongoDBDao.parseDecimals('fromMongo', item) as T);
-    }
-
-    protected getRaw(query: Hashtable) {
-        return this.collection
-            .findOne(query)
-            .then((item) => MongoDBDao.parseDecimals('fromMongo', item) as T);
-    }
-
-    public list(needle: Partial<T>) {
-        return this.collection
-            .find(needle)
+            .find(parsed)
             .toArray()
-            .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
-    }
-
-    protected listRaw(query: Hashtable) {
-        return this.collection
-            .find(query)
-            .toArray()
-            .then((_list) => MongoDBDao.parseDecimals('fromMongo', _list) as Array<T>);
+            .then((list: any) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
 
     public aggregate(aggregateQuery: any): Promise<Array<any>> {
         return this.collection
             .aggregate(aggregateQuery)
             .toArray()
-            .then((list) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
+            .then((list: any) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
 
-    public update(needle: Partial<T>, substitution: Partial<T>) {
-        const parsed = MongoDBDao.parseDecimals('toMongo', substitution);
+    public updateRaw(query: Hashtable<any>, update: Hashtable<any>) {
+        const parsedQuery = MongoDBDao.parseDecimals('toMongo', query);
+        const parsedUpdate = MongoDBDao.parseDecimals('toMongo', update);
         return this.collection
-            .updateMany(needle, { $set: parsed })
-            .then(() => needle);
-    }
-
-    public updateRaw(query: Hashtable, update: Hashtable) {
-        const parsed = MongoDBDao.parseDecimals('toMongo', query);
-        return this.collection
-            .updateMany(query, update)
-            .then(() => {});
+            .updateMany(parsedQuery, parsedUpdate)
+            .then(() => query);
     }
 
     public remove(needle: Partial<T>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
-            .deleteMany(needle)
+            .deleteMany(parsed)
             .then(() => needle);
     }
 
-    public removeRaw(query: Hashtable) {
+    public removeRaw(query: Hashtable<any>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', query);
         return this.collection
-            .deleteMany(query)
-            .then(() => {});
+            .deleteMany(parsed)
+            .then(() => ({}));
     }
+
+    public create(needle: Partial<T>) {
+        const fulfilled = Object.assign(this.getDefaultValue(), needle);
+        const parsed = MongoDBDao.parseDecimals('fromMongo', fulfilled);
+        if (!Object.prototype.hasOwnProperty.call(parsed, 'id')) {
+            parsed.id = generateId();
+        }
+        return this.collection
+            .insertOne(parsed)
+            .then<T>((result: any) => MongoDBDao.parseDecimals('fromMongo', result.ops[0]));
+    }
+
+    public fill(needle: Array<Partial<T>>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', needle);
+        return this.collection
+            .insertMany(parsed)
+            .then<Array<T>>((result: any) => MongoDBDao.parseDecimals('toMongo', result.ops));
+    }
+
+    public abstract getDaoId(): string;
+
+    public abstract getCollectionName(): string;
+
+    public abstract getDefaultValue(): T;
+
+    public get(needle: Partial<T>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', needle);
+        return this.collection
+            .findOne(parsed)
+            .then((item: any) => MongoDBDao.parseDecimals('fromMongo', item) as T);
+    }
+
+    public getRaw(query: Hashtable<any>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', query);
+        return this.collection
+            .findOne(parsed)
+            .then((item: any) => MongoDBDao.parseDecimals('fromMongo', item) as T);
+    }
+
+    public update(needle: Partial<T>, substitution: Partial<T>) {
+        const parsedNeedle = MongoDBDao.parseDecimals('toMongo', needle);
+        const parsedSubstitution = MongoDBDao.parseDecimals('toMongo', substitution);
+        return this.collection
+            .updateMany(parsedNeedle, { $set: parsedSubstitution })
+            .then(() => needle);
+    }
+
+    public listRaw(query: Hashtable<any>) {
+        const parsed = MongoDBDao.parseDecimals('toMongo', query);
+        return this.collection
+            .find(parsed)
+            .toArray()
+            .then((list: any) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
+    }
+
 }
