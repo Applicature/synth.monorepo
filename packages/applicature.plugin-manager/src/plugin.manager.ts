@@ -97,9 +97,15 @@ export class PluginManager {
                 }
             }
 
-            for (const pluginId of Object.keys(this.plugins)) {
+            const pluginIds = Object.keys(this.plugins);
+            
+            for (const pluginId of pluginIds) {
                 const plugin = this.plugins[pluginId];
                 await plugin.init();
+            }
+
+            for (const pluginId of pluginIds) {
+                const plugin = this.plugins[pluginId];
                 plugin.invoke();
                 Object.assign(this.jobs, plugin.getJobs());
                 Object.assign(this.daos, await plugin.getDaos());
