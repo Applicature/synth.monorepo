@@ -3,7 +3,7 @@
     "web": {
       "middleware": {
         "bodyParserJson": {
-          "limit": "100m"
+          "limit": "100mb"
         }
       },
       "port": 3000
