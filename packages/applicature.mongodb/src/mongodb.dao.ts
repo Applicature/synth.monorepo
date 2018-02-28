@@ -90,7 +90,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
 
     public create(needle: Partial<T>) {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
-        const parsed = MongoDBDao.parseDecimals('fromMongo', fulfilled);
+        const parsed = MongoDBDao.parseDecimals('toMongo', fulfilled);
         if (!Object.prototype.hasOwnProperty.call(parsed, 'id')) {
             parsed.id = generateId();
         }
