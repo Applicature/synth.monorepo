@@ -4,6 +4,7 @@ import { PluginManager } from '../plugin.manager';
 
 export abstract class Job {
     public enabled: boolean = false;
+    public inited: boolean = false;
     protected jobExecutor: Agenda;
     protected job: Agenda.Job;
 
@@ -12,6 +13,14 @@ export abstract class Job {
         this.jobExecutor.define(this.getJobId(), async (job, done) => {
             this.job = job;
             logger.info(`${this.getJobId()}: executing job`);
+
+            if (! this.inited) {
+                logger.warn(`${this.getJobId()}: was not initialized, initializing`);
+
+                await this.init();
+
+                this.inited = true;
+            }
 
             try {
                 await this.execute();
@@ -26,8 +35,11 @@ export abstract class Job {
     }
 
     public abstract getJobId(): string;
-    public abstract async init(): Promise<void>;
     public abstract async execute(): Promise<void>;
+
+    public async init(): Promise<void> {
+        this.inited = true;
+    }
 
     public async touch(): Promise<any> {
         return new Promise((resolve, reject) => {
