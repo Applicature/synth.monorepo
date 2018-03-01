@@ -20,6 +20,8 @@ export abstract class Job {
                 await this.init();
 
                 this.inited = true;
+
+                logger.warn(`${this.getJobId()}: was finally initialized`);
             }
 
             try {
