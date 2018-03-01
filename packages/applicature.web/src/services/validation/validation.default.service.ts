@@ -12,7 +12,7 @@ export class ValidationDefaultService extends ValidationAbstractService {
         return 'validation.default.service';
     }
     public setValidation(actionId: string, scheme: any): any {
-        return this.validationSchemas[actionId] = {...this.validationSchemas[actionId], ...scheme};
+        return this.validationSchemas[actionId] = scheme;
     }
     public getValidation(actionId: string): any {
         return this.validationSchemas[actionId];

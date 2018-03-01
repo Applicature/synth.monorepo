@@ -1,5 +1,5 @@
 import * as joi from 'joi';
-import { ValidationDefaultService } from '../../src/services/validation/validation.default.service';
+import {ValidationDefaultService} from '../../src/services/validation/validation.default.service';
 import {PluginManagerMock} from '../mocks/plugin.manager';
 
 describe('AuthDefaultService', () => {
@@ -17,12 +17,15 @@ describe('AuthDefaultService', () => {
         const result = service.setValidation(actionId, validationScheme);
         expect(result).toEqual(validationScheme);
     });
-    test('Should create new validation scheme, update it & validate', () => {
+    test('Should create new validation scheme, replace it & validate', () => {
         const service = new ValidationDefaultService(pluginManager);
-        const validationScheme = {username: joi.string().alphanum().min(3).max(30).required()};
+        const validationScheme = {fullName: joi.string().min(3).max(20).required()};
         const actionId = 'createUser';
         service.setValidation(actionId, validationScheme);
-        service.setValidation(actionId, {password: joi.string().min(3).max(20).required()});
+        service.setValidation(actionId, {
+            password: joi.string().min(3).max(20).required(),
+            username: joi.string().alphanum().min(3).max(30).required(),
+        });
         const result = service.validate(actionId, {username: 'user', password: 'password'});
         expect(result).toHaveProperty('error', null);
     });
