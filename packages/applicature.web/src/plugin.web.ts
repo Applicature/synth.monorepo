@@ -8,6 +8,7 @@ import * as express from 'express';
 import * as helmet from 'helmet';
 import * as http from 'http';
 import * as methodOverride from 'method-override';
+import * as morgan from 'morgan';
 import * as winston from 'winston';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
 import {ValidationDefaultService} from './services/validation/validation.default.service';
@@ -28,6 +29,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         cors: {},
         helmet: {},
         methodOverride: '',
+        morgan: ':id :method :url :response-time',
     };
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
@@ -94,6 +96,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     // Run configuration methods on the Express instance
     private middleware(): void {
         this.mergeMiddlewareConfiguration();
+        this.app.use(morgan(this.pluginMiddlewareConfig.morgan));
         // parse body params and attache them to req.body
         this.app.use(bodyParser.json(this.pluginMiddlewareConfig.bodyParserJson));
         this.app.use(bodyParser.urlencoded(this.pluginMiddlewareConfig.bodyParserUrlencoded));

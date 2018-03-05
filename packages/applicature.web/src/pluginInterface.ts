@@ -14,4 +14,5 @@ export interface IExpressMiddlewareConfig {
     methodOverride?: any;
     helmet?: any;
     cors?: any;
+    morgan?: any;
 }

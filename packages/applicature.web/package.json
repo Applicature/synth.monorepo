@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.web",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": false,
   "license": "UNLICENSED",
   "description": "Web Plugin",
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@applicature/multivest.core": "^0.1.0",
+    "@types/morgan": "^1.7.35",
     "compression": "^1.7.1",
     "config": "^1.29.2",
     "cookie-parser": "^1.4.3",
@@ -35,7 +36,7 @@
     "express-validation": "^1.0.2",
     "helmet": "^3.9.0",
     "http-status": "^1.0.1",
-    "joi": "^13.1.1",
+    "joi": "13.1.1",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
     "winston": "^2.1.1"
