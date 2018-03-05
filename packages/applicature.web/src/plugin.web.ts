@@ -29,7 +29,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         cors: {},
         helmet: {},
         methodOverride: '',
-        morgan: ':id :method :url :response-time',
+        morgan: 'common',
     };
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
