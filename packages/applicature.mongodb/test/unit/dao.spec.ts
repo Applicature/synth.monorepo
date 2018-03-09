@@ -1,7 +1,7 @@
 import { MultivestError, PluginManager } from '@applicature/multivest.core';
 import { BigNumber } from 'bignumber.js';
 import { Decimal128 } from 'mongodb';
-import { MongoDBDao } from '../../index';
+import { MongoDBDao } from '../../src/mongodb.dao';
 import { Plugin as MongodbPlugin } from '../../src/mongodb.plugin';
 import { TestDao, TestDaoScheme } from '../mock/dao.mock';
 import { MongodbPluginMock } from '../mock/plugin.mock';
