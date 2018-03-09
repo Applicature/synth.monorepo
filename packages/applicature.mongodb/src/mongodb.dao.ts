@@ -61,7 +61,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
 
     public aggregate(aggregateQuery: any): Promise<Array<any>> {
         return this.collection
-            .aggregate(aggregateQuery)
+            .aggregate(aggregateQuery, {allowDiskUse: true})
             .toArray()
             .then((list: any) => MongoDBDao.parseDecimals('fromMongo', list) as Array<T>);
     }
