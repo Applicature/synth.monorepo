@@ -31,7 +31,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         helmet: {},
         methodOverride: '',
         morgan: 'common',
-        raven: ''
+        raven: '',
     };
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
@@ -117,7 +117,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
 
         if(this.pluginMiddlewareConfig.raven) {
-            raven.config(this.pluginMiddlewareConfig.raven).install();
+            raven.config(this.pluginMiddlewareConfig.raven);
 
             this.app.use(raven.requestHandler());
         }

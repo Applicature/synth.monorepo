@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.web",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": false,
   "license": "UNLICENSED",
   "description": "Web Plugin",
@@ -54,6 +54,7 @@
     "@types/joi": "^13.0.5",
     "@types/method-override": "0.0.31",
     "@types/node": "^8.5.2",
+    "@types/raven": "^2.1.6",
     "@types/winston": "^2.3.7",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
