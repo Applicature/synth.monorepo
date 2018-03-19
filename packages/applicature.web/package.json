@@ -39,6 +39,7 @@
     "joi": "13.1.1",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
+    "raven": "^2.4.2",
     "winston": "^2.1.1"
   },
   "devDependencies": {

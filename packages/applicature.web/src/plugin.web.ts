@@ -10,6 +10,7 @@ import * as http from 'http';
 import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
 import * as winston from 'winston';
+import * as raven from 'raven';
 import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
 import {ValidationDefaultService} from './services/validation/validation.default.service';
 
@@ -30,6 +31,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         helmet: {},
         methodOverride: '',
         morgan: 'common',
+        raven: ''
     };
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
@@ -57,9 +59,14 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
     public startServer() {
         this.middleware();
+
         this.toEnable.forEach((id: string) => {
             this.app.use(this.getRouter(id));
         });
+
+        if(this.pluginMiddlewareConfig.raven) {
+            this.app.use(raven.errorHandler());
+        }
 
         // error handler, send stacktrace only during development
         this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
@@ -108,6 +115,12 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
         // enable CORS - Cross Origin Resource Sharing
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
+
+        if(this.pluginMiddlewareConfig.raven) {
+            raven.config(this.pluginMiddlewareConfig.raven).install();
+
+            this.app.use(raven.requestHandler());
+        }
     }
 }
 

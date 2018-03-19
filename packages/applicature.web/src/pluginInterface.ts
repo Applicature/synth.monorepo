@@ -15,4 +15,5 @@ export interface IExpressMiddlewareConfig {
     helmet?: any;
     cors?: any;
     morgan?: any;
+    raven?: any;
 }
