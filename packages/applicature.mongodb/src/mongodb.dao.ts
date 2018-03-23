@@ -103,7 +103,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         const parsed = MongoDBDao.parseDecimals('toMongo', needle);
         return this.collection
             .insertMany(parsed)
-            .then<Array<T>>((result: any) => MongoDBDao.parseDecimals('toMongo', result.ops));
+            .then<Array<T>>((result: any) => MongoDBDao.parseDecimals('fromMongo', result.ops));
     }
 
     public abstract getDaoId(): string;
