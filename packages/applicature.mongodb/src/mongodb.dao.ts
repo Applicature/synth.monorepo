@@ -4,6 +4,13 @@ import { v1 as generateId } from 'uuid';
 import {parseDecimals} from './utils';
 
 export abstract class MongoDBDao<T> extends Dao<T> {
+    /*
+    @deprecated use `action`Raw methods instead
+    */
+    public static parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
+        return parseDecimals(type, data);
+    }
+
     protected collection: Collection<T>;
 
     constructor(db: Db) {

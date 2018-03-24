@@ -46,7 +46,7 @@ describe('dao data accessing', () => {
     });
 });
 
-describe('parseDecimals()', () => {
+describe('MongoDBDao.parseDecimals()', () => {
     it('should parse values', () => {
         const value = '0.38238446535425257365808057865';
         const from = new BigNumber(value);
