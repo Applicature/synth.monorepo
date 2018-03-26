@@ -1,1 +1,1 @@
-export * from 'src/services/pdf.service';
+export * from './src/services/pdf.service';
