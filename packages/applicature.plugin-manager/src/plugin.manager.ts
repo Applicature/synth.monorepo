@@ -98,7 +98,7 @@ export class PluginManager {
             }
 
             const pluginIds = Object.keys(this.plugins);
-            
+
             for (const pluginId of pluginIds) {
                 const plugin = this.plugins[pluginId];
                 await plugin.init();
@@ -110,6 +110,12 @@ export class PluginManager {
                 Object.assign(this.jobs, plugin.getJobs());
                 Object.assign(this.daos, await plugin.getDaos());
                 Object.assign(this.services, plugin.getServices());
+            }
+
+            for (const serviceId in this.services) {
+                if (this.services[serviceId]) {
+                    await this.services[serviceId].init();
+                }
             }
 
             const endTime = new Date().getTime();
