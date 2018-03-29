@@ -85,6 +85,12 @@ export class TemplateService extends Service {
         return this.compiledTemplates[templateId](data);
     }
 
+    public renderFromString(template: string, data: Hashtable<any>): string {
+        const compiledTemplate = compile(template);
+
+        return compiledTemplate(data);
+    }
+
     private getContent(parentDir: string, name: string) {
         return new Promise((resolve, reject) => {
             fs.readFile(parentDir  + name, 'utf-8',
