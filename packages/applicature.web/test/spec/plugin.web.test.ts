@@ -18,14 +18,14 @@ describe('Web Plugin', () => {
     test('should add Routes', () => {
         const pluginManager: any = new PluginManagerMock(jest.fn());
         const app = express();
-        const web = new WebPlugin(pluginManager, config, app);
+        const web = new WebPlugin(pluginManager);
         const router = express.Router();
         web.addRouter('one', router);
     });
     test('should enable Router', () => {
         const pluginManager: any = new PluginManagerMock(jest.fn());
         const app = express();
-        const web = new WebPlugin(pluginManager, config, app);
+        const web = new WebPlugin(pluginManager);
         const router = express.Router();
         web.addRouter('one', router);
         web.enableRouter('one');
@@ -33,7 +33,7 @@ describe('Web Plugin', () => {
     test('should start Server', () => {
         const pluginManager: any = new PluginManagerMock(jest.fn());
         const app = express();
-        const web = new WebPlugin(pluginManager, config, app);
+        const web = new WebPlugin(pluginManager);
         web.startServer();
         web.closeServer();
     });
