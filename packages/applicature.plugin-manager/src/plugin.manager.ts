@@ -54,6 +54,34 @@ export class PluginManager {
         return this.services[serviceId];
     }
 
+    public getServiceByClass(expectedService: typeof Service): Service {
+        const ids = Object.keys(this.services);
+
+        for (const id of ids) {
+            const service = this.services[id];
+
+            if (service instanceof expectedService) {
+                return service;
+            }
+        }
+    }
+
+    public getServicesByClass(expectedService: typeof Service): Array<Service> {
+        const ids = Object.keys(this.services);
+
+        const filteredServices: Array<Service> = [];
+
+        for (const id of ids) {
+            const service = this.services[id];
+
+            if (service instanceof expectedService) {
+                filteredServices.push(service);
+            }
+        }
+
+        return filteredServices;
+    }
+
     public async enableJob(jobId: string, interval: string) {
         if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
