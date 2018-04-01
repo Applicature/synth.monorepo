@@ -23,7 +23,7 @@ export function parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
         return data.map((item) => parseDecimals(type, item));
     }
 
-    if (type === 'toMongo' && data instanceof BigNumber) {
+    if (type === 'toMongo' && (data instanceof BigNumber || data.isBigNumber)) {
         return Decimal128.fromString(data.toString());
     }
 
