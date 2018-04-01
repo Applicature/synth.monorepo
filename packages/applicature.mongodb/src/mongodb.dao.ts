@@ -18,7 +18,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         this.collection = db.collection<T>(this.getCollectionName());
     }
 
-    public create(needle: Partial<T>) {
+    public create(needle: Partial<T>): Promise<T> {
         const fulfilled = Object.assign(this.getDefaultValue(), needle);
 
         const parsed = parseDecimals('toMongo', fulfilled);

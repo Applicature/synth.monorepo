@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.mongodb",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "private": false,
   "license": "UNLICENSED",
   "description": "MongoDB Plugin",
