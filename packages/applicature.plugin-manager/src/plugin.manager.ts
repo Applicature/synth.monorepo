@@ -46,6 +46,20 @@ export class PluginManager {
         return this.daos[daoId];
     }
 
+    public getDaoByClass<T>(expectedDao: typeof Dao): Dao<T> {
+        const ids = Object.keys(this.daos);
+
+        for (const id of ids) {
+            const dao = this.daos[id];
+
+            if (dao instanceof expectedDao) {
+                return dao;
+            }
+        }
+
+        return null;
+    }
+
     public registerService(service: Service) {
         this.services[service.getServiceId()] = service;
     }
@@ -64,6 +78,8 @@ export class PluginManager {
                 return service;
             }
         }
+
+        return null;
     }
 
     public getServicesByClass(expectedService: typeof Service): Array<Service> {
