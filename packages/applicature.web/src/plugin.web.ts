@@ -1,4 +1,4 @@
-import { Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/multivest.core';
+import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as config from 'config';
@@ -9,10 +9,11 @@ import * as helmet from 'helmet';
 import * as http from 'http';
 import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
-import * as winston from 'winston';
 import * as raven from 'raven';
-import { IExpressMiddlewareConfig, IWeb } from './pluginInterface';
-import {ValidationDefaultService} from './services/validation/validation.default.service';
+import * as winston from 'winston';
+import {WebMultivestError} from './error';
+import {IExpressMiddlewareConfig, IWeb} from './pluginInterface';
+import {ValidationService} from './services/validation/validation.default.service';
 
 class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
@@ -33,6 +34,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         morgan: 'common',
         raven: '',
     };
+
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
         this.app = express();
@@ -49,8 +51,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
     public getPluginId(): string {
         return 'web';
     }
+
     public init(): void {
-        this.serviceClasses.push(ValidationDefaultService);
+        this.serviceClasses.push(ValidationService);
     }
 
     public getApp(): express.Application {
@@ -64,17 +67,30 @@ class WebPlugin extends Plugin<void> implements IWeb {
             this.app.use(this.getRouter(id));
         });
 
-        if(this.pluginMiddlewareConfig.raven) {
+        if (this.pluginMiddlewareConfig.raven) {
             this.app.use(raven.errorHandler());
         }
 
         // error handler, send stacktrace only during development
-        this.app.use((err: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction) =>
-            res.status(err.status ? err.status : 500).json({
-                message: err.message,
-                stack: config.get('env') && config.get('env') === 'development' ? err.stack : {},
-            }),
-        );
+        this.app.use((
+            error: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction,
+        ) => {
+            let status;
+
+            if (error instanceof WebMultivestError) {
+                const webError = error as WebMultivestError;
+
+                status = webError.status;
+            }
+            else {
+                status = 500;
+            }
+
+            res.status(status).json({
+                message: error.message,
+                stack: config.get('env') && config.get('env') === 'development' ? error.stack : null,
+            });
+        });
 
         // listen on port listen.port
         const listenPort = config.get('multivest.web.port');
@@ -116,7 +132,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         // enable CORS - Cross Origin Resource Sharing
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
 
-        if(this.pluginMiddlewareConfig.raven) {
+        if (this.pluginMiddlewareConfig.raven) {
             raven.config(this.pluginMiddlewareConfig.raven);
 
             this.app.use(raven.requestHandler());
