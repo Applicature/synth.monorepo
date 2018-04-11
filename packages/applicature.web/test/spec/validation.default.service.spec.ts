@@ -1,5 +1,5 @@
 import * as joi from 'joi';
-import {ValidationService} from '../../src/services/validation/validation.default.service';
+import {ValidationDefaultService as ValidationService} from '../../src/services/validation/validation.default.service';
 import {PluginManagerMock} from '../mocks/plugin.manager';
 
 describe('AuthDefaultService', () => {
