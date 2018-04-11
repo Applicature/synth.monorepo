@@ -1,7 +1,9 @@
 import { Hashtable } from './structure';
 
 export class MultivestError extends Error {
-    constructor(public message: string) {
+    public status: number;
+    constructor(public message: string, status: number = 500) {
         super(message);
+        this.status = status
     }
 }
