@@ -4,7 +4,7 @@ import * as validation from 'express-validation';
 import * as joi from 'joi';
 import { ValidationAbstractService } from './validation.abstract.service';
 
-export class ValidationService extends ValidationAbstractService {
+export class ValidationDefaultService extends ValidationAbstractService {
 
     private validationSchemas: Hashtable<any> = {};
 

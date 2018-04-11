@@ -13,7 +13,7 @@ import * as raven from 'raven';
 import * as winston from 'winston';
 import {WebMultivestError} from './error';
 import {IExpressMiddlewareConfig, IWeb} from './pluginInterface';
-import {ValidationService} from './services/validation/validation.default.service';
+import {ValidationDefaultService as ValidationService} from './services/validation/validation.default.service';
 
 class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
