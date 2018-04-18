@@ -143,9 +143,10 @@ class WebPlugin extends Plugin<void> implements IWeb {
             authentication: true,
             onAuthenticate: (req: any, username: string, password: string) => {
                 // simple check for username and password
-                return((username === 'applicature') && (password === '***REMOVED***'));
+                return((username === config.get('api.stats.username'))
+                    && (password === config.get('api.stats.password')));
             },
-            uriPath: `${config.get('api.namespace')}/swagger-stats`,
+            uriPath: `${config.get('api.namespace')}${config.get('api.stats.urlPath')}`,
         }));
     }
 }

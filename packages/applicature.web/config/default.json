@@ -10,6 +10,11 @@
     }
   },
   "api": {
-    "namespace": "/api"
+    "namespace": "/api",
+    "stats": {
+      ***REMOVED***,
+      "password": "***REMOVED***",
+      ***REMOVED***
+    }
   }
 }
