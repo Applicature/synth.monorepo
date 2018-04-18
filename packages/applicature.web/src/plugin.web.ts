@@ -145,6 +145,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
                 // simple check for username and password
                 return((username === 'applicature') && (password === '***REMOVED***'));
             },
+            uriPath: `${config.get('api.namespace')}/swagger-stats`,
         }));
     }
 }
