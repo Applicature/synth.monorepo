@@ -34,6 +34,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         methodOverride: '',
         morgan: 'common',
         raven: '',
+        swStats: null,
     };
 
     constructor(pluginManager: PluginManager) {
@@ -138,16 +139,18 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
             this.app.use(raven.requestHandler());
         }
+        if (this.pluginMiddlewareConfig.swStats) {
+            this.app.use(swStats.getMiddleware({
+                authentication: true,
+                onAuthenticate: (req: any, username: string, password: string) => {
+                    // simple check for username and password
+                    return((username === this.pluginMiddlewareConfig.swStats.username)
+                        && (password === this.pluginMiddlewareConfig.swStats.password));
+                },
+                uriPath: `${config.get('api.namespace')}${this.pluginMiddlewareConfig.swStats.urlPath}`,
+            }));
+        }
 
-        this.app.use(swStats.getMiddleware({
-            authentication: true,
-            onAuthenticate: (req: any, username: string, password: string) => {
-                // simple check for username and password
-                return((username === config.get('api.stats.username'))
-                    && (password === config.get('api.stats.password')));
-            },
-            uriPath: `${config.get('api.namespace')}${config.get('api.stats.urlPath')}`,
-        }));
     }
 }
 

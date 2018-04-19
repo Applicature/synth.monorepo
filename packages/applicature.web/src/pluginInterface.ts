@@ -17,4 +17,9 @@ export interface IExpressMiddlewareConfig {
     cors?: any;
     morgan?: any;
     raven?: any;
+    swStats?: {
+        username: string;
+        password: string;
+        urlPath: string;
+    };
 }
