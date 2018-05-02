@@ -63,6 +63,11 @@ class WebPlugin extends Plugin<void> implements IWeb {
     public startServer() {
         this.middleware();
 
+        this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+            req.tenantId = 'tenantID';
+            next();
+        });
+
         this.toEnable.forEach((id: string) => {
             this.app.use(this.getRouter(id));
         });

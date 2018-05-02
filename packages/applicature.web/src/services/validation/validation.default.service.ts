@@ -9,7 +9,7 @@ export class ValidationService extends ValidationAbstractService {
     private validationSchemas: Hashtable<any> = {};
 
     public getServiceId() {
-        return 'validation.default.service';
+        return 'validation.service';
     }
     public setValidation(actionId: string, scheme: any): any {
         return this.validationSchemas[actionId] = scheme;

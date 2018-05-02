@@ -1,6 +1,7 @@
 import * as joi from 'joi';
 import {ValidationService} from '../../src/services/validation/validation.default.service';
 import {PluginManagerMock} from '../mocks/plugin.manager';
+import {ValidationAbstractService} from "../../src/services/validation/validation.abstract.service";
 
 describe('AuthDefaultService', () => {
 
@@ -28,5 +29,9 @@ describe('AuthDefaultService', () => {
         });
         const result = service.validate(actionId, {username: 'user', password: 'password'});
         expect(result).toHaveProperty('error', null);
+    });
+    test('Should be instanceof ValidationAbstractService', () => {
+        const service = new ValidationService(pluginManager);
+        expect(service instanceof ValidationAbstractService).toBeTruthy();
     });
 });
