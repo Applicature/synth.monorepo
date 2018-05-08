@@ -32,6 +32,7 @@ export class NodeMailerEmailService extends EmailService {
             replyTo: emailOpts.replyTo,
 
             messageId: emailOpts.messageId,
+            attachments: emailOpts.attachments,
         };
 
         return new Promise((resolve, reject) => {
