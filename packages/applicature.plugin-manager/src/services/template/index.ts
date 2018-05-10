@@ -87,7 +87,6 @@ export class TemplateService extends Service {
 
     public renderFromString(template: string, data: Hashtable<any>): string {
         const compiledTemplate = compile(template);
-
         return compiledTemplate(data);
     }
 
