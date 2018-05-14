@@ -5,7 +5,7 @@ import { EmptyPlugin } from '../mocks/empty.plugin';
 import { TestJob } from '../mocks/job';
 import { PluginManagerMock } from '../mocks/plugin.manager';
 import { TestService } from '../mocks/service';
-
+import { Dao } from '../../src/entities/dao';
 describe('plugin', () => {
 
     let plugin: Plugin<void>;
