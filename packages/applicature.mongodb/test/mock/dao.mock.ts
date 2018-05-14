@@ -2,7 +2,8 @@ import { MongoScheme } from '../../index';
 import { MongoDBDao } from '../../src/mongodb.dao';
 
 export interface TestDaoScheme extends MongoScheme {
-    field: string;
+    field: number|string;
+    type?: string;
 }
 
 export class TestDao extends MongoDBDao<TestDaoScheme> {

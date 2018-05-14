@@ -23,7 +23,7 @@ describe('dao data accessing', () => {
             { field: 3, type: '1' },
             { field: 4, type: '2' },
         ]);
-        const result = await dao.aggregate([
+        const result = await dao.aggregateRaw([
             {
                 $group: { _id: '$type', total: { $sum: '$field ' } }
             }

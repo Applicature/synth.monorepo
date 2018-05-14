@@ -69,7 +69,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
 
         return this.collection
             .updateMany(parsedNeedle, {$set: parsedSubstitution})
-            .then(() => needle);
+            .then(() => needle as T);
     }
 
     public updateRaw(query: Hashtable<any>, update: Hashtable<any>) {
@@ -111,7 +111,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
 
         return this.collection
             .deleteMany(parsed)
-            .then(() => needle);
+            .then(() => needle as T);
     }
 
     public removeRaw(query: Hashtable<any>) {
