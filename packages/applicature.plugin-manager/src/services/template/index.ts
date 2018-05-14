@@ -4,6 +4,7 @@ import { compile, registerHelper, registerPartial } from 'handlebars';
 import { Service } from '../../entities/service';
 import { PluginManager } from '../../plugin.manager';
 import { Hashtable } from '../../structure';
+import HelperDelegate = Handlebars.HelperDelegate;
 
 function walkSync(parentDir: string, directory: string, filelist: Array<Array<string>>) {
     directory = directory || '';
@@ -27,7 +28,7 @@ function walkSync(parentDir: string, directory: string, filelist: Array<Array<st
 export class TemplateService extends Service {
     private compiledTemplates: Hashtable<HandlebarsTemplateDelegate>;
     // because helpers could have any signature
-    private helpersRegistry: Hashtable<Function>;
+    private helpersRegistry: Hashtable<HelperDelegate>;
 
     constructor(protected pluginManager: PluginManager) {
         super(pluginManager);
@@ -41,7 +42,7 @@ export class TemplateService extends Service {
     }
 
     // because helpers could have any signature
-    public addHelper(helperId: string, fn: Function) {
+    public addHelper(helperId: string, fn: HelperDelegate) {
         this.helpersRegistry[helperId] = fn;
     }
 
@@ -90,7 +91,7 @@ export class TemplateService extends Service {
         return compiledTemplate(data);
     }
 
-    private getContent(parentDir: string, name: string) {
+    private getContent(parentDir: string, name: string): Promise<string> {
         return new Promise((resolve, reject) => {
             fs.readFile(parentDir  + name, 'utf-8',
                 (error: Error, source: string) => {
