@@ -1,11 +1,11 @@
 import { Dao } from '../../src/entities/dao';
 
-export class TestDao extends Dao<any|void> {
+export class TestDao extends Dao<any> {
     public getDaoId() {
         return 'test.dao';
     }
 
-    public async get(needle: Partial<{}>) {
+    public async get() {
         return Promise.resolve({});
     }
 
