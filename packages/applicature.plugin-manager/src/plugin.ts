@@ -36,7 +36,7 @@ export abstract class Plugin<T> {
         }
     }
 
-    public registerDao(daoClass: Constructable<Dao<T>>): void {
+    public registerDao<T extends Dao<any>>(daoClass: Constructable<T>): void {
         this.daoClasses.push(daoClass);
     }
 
