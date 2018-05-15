@@ -45,7 +45,7 @@ export class PluginManager {
         return this.daos[daoId];
     }
 
-    public getDaoByClass<T extends Constructable<Dao<T>>>(expectedDao: T): Dao<T> {
+    public getDaoByClass<T extends Constructable<Dao<any>>>(expectedDao: T): Dao<any> {
         const ids = Object.keys(this.daos);
 
         for (const id of ids) {
