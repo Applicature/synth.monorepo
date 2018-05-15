@@ -1,5 +1,5 @@
 import { Dao, Hashtable } from '@applicature/multivest.core';
-import { Collection, Db } from 'mongodb';
+import {Collection, Db, MongoClient} from 'mongodb';
 import { v1 as generateId } from 'uuid';
 import {parseDecimals} from './utils';
 
@@ -136,7 +136,7 @@ export abstract class MongoDBDao<T> extends Dao<T> {
         return this.collection
             .aggregate(aggregateQuery, {allowDiskUse: true})
             .toArray()
-            .then((list: any) => parseDecimals('fromMongo', list) as Array<T>);
+            .then((list: any) => parseDecimals('fromMongo', list) as Array<any>);
     }
 
     public abstract getDaoId(): string;
