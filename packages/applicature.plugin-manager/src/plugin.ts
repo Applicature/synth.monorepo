@@ -52,7 +52,7 @@ export abstract class Plugin<T> {
         return this.jobs;
     }
 
-    public registerService(serviceClass: Constructable<Service>): void {
+    public registerService<T extends Service>(serviceClass: Constructable<T>): void {
         this.serviceClasses.push(serviceClass);
     }
 

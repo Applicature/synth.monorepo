@@ -67,14 +67,14 @@ export class PluginManager {
         return this.services[serviceId];
     }
 
-    public getServiceByClass(expectedService: typeof Service): Service {
+    public getServiceByClass<T extends Service>(expectedService: Constructable<T>): T {
         const ids = Object.keys(this.services);
 
         for (const id of ids) {
             const service = this.services[id];
 
             if (service instanceof expectedService) {
-                return service;
+                return service as T;
             }
         }
 
