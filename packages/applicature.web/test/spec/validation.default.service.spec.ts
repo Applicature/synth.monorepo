@@ -1,7 +1,7 @@
 import * as joi from 'joi';
+import {ValidationAbstractService} from '../../src/services/validation/validation.abstract.service';
 import {ValidationService} from '../../src/services/validation/validation.default.service';
 import {PluginManagerMock} from '../mocks/plugin.manager';
-import {ValidationAbstractService} from "../../src/services/validation/validation.abstract.service";
 
 describe('AuthDefaultService', () => {
 
@@ -9,7 +9,7 @@ describe('AuthDefaultService', () => {
 
     test('get serviceId', () => {
         const validationService = new ValidationService(pluginManager);
-        expect(validationService.getServiceId()).toBe('validation.default.service');
+        expect(validationService.getServiceId()).toBe('validation.service');
     });
     test('Should create new validation scheme', () => {
         const service = new ValidationService(pluginManager);

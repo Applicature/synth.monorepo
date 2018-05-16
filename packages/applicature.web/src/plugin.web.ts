@@ -53,7 +53,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     public init(): void {
-        this.serviceClasses.push(ValidationService);
+        this.registerService(ValidationService);
     }
 
     public getApp(): express.Application {
@@ -63,7 +63,8 @@ class WebPlugin extends Plugin<void> implements IWeb {
     public startServer() {
         this.middleware();
 
-        this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+        this.app.use((req: express.Request & {tenantId: string}, res: express.Response, next: express.NextFunction) => {
+            // @TODO: get correct tenantId or replace it
             req.tenantId = 'tenantID';
             next();
         });
