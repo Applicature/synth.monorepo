@@ -2,7 +2,7 @@ import { Plugin } from '../../src/plugin';
 import { TestDao } from './dao';
 import { TestJob } from './job';
 
-class TestPlugin extends Plugin<void> {
+class TestPlugin extends Plugin<any> {
 
     protected jobClasses = [ TestJob ];
     protected daoClasses = [ TestDao ];

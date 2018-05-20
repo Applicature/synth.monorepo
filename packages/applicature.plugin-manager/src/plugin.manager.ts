@@ -8,7 +8,6 @@ import { Constructable, Hashtable } from './structure';
 
 export class PluginManager {
     private jobExecutor: Agenda = null;
-
     private plugins: Hashtable<Plugin<any>> = {};
     private jobs: Hashtable<Job> = {};
     private daos: Hashtable<Dao<any>> = {};
@@ -46,14 +45,14 @@ export class PluginManager {
         return this.daos[daoId];
     }
 
-    public getDaoByClass<T>(expectedDao: typeof Dao): Dao<T> {
+    public getDaoByClass<T extends Dao<any>>(expectedDao: Constructable<T>): T {
         const ids = Object.keys(this.daos);
 
         for (const id of ids) {
             const dao = this.daos[id];
 
             if (dao instanceof expectedDao) {
-                return dao;
+                return dao as T;
             }
         }
 
@@ -68,14 +67,14 @@ export class PluginManager {
         return this.services[serviceId];
     }
 
-    public getServiceByClass(expectedService: typeof Service): Service {
+    public getServiceByClass<T extends Service>(expectedService: Constructable<T>): T {
         const ids = Object.keys(this.services);
 
         for (const id of ids) {
             const service = this.services[id];
 
             if (service instanceof expectedService) {
-                return service;
+                return service as T;
             }
         }
 

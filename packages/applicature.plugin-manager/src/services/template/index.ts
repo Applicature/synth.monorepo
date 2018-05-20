@@ -90,7 +90,7 @@ export class TemplateService extends Service {
         return compiledTemplate(data);
     }
 
-    private getContent(parentDir: string, name: string) {
+    private getContent(parentDir: string, name: string): Promise<string> {
         return new Promise((resolve, reject) => {
             fs.readFile(parentDir  + name, 'utf-8',
                 (error: Error, source: string) => {

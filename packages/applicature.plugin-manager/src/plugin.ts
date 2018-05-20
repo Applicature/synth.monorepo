@@ -1,15 +1,14 @@
-import * as Agenda from 'agenda';
 import { Dao, Job, Service } from './entities';
 import { PluginManager } from './plugin.manager';
 import { Constructable, Hashtable } from './structure';
 
 export abstract class Plugin<T> {
     public path: string;
-    protected jobClasses: Array<typeof Job> = [];
+    protected jobClasses: Array<Constructable<Job>> = [];
     protected jobs: Hashtable<Job> = {};
-    protected daoClasses: Array<typeof Dao> = [];
+    protected daoClasses: Array<Constructable<Dao<T>>> = [];
     protected daos: Hashtable<Dao<T>> = {};
-    protected serviceClasses: Array<typeof Service> = [];
+    protected serviceClasses: Array<Constructable<Service>> = [];
     protected services: Hashtable<Service> = {};
 
     constructor(protected pluginManager: PluginManager) {}
@@ -37,7 +36,7 @@ export abstract class Plugin<T> {
         }
     }
 
-    public registerDao(daoClass: typeof Dao) {
+    public registerDao<T extends Dao<any>>(daoClass: Constructable<T>): void {
         this.daoClasses.push(daoClass);
     }
 
@@ -45,7 +44,7 @@ export abstract class Plugin<T> {
         return this.daos;
     }
 
-    public registerJob(jobClass: typeof Job) {
+    public registerJob(jobClass: Constructable<Job>): void {
         this.jobClasses.push(jobClass);
     }
 
@@ -53,7 +52,7 @@ export abstract class Plugin<T> {
         return this.jobs;
     }
 
-    public registerService(serviceClass: typeof Service) {
+    public registerService<T extends Service>(serviceClass: Constructable<T>): void {
         this.serviceClasses.push(serviceClass);
     }
 
@@ -61,7 +60,7 @@ export abstract class Plugin<T> {
         return this.services;
     }
 
-    protected invokeDao(DaoConstructor: Constructable<Dao<T>>) {
+    protected invokeDao(DaoConstructor: Constructable<Dao<T>>): Dao<T> {
         return new DaoConstructor();
     }
 }

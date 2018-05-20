@@ -1,14 +1,14 @@
 
+import { Dao } from '../../src/entities/dao';
 import { Plugin } from '../../src/plugin';
 import { TestDao } from '../mocks/dao';
 import { EmptyPlugin } from '../mocks/empty.plugin';
 import { TestJob } from '../mocks/job';
 import { PluginManagerMock } from '../mocks/plugin.manager';
 import { TestService } from '../mocks/service';
-
 describe('plugin', () => {
 
-    let plugin: Plugin<void>;
+    let plugin: Plugin<any>;
     beforeEach(() => {
         const pluginManagerMock: any = new PluginManagerMock(jest.fn());
         plugin = new EmptyPlugin(pluginManagerMock);
