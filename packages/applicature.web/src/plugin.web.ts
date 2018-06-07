@@ -12,6 +12,7 @@ import * as morgan from 'morgan';
 import * as raven from 'raven';
 import * as swStats from 'swagger-stats';
 import * as winston from 'winston';
+import * as passport from 'passport';
 import {WebMultivestError} from './error';
 import {IExpressMiddlewareConfig, IWeb} from './pluginInterface';
 import {ValidationDefaultService as ValidationService} from './services/validation/validation.default.service';
@@ -139,6 +140,8 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
             this.app.use(raven.requestHandler());
         }
+        this.app.use(passport.initialize());
+        this.app.use(passport.serialize());
         if (this.pluginMiddlewareConfig.swStats) {
             this.app.use(swStats.getMiddleware({
                 authentication: true,
@@ -150,7 +153,6 @@ class WebPlugin extends Plugin<void> implements IWeb {
                 uriPath: `${config.get('api.namespace')}${this.pluginMiddlewareConfig.swStats.urlPath}`,
             }));
         }
-
     }
 }
 

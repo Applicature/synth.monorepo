@@ -1,6 +1,6 @@
 {
   "name": "@applicature/multivest.web",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "private": false,
   "license": "UNLICENSED",
   "description": "Web Plugin",
@@ -40,6 +40,7 @@
     "joi": "13.1.1",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
+    "passport": "^0.4.0",
     "raven": "^2.4.2",
     "swagger-stats": "0.95.2",
     "winston": "^2.1.1"
