@@ -141,7 +141,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
             this.app.use(raven.requestHandler());
         }
         this.app.use(passport.initialize());
-        this.app.use(passport.serialize());
+        // this.app.use(passport.serialize());
         if (this.pluginMiddlewareConfig.swStats) {
             this.app.use(swStats.getMiddleware({
                 authentication: true,
