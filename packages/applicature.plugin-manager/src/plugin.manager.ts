@@ -97,6 +97,22 @@ export class PluginManager {
         return filteredServices;
     }
 
+    public getServicesTableByClass(expectedService: typeof Service): Hashtable<Service> {
+        const ids = Object.keys(this.services);
+
+        const filteredServices: Hashtable<Service> = {};
+
+        for (const id of ids) {
+            const service = this.services[id];
+
+            if (service instanceof expectedService) {
+                filteredServices[id] = service;
+            }
+        }
+
+        return filteredServices;
+    }
+
     public async enableJob(jobId: string, interval: string) {
         if (!Object.prototype.hasOwnProperty.call(this.jobs, jobId)) {
             throw new MultivestError(`PluginManager: Unknown job ${jobId}`);
@@ -144,7 +160,7 @@ export class PluginManager {
 
             for (const pluginId of pluginIds) {
                 const plugin = this.plugins[pluginId];
-                await plugin.init();
+                await plugin.init(); //registerService(), servicesClasses.push(ServiceConstructor)
             }
 
             for (const pluginId of pluginIds) {
@@ -152,12 +168,12 @@ export class PluginManager {
                 plugin.invoke();
                 Object.assign(this.jobs, plugin.getJobs());
                 Object.assign(this.daos, await plugin.getDaos());
-                Object.assign(this.services, plugin.getServices());
+                Object.assign(this.services, plugin.getServices()); //authService, userService ...
             }
 
             for (const serviceId in this.services) {
                 if (this.services[serviceId]) {
-                    await this.services[serviceId].init();
+                    await this.services[serviceId].init(); // userService calls authService
                 }
             }
 
