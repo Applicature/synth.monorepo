@@ -60,7 +60,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         return this.app;
     }
 
-    public startServer() {
+    public setupServer() {
         this.middleware();
 
         this.toEnable.forEach((id: string) => {
@@ -88,10 +88,13 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
             res.status(status).json({
                 message: error.message,
-                stack: config.get('env') && config.get('env') === 'development' ? error.stack : null,
+                stack: config.get('env') && config.get('env') === 'test' ? error.stack : null,
             });
         });
+    }
 
+    public startServer() {
+        this.setupServer();
         // listen on port listen.port
         const listenPort = config.get('multivest.web.port');
         this.httpServer = new http.Server(this.app);
