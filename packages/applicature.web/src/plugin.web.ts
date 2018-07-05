@@ -23,6 +23,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
     private httpServer: http.Server;
     private routes: Hashtable<express.Router> = {};
     private toEnable: Array<string> = [];
+    private sentry: string;
     private pluginMiddlewareConfig: IExpressMiddlewareConfig = {
         bodyParserJson: {
             limit: '50mb',
@@ -34,7 +35,6 @@ class WebPlugin extends Plugin<void> implements IWeb {
         helmet: {},
         methodOverride: '',
         morgan: 'common',
-        raven: '',
         swStats: null,
     };
 
@@ -70,7 +70,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
             this.app.use(this.getRouter(id));
         });
 
-        if (this.pluginMiddlewareConfig.raven) {
+        if (this.sentry) {
             this.app.use(raven.errorHandler());
         }
 
@@ -113,6 +113,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
     // Configure Express middleware.
     private mergeMiddlewareConfiguration(): void {
+        if (config.has('logger.sentry')) {
+            this.sentry = config.get('logger.sentry');
+        }
         this.pluginMiddlewareConfig = {
             ...this.pluginMiddlewareConfig,
             ...config.get('multivest.web.middleware'),
@@ -135,9 +138,8 @@ class WebPlugin extends Plugin<void> implements IWeb {
         // enable CORS - Cross Origin Resource Sharing
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
 
-        if (this.pluginMiddlewareConfig.raven) {
-            raven.config(this.pluginMiddlewareConfig.raven);
-
+        if (this.sentry) {
+            raven.config(this.sentry).install();
             this.app.use(raven.requestHandler());
         }
         this.app.use(passport.initialize());
