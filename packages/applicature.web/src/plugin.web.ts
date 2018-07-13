@@ -89,6 +89,11 @@ class WebPlugin extends Plugin<void> implements IWeb {
                 status = 500;
             }
 
+            if (error.message === 'validation error') {
+                error.message = 'VALIDATION_ERROR';
+                status = 400;
+            }
+
             res.status(status).json({
                 message: error.message,
                 stack: config.get('env') && config.get('env') === 'development' ? error.stack : null,
