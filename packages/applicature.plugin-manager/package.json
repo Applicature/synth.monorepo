@@ -50,6 +50,7 @@
     "istanbul-reports": "1.1.4",
     "jest": "^21.2.1",
     "jest-junit": "^3.6.0",
+    "jest-multi-test-result-processor": "^1.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "sonarqube-scanner": "^2.1.0",
     "source-map-support": "^0.5.4",
