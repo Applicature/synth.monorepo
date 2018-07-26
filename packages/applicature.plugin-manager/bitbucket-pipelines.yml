@@ -11,6 +11,7 @@ pipelines:
           - npm install
           - npm run build
           - npm run test:ci
+          - npm run test:tslint
           - npm run test:sonar
           - npm publish
 
