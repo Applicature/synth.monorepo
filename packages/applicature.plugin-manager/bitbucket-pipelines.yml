@@ -1,6 +1,14 @@
 image: node:carbon
+
+clone:
+  depth: full
+
 pipelines:
   default:
+    - step:
+        name: Cloning
+        script:
+          - echo "Clone all the things!"
     - step:
         caches:
           - node
