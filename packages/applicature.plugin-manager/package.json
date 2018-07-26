@@ -1,6 +1,6 @@
 {
-  "name": "@applicature/multivest.core",
-  "version": "0.2.1",
+  "name": "@applicature-private/multivest.core",
+  "version": "2.0.0",
   "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
@@ -24,9 +24,6 @@
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:applicature/multivest.plugin-manager.git"
-  },
-  "publishConfig": {
-    "registry": "https://artifacts-dev.zubko.biz/repository/applicature-npm/"
   },
   "dependencies": {
     "agenda": "^1.0.3",
