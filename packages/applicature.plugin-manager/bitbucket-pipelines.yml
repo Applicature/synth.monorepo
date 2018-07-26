@@ -11,8 +11,7 @@ pipelines:
           - npm install
           - npm run build
           - npm run test:ci
-          - npm install -g sonarqube-scanner
-          - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN
+          - npm run test:sonar
           - npm publish
 
 definitions:
