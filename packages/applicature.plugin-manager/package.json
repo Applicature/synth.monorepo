@@ -15,10 +15,9 @@
   "scripts": {
     "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
-    "precommit": "npm run lint ; npm run test:coverage",
+    "precommit": "npm run lint ; npm run test:ci",
     "test": "jest",
-    "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
-    "test:ci": "jest --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts",
+    "test:ci": "jest --coverage --collectCoverageFrom=*/**/*.ts",
     "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
     "test:tslint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
@@ -70,7 +69,7 @@
       }
     },
     "mapCoverage": true,
-    "testResultsProcessor": "jest-sonar-reporter",
+    "testResultsProcessor": "jest-multi-test-result-processor",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -90,6 +89,12 @@
       "text",
       "clover",
       "cobertura"
+    ]
+  },
+  "jest-multi-test-result-processor": {
+    "processors": [
+      "jest-junit",
+      "jest-sonar-reporter"
     ]
   },
   "jestSonar": {
