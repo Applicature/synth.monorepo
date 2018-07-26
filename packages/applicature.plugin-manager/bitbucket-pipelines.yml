@@ -5,22 +5,8 @@ pipelines:
         caches:
           - node
         script:
-          # Generates a .npmrc file configured for installing private modules:
-          #
-          # NPM_REGISTRY_URL: the full URL of your private registry
-          #                   defaults to registry.npmjs.org.
-          # NPM_TOKEN: secret token for installing private modules. This
-          #            this token can be found in your .npmrc, after logging in.
           - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
-          # installs public and private moduless.
           - npm install
-
-#@TODO: run build
           - npm run build
-
-#@TODO: run tests
-          # run the tests.
           - npm run test:ci
-
-#@TODO: collect junit logs from ./test-reports/junit.xml
-#          - npm publish
+          - npm publish
