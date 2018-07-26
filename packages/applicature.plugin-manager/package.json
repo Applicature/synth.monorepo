@@ -92,6 +92,11 @@
       "cobertura"
     ]
   },
+  "jestSonar": {
+    "reportPath": "./test-reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
   "jest-junit": {
     "output": "./test-reports/junit.xml"
   }
