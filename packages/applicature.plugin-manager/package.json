@@ -82,6 +82,6 @@
     ]
   },
   "jest-junit": {
-    "output": "./coverage/junit.xml"
+    "output": "./test-reports/junit.xml"
   }
 }
