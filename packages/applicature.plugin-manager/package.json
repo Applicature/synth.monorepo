@@ -70,7 +70,6 @@
         "skipBabel": true
       }
     },
-    "mapCoverage": true,
     "testResultsProcessor": "jest-multi-test-result-processor",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
