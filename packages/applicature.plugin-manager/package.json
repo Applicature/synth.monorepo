@@ -17,7 +17,7 @@
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
     "precommit": "npm run lint ; npm run test:ci",
     "test": "jest",
-    "test:ci": "jest --coverage --collectCoverageFrom=*/**/*.ts",
+    "test:ci": "jest --coverage",
     "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
     "test:tslint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
@@ -64,6 +64,7 @@
     "src/"
   ],
   "jest": {
+    "collectCoverageFrom": ["src/**/*.ts"],
     "globals": {
       "ts-jest": {
         "skipBabel": true
