@@ -11,3 +11,4 @@ coverage
 dist
 junit.xml
 package-lock.json
+test-reports

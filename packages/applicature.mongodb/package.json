@@ -15,12 +15,12 @@
   "scripts": {
     "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
-    "precommit": "npm run lint ; npm run test:coverage ; npm run test:security",
-    "test": "jest test/unit",
-    "test:coverage": "jest test/unit --coverage --collectCoverageFrom=*/**/*.ts",
+    "precommit": "npm run lint ; npm run test:ci",
+    "test": "jest",
+    "test:ci": "jest --coverage",
     "test:integration": "jest test/integration",
-    "test:ci": "jest test/unit --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts",
-    "test:security": "nsp check"
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
+    "test:tslint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,12 @@
     "jest-cli": "^22.4.3",
     "mongodb": "^2.2.35",
     "uuid": "^3.2.1",
-    "winston": "^2.4.1"
+    "winston": "^2.4.1",
+    "jest-multi-test-result-processor": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "sonarqube-scanner": "^2.1.0",
+    "istanbul-api": "1.2.2",
+    "istanbul-reports": "1.1.4"
   },
   "files": [
     "dist/",
@@ -64,6 +69,15 @@
     "typescript": "^2.8.1"
   },
   "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
+    "testResultsProcessor": "jest-multi-test-result-processor",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -74,7 +88,8 @@
       "js"
     ],
     "coveragePathIgnorePatterns": [
-      "<rootDir>/.*?\\.d\\.ts$"
+      "<rootDir>/.*?\\.d\\.ts$",
+      "<rootDir>/.*?\\.mock\\.ts$"
     ],
     "coverageReporters": [
       "json",
@@ -84,7 +99,18 @@
       "cobertura"
     ]
   },
+  "jest-multi-test-result-processor": {
+    "processors": [
+      "jest-junit",
+      "jest-sonar-reporter"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "./test-reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
   "jest-junit": {
-    "output": "./coverage/junit.xml"
+    "output": "./test-reports/junit.xml"
   }
 }

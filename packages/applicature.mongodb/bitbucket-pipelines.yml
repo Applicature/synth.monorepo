@@ -1,0 +1,85 @@
+image: node:carbon
+
+clone:
+  depth: full
+
+pipelines:
+  default:
+  - step:
+      caches:
+      - node
+      - sonarcloud
+      - node-scanner
+      - eslintcache
+      script:
+      - npm install
+      - npm run build
+      - npm run test:lint
+      - npm run test:ci
+      - npm run test:sonar
+  branches:
+    develop:
+    - step:
+        caches:
+        - node
+        - sonarcloud
+        - node-scanner
+        - eslintcache
+        script:
+        - npm install
+        - npm run build
+        - npm run test:lint
+        - npm run test:ci
+        - npm run test:sonar
+        - ./notify-sentry-of-release.bash
+        artifacts:
+        - dist/**
+
+    - step:
+        # set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY as environment variables
+        name: Deploy to development S3
+        deployment: test
+        image: atlassian/pipelines-awscli
+        script:
+        - aws s3 sync --delete ./dist s3://multivest.mongodb
+
+    master:
+    - step:
+        caches:
+        - node
+        - sonarcloud
+        - node-scanner
+        - eslintcache
+        script:
+        - npm install
+        - npm run build
+        - npm run test:tslint
+        - npm run test:ci
+        - npm run test:sonar
+        - ./notify-sentry-of-release.bash
+        - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
+        - npm publish
+          artifacts:
+        - dist/**
+
+    - step:
+        name: Deploy to staging S3
+        deployment: staging
+        trigger: manual
+        image: atlassian/pipelines-awscli
+        script:
+        - aws s3 sync --delete ./dist s3://multivest.mongodb
+
+    - step:
+        name: Deploy to production S3
+        deployment: production
+        trigger: manual
+        image: atlassian/pipelines-awscli
+        script:
+        - aws s3 sync --delete ./dist s3://multivest.mongodb
+
+definitions:
+  caches:
+    sonarcloud: ~/.sonar/cache
+    node-scanner: ~/.sonar/native-sonar-scanner
+    eslintcache: ~/.eslintcache
