@@ -27,10 +27,10 @@ declare module 'express-validation' {
     function validate(validator: Validator): RequestHandler;
     namespace validate {
         class ValidationError {
-            errors: Array<Messages>;
-            status: number;
-            statusText: string;
-            message: "validation error";
+            public errors: Array<Messages>;
+            public status: number;
+            public statusText: string;
+            public message: 'validation error';
 
         }
         interface Messages {

@@ -11,3 +11,4 @@ coverage
 dist
 package-lock.json
 yarn.lock
+test-reports
