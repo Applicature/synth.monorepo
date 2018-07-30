@@ -38,4 +38,3 @@ definitions:
   caches:
     sonarcloud: ~/.sonar/cache
     node-scanner: ~/.sonar/native-sonar-scanner
-    eslintcache: ~/.eslintcache
