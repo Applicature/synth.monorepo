@@ -1,4 +1,4 @@
-import { MultivestError, PluginManager } from '@applicature/multivest.core';
+import { MultivestError, PluginManager } from '@applicature-private/multivest.core';
 import { BigNumber } from 'bignumber.js';
 import { Decimal128 } from 'mongodb';
 import { MongoDBDao } from '../../src/mongodb.dao';

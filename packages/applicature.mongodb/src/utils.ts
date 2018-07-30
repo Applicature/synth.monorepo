@@ -1,4 +1,4 @@
-import {Hashtable} from '@applicature/multivest.core';
+import {Hashtable} from '@applicature-private/multivest.core';
 import {BigNumber} from 'bignumber.js';
 import {Decimal128, ObjectID} from 'mongodb';
 

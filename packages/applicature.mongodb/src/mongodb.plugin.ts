@@ -3,7 +3,13 @@
  * https://github.com/vadimdemedes/mongorito/blob/master/lib/database.js
  */
 
-import { Constructable, Dao, Hashtable, MultivestError, Plugin, PluginManager } from '@applicature/multivest.core';
+import {
+    Constructable,
+    Dao,
+    MultivestError,
+    Plugin,
+    PluginManager
+} from '@applicature-private/multivest.core';
 import * as config from 'config';
 import { connect, Db, MongoClientOptions } from 'mongodb';
 import * as logger from 'winston';

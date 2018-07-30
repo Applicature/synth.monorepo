@@ -1,4 +1,4 @@
-import { MultivestError, PluginManager } from '@applicature/multivest.core';
+import { MultivestError, PluginManager } from '@applicature-private/multivest.core';
 import { Db, MongoClient } from 'mongodb';
 import { MongoDBDao } from '../../index';
 import { TestDao, TestDaoScheme } from '../mock/dao.mock';

@@ -1,4 +1,4 @@
-import { Dao, Hashtable } from '@applicature/multivest.core';
+import { Dao, Hashtable } from '@applicature-private/multivest.core';
 import {Collection, Db, MongoClient} from 'mongodb';
 import { v1 as generateId } from 'uuid';
 import {parseDecimals} from './utils';
