@@ -10,6 +10,8 @@
     "npm": ">=2.15.11",
     "yarn": ">=0.20.3"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
@@ -26,6 +28,7 @@
   },
   "dependencies": {
     "@applicature/multivest.core": "^0.2.1",
+    "bignumber.js": "^7.2.1",
     "config": "^1.30.0",
     "jest-cli": "^22.4.3",
     "mongodb": "^2.2.35",
