@@ -1,4 +1,4 @@
-import {PluginManager, Service} from '@applicature/multivest.core';
+import {PluginManager, Service} from '@applicature-private/multivest.core';
 
 export type ProcessType = string | void;
 

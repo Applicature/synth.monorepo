@@ -14,10 +14,23 @@ pipelines:
       - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
       - npm install
       - npm run build
-      - npm run test:ci
       - npm run test:lint
-      - npm run test:sonar
-      - npm publish
+      - npm run test:ci
+      # - npm run test:sonar
+  branches:
+    v2.dev:
+    - step:
+        caches:
+        - node
+        - sonarcloud
+        - node-scanner
+        script:
+        - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
+        - npm install
+        - npm run build
+        - npm run test:ci
+        # - npm run test:sonar
+        - npm publish
 
 definitions:
   caches:

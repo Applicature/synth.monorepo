@@ -1,5 +1,5 @@
 {
-  "name": "@applicature/multivest.web",
+  "name": "@applicature-private/multivest.web",
   "version": "0.2.4",
   "private": false,
   "license": "UNLICENSED",
@@ -17,7 +17,7 @@
     "test": "jest",
     "test:ci": "jest --coverage",
     "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
-    "test:tslint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
+    "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,7 +26,7 @@
     "url": "git@bitbucket.org:applicature/multivest.web.git"
   },
   "dependencies": {
-    "@applicature/multivest.core": "^0.2.1",
+    "@applicature-private/multivest.core": "^2.0.3",
     "@types/morgan": "^1.7.35",
     "compression": "^1.7.1",
     "config": "^1.29.2",

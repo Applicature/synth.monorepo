@@ -1,4 +1,4 @@
-import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/multivest.core';
+import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature-private/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as config from 'config';
