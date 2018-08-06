@@ -29,6 +29,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         compress: {},
         cookieParser: {},
         cors: {},
+        enableCompressing: false,
         helmet: {},
         methodOverride: '',
         morgan: 'common',
@@ -127,7 +128,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
         this.app.use(bodyParser.json(this.pluginMiddlewareConfig.bodyParserJson));
         this.app.use(bodyParser.urlencoded(this.pluginMiddlewareConfig.bodyParserUrlencoded));
         this.app.use(cookieParser(this.pluginMiddlewareConfig.cookieParser));
-        this.app.use(compress(this.pluginMiddlewareConfig.compress));
+        if (this.pluginMiddlewareConfig.enableCompressing) {
+            this.app.use(compress(this.pluginMiddlewareConfig.compress));
+        }
         this.app.use(methodOverride(this.pluginMiddlewareConfig.methodOverride));
         // secure apps by setting various HTTP headers
         this.app.use(helmet(this.pluginMiddlewareConfig.helmet));
