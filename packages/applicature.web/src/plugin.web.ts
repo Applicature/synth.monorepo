@@ -70,15 +70,18 @@ class WebPlugin extends Plugin<void> implements IWeb {
             this.app.use(this.getRouter(id));
         });
 
-        if (this.sentry) {
-            this.app.use(raven.errorHandler());
-        }
-
         // error handler, send stacktrace only during development
         this.app.use((
             error: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction,
         ) => {
             let status;
+
+            if (error instanceof MultivestError) {
+                winston.warn(error.message, error.stack);
+            }
+            else if (this.sentry) {
+                raven.errorHandler()(error, req, res, next);
+            }
 
             if (error instanceof WebMultivestError) {
                 const webError = error as WebMultivestError;
