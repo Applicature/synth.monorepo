@@ -16,7 +16,7 @@ pipelines:
       - npm run build
       - npm run test:lint
       - npm run test:ci
-      # - npm run test:sonar
+      - npm run test:sonar
   branches:
     v2.dev:
     - step:
@@ -29,7 +29,7 @@ pipelines:
         - npm install
         - npm run build
         - npm run test:ci
-        # - npm run test:sonar
+        - npm run test:sonar
         - npm publish
 
 definitions:

@@ -1,6 +1,6 @@
 {
   "name": "@applicature-private/multivest.web",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": false,
   "license": "UNLICENSED",
   "description": "Web Plugin",
@@ -15,8 +15,8 @@
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
     "precommit": "npm run lint ; npm run test:ci",
     "test": "jest",
-    "test:ci": "jest --coverage",
-    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
+    "test:ci": "jest --coverage --forceExit",
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_TOKEN",
     "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
   "main": "dist/index.js",
