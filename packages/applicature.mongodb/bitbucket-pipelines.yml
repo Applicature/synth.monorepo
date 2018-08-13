@@ -14,11 +14,21 @@ pipelines:
           - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
           - npm install
           - npm run build
-          - npm run test:lint
           - npm run test:ci
-          # - npm run test:sonar
+          - npm run test:lint
+          - npm run test:sonar
         services: 
           - mongo
+    - step:
+        name: Deploy beta version
+        trigger: manual
+        caches:
+          - node
+        script:
+          - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
+          - npm install
+          - npm run build
+          - npm publish --tag beta
   branches:
     v2.dev:
       - step:
@@ -31,7 +41,8 @@ pipelines:
             - npm install
             - npm run build
             - npm run test:ci
-            # - npm run test:sonar
+            - npm run test:lint
+            - npm run test:sonar
             - npm publish
           services: 
             - mongo 
