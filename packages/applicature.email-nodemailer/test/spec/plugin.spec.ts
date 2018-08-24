@@ -1,4 +1,4 @@
-import { PluginManager } from '@applicature/multivest.core';
+import { PluginManager } from '@applicature-private/multivest.core';
 import { Plugin as NodemailerEmailPlugin } from '../../src/plugin';
 
 describe('Nodemailer Plugin', () => {

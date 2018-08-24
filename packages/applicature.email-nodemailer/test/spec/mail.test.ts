@@ -1,6 +1,6 @@
-import {PluginManager} from '@applicature/multivest.core';
-import {EmailOpts} from '@applicature/multivest.email.abstract/dist';
-import {NodeMailerEmailService} from '../../src';
+import { PluginManager } from '@applicature-private/multivest.core';
+import { EmailOpts } from '@applicature-private/multivest.email.abstract';
+import { NodeMailerEmailService } from '../../src';
 
 describe('test', () => {
     it('should work', async () => {

@@ -1,4 +1,4 @@
-import { Plugin } from '@applicature/multivest.core';
+import { Plugin } from '@applicature-private/multivest.core';
 import { NodeMailerEmailService } from './service';
 
 class NodeMailerEmailPlugin extends Plugin<any> {
@@ -9,7 +9,6 @@ class NodeMailerEmailPlugin extends Plugin<any> {
 
     public init() {
         this.serviceClasses.push(NodeMailerEmailService);
-
     }
 }
 
