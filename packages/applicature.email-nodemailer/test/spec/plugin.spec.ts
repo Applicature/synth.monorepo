@@ -8,6 +8,7 @@ describe('Nodemailer Plugin', () => {
         const Plugin = new NodemailerEmailPlugin(pluginManager);
         await Plugin.init();
     });
+
     test('should return plugin id', async () => {
         const pluginManager: any = new PluginManager([]);
         await pluginManager.init();
