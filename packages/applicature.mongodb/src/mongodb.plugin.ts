@@ -23,23 +23,20 @@ class MongodbPlugin extends Plugin<any> {
     protected connectionPromise: Promise<Db>;
     protected urls: string;
     protected options: MongoClientOptions;
+    protected dbName: string;
 
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
 
         this.urls = config.get('multivest.mongodb.url');
 
-        const options = config.get('multivest.mongodb.options') as MongoClientOptions;
+        this.options = config.has('multivest.mongodb.options')
+            ? config.get<MongoClientOptions>('multivest.mongodb.options')
+            : { autoReconnect: true, reconnectTries: 10 };
 
-        if (options) {
-            this.options = options;
-        }
-        else {
-            this.options = {
-                autoReconnect: true,
-                reconnectTries: 10,
-            };
-        }
+        this.dbName = config.has('multivest.mongodb.dbName')
+            ? config.get<MongoClientOptions>('multivest.mongodb.dbName')
+            : null;
     }
 
     public getPluginId() {
@@ -127,8 +124,15 @@ class MongodbPlugin extends Plugin<any> {
         return this.state === ConnectionState.Connected;
     }
 
-    protected initConnection() {
-        return connect(this.urls, this.options);
+    protected async initConnection() {
+        const connection = await connect(this.urls, this.options);
+        
+        if (this.dbName) {
+            const db = await connection.db(this.dbName);
+            return db;
+        }
+
+        return connection;
     }
 
     protected invokeDao(DaoConstructor: Constructable<Dao<any>>) {
