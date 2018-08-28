@@ -1,6 +1,6 @@
 {
-  "name": "@applicature/multivest.pdf",
-  "version": "0.1.5",
+  "name": "@applicature-private/multivest.pdf",
+  "version": "0.2.0",
   "private": false,
   "license": "UNLICENSED",
   "description": "Pdf Generation",
@@ -15,12 +15,11 @@
   "scripts": {
     "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
-    "precommit": "npm run lint ; npm run test:coverage ; npm run test:security",
+    "precommit": "npm run lint ; npm run test:ci",
     "test": "jest",
-    "test:integration": "jest test/integration",
-    "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
-    "test:ci": "jest --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts",
-    "test:security": "nsp check"
+    "test:ci": "jest --coverage",
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
+    "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
   "repository": {
     "type": "git",
