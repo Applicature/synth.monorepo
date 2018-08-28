@@ -28,7 +28,12 @@
   "dependencies": {
     "config": "^1.26.1",
     "html-pdf": "^2.2.0",
-    "winston": "^2.1.1"
+    "winston": "^2.1.1",
+    "jest-multi-test-result-processor": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "sonarqube-scanner": "^2.1.0",
+    "istanbul-api": "1.2.2",
+    "istanbul-reports": "1.1.4"
   },
   "devDependencies": {
     "@types/config": "0.0.33",
@@ -56,6 +61,16 @@
     "src/"
   ],
   "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
+    "testResultsProcessor": "jest-multi-test-result-processor",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -63,9 +78,7 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
-      "js",
-      "json",
-      "node"
+      "js"
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/.*?\\.d\\.ts$",
@@ -79,7 +92,18 @@
       "cobertura"
     ]
   },
+  "jest-multi-test-result-processor": {
+    "processors": [
+      "jest-junit",
+      "jest-sonar-reporter"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "./test-reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
   "jest-junit": {
-    "output": "./coverage/junit.xml"
+    "output": "./test-reports/junit.xml"
   }
 }
