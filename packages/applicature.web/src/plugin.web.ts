@@ -75,6 +75,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
             error: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction,
         ) => {
             let status;
+            let details;
 
             if (error instanceof MultivestError) {
                 winston.warn(error.message, error.stack);
@@ -93,11 +94,18 @@ class WebPlugin extends Plugin<void> implements IWeb {
             }
 
             if (error.message === 'validation error') {
+                if (Array.isArray(error.errors)) {
+                    if (error.errors[0].field[0] === 'email') {
+                        details = 'INVALID_EMAIL';
+                    }
+                }
+
                 error.message = 'VALIDATION_ERROR';
                 status = 400;
             }
 
             res.status(status).json({
+                details,
                 message: error.message,
                 stack: config.get('env') && config.get('env') === 'development' ? error.stack : null,
             });
