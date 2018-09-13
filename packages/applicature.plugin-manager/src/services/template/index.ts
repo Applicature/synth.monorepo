@@ -27,7 +27,7 @@ function walkSync(parentDir: string, directory: string, filelist: Array<Array<st
 export class TemplateService extends Service {
     private compiledTemplates: Hashtable<HandlebarsTemplateDelegate>;
     // because helpers could have any signature
-    private helpersRegistry: Hashtable<Function>;
+    private helpersRegistry: Hashtable<() => void>;
 
     constructor(protected pluginManager: PluginManager) {
         super(pluginManager);
@@ -41,7 +41,7 @@ export class TemplateService extends Service {
     }
 
     // because helpers could have any signature
-    public addHelper(helperId: string, fn: Function) {
+    public addHelper(helperId: string, fn: () => void) {
         this.helpersRegistry[helperId] = fn;
     }
 

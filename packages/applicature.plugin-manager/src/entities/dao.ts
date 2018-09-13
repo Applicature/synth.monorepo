@@ -1,4 +1,4 @@
-export abstract class Dao<T=void> {
+export abstract class Dao<T = void> {
     public abstract getDaoId(): string;
     public abstract get(needle: Partial<T>): Promise<T>;
     public abstract list(needle: Partial<T>): Promise<Array<T>>;

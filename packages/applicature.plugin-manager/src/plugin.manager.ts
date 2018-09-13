@@ -160,7 +160,7 @@ export class PluginManager {
 
             for (const pluginId of pluginIds) {
                 const plugin = this.plugins[pluginId];
-                await plugin.init(); //registerService(), servicesClasses.push(ServiceConstructor)
+                await plugin.init(); // registerService(), servicesClasses.push(ServiceConstructor)
             }
 
             for (const pluginId of pluginIds) {
@@ -168,7 +168,7 @@ export class PluginManager {
                 plugin.invoke();
                 Object.assign(this.jobs, plugin.getJobs());
                 Object.assign(this.daos, await plugin.getDaos());
-                Object.assign(this.services, plugin.getServices()); //authService, userService ...
+                Object.assign(this.services, plugin.getServices()); // authService, userService ...
             }
 
             for (const serviceId in this.services) {

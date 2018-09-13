@@ -1,6 +1,6 @@
 {
   "name": "@applicature-private/multivest.core",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
@@ -64,7 +64,9 @@
     "src/"
   ],
   "jest": {
-    "collectCoverageFrom": ["src/**/*.ts"],
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
     "globals": {
       "ts-jest": {
         "skipBabel": true
