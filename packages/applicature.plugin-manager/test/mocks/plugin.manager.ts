@@ -1,9 +1,9 @@
 
-import {PluginManager} from "../../src/plugin.manager";
+import {PluginManager} from '../../src/plugin.manager';
 
 export class PluginManagerMock extends PluginManager{
     constructor(private defineFunction: () => void) {
-        super()
+        super();
     }
 
     public getJobExecutor(): any {
