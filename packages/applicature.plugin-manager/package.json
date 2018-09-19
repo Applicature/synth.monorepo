@@ -1,6 +1,6 @@
 {
   "name": "@applicature-private/multivest.core",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
@@ -19,7 +19,7 @@
     "test": "jest",
     "test:ci": "jest --coverage",
     "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
-    "test:tslint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
+    "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
   "repository": {
     "type": "git",
