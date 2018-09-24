@@ -1,13 +1,14 @@
-import {Hashtable} from '@applicature-private/multivest.core';
-import {BigNumber} from 'bignumber.js';
-import {Decimal128, ObjectID} from 'mongodb';
+import { Hashtable } from '@applicature-private/multivest.core';
+import { BigNumber } from 'bignumber.js';
+import { get } from 'lodash';
+import { Decimal128, ObjectID } from 'mongodb';
 
 export function parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
     if (typeof data !== 'object' || !data) {
         return data;
     }
 
-    if (data instanceof ObjectID) {
+    if (data instanceof ObjectID || get(data, 'constructor.name') === 'ObjectID') {
         return data;
     }
 
@@ -23,11 +24,19 @@ export function parseDecimals(type: 'toMongo' | 'fromMongo', data: any): any {
         return data.map((item) => parseDecimals(type, item));
     }
 
-    if (type === 'toMongo' && (data instanceof BigNumber || data.isBigNumber || data._isBigNumber)) {
+    if (
+        type === 'toMongo'
+        && (
+            data instanceof BigNumber
+            || data.isBigNumber
+            || data._isBigNumber
+            || get(data, 'constructor.name') === 'ObjectID'
+        )
+    ) {
         return Decimal128.fromString(data.toString());
     }
 
-    if (type === 'fromMongo' && data instanceof Decimal128) {
+    if (type === 'fromMongo' && (data instanceof Decimal128 || get(data, 'constructor.name') === 'Decimal128')) {
         return new BigNumber(data.toString());
     }
 
