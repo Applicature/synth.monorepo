@@ -20,7 +20,7 @@ export class PrometheusMetricTransport extends CollectableMetricTransport {
         return collectedData;
     }
 
-    protected async saveMetric(name: string, value: number, timestamp: Date = new Date()): Promise<void> {
+    public async saveMetric(name: string, value: number, timestamp: Date = new Date()): Promise<void> {
         const metric = this.metrics[name];
 
         if (metric) {
