@@ -1,9 +1,9 @@
 import { Hashtable } from '@applicature-private/multivest.core';
-import { Counter, Registry } from 'prom-client';
+import { Gauge, Registry } from 'prom-client';
 import { CollectableMetricTransport } from './collectable.metric.transport';
 
 export class PrometheusMetricTransport extends CollectableMetricTransport {
-    private metrics: Hashtable<Counter>;
+    private metrics: Hashtable<Gauge>;
     private registry: Registry;
 
     constructor() {
@@ -20,21 +20,33 @@ export class PrometheusMetricTransport extends CollectableMetricTransport {
         return collectedData;
     }
 
-    public async saveMetric(name: string, value: number, timestamp: Date = new Date()): Promise<void> {
+    public async saveMetric(
+        name: string,
+        value: number,
+        timestamp: Date = new Date(),
+        dimensions: Hashtable<string> = null
+    ): Promise<void> {
         const metric = this.metrics[name];
 
-        if (metric) {
-            metric.inc(value, timestamp);
-        } else {
-            const newMetric = new Counter({
+        if (!metric) {
+            const metricCfg: any = {
                 help: `help for ${ name } metric`,
                 name,
-            });
+            };
+            if (dimensions) {
+                metricCfg.labelNames = Object.keys(dimensions);
+            }
+
+            const newMetric = new Gauge(metricCfg);
 
             this.metrics[name] = newMetric;
             this.registry.registerMetric(newMetric);
         }
 
-        return;
+        if (dimensions) {
+            metric.inc(dimensions, value, timestamp);
+        } else {
+            metric.inc(value, timestamp);
+        }
     }
 }

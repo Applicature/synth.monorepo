@@ -1,3 +1,4 @@
+import { Hashtable } from '@applicature-private/multivest.core';
 import * as CloudWatch from 'aws-sdk/clients/cloudwatch';
 import * as config from 'config';
 import * as logger from 'winston';
@@ -19,15 +20,32 @@ export class AwsMetricTransport extends MetricTransport {
         return 'aws.metric.service';
     }
 
-    public async saveMetric(name: string, value: number, timestamp: Date = new Date()): Promise<void> {
+    public async saveMetric(
+        name: string,
+        value: number,
+        timestamp: Date = new Date(),
+        dimensions: Hashtable<string> = null
+    ): Promise<void> {
+        const metricData: any = {
+            MetricName: name,
+            Timestamp: timestamp,
+            Value: value,
+        };
+
+        if (dimensions) {
+            metricData.Dimensions = [];
+            for (const key of Object.keys(dimensions)) {
+                metricData.Dimensions.push({
+                    Name: key,
+                    Value: dimensions[key]
+                });
+            }
+        }
+
         try {
             await this.provider.putMetricData({
                 MetricData: [
-                    {
-                        MetricName: name,
-                        Timestamp: timestamp,
-                        Value: value,
-                    }
+                    metricData
                 ],
                 Namespace: 'FluenceAPI',
             }).promise();

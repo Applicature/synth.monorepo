@@ -11,8 +11,6 @@ export abstract class MetricService extends Service {
         const transportBuilder =
             this.pluginManager.getServiceByClass(MetricTransportBuilderService) as MetricTransportBuilderService;
         this.transport = transportBuilder.getMetricTransport();
-
-        return;
     }
 
     public collectMetrics(): any {
