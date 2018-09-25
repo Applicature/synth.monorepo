@@ -28,7 +28,7 @@ export class MetricTransportBuilderService extends Service {
     }
 
     public getMetricTransport(): MetricTransport {
-        if (this.isMetricEnabled) {
+        if (this.isMetricEnabled === false) {
             this.metricTransport = new MetricStubTransport();
         }
         
