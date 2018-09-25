@@ -1,9 +1,7 @@
 import { Plugin } from '@applicature-private/multivest.core';
 
 import {
-    AwsMetricService,
-    MetricBuilderService,
-    PrometheusMetricService,
+    MetricTransportBuilderService,
 } from './services';
 
 class MetricServicesPlugin extends Plugin<void> {
@@ -12,9 +10,7 @@ class MetricServicesPlugin extends Plugin<void> {
     }
 
     public init() {
-        this.registerService(AwsMetricService);
-        this.registerService(MetricBuilderService);
-        this.registerService(PrometheusMetricService);
+        this.registerService(MetricTransportBuilderService);
     }
 }
 

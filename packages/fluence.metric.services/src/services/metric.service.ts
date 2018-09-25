@@ -1,13 +1,18 @@
 import { PluginManager, Service } from '@applicature-private/multivest.core';
 import { CollectableMetricTransport, MetricTransport } from '../metric.transports';
+import { MetricTransportBuilderService } from './metric.transport.builder.service';
 
 export abstract class MetricService extends Service {
     protected transport: MetricTransport;
 
-    constructor(pluginManager: PluginManager, transport: MetricTransport) {
-        super(pluginManager);
+    public async init(): Promise<void> {
+        super.init();
 
-        this.transport = transport;
+        const transportBuilder =
+            this.pluginManager.getServiceByClass(MetricTransportBuilderService) as MetricTransportBuilderService;
+        this.transport = transportBuilder.getMetricTransport();
+
+        return;
     }
 
     public collectMetrics(): any {
