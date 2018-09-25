@@ -1,14 +1,13 @@
-import { PluginManager } from '@applicature-private/multivest.core';
 import * as CloudWatch from 'aws-sdk/clients/cloudwatch';
 import * as config from 'config';
 import * as logger from 'winston';
-import { MetricService } from './metric.service';
+import { MetricTransport } from './metric.transport';
 
-export class AwsMetricService extends MetricService {
+export class AwsMetricTransport extends MetricTransport {
     protected provider: CloudWatch;
 
-    constructor(pluginManager: PluginManager) {
-        super(pluginManager);
+    constructor() {
+        super();
 
         const cloudWatchCfg = config.has('aws.cloudWatch')
             ? config.get('aws.cloudWatch')

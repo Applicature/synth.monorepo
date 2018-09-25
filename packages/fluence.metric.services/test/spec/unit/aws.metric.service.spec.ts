@@ -1,9 +1,9 @@
 import * as CloudWatch from 'aws-sdk/clients/cloudwatch';
 import { env } from 'process';
-import { AwsMetricService, MetricService } from '../../../src';
+import { AwsMetricTransport, MetricService } from '../../../src';
 
-describe('AwsMetricService unit test', () => {
-    let metricService: MetricService;
+describe('AwsMetricTransport unit test', () => {
+    let metricService: AwsMetricTransport;
     let putMetricData: any;
     let putMetricDataMock: any;
 
@@ -11,7 +11,7 @@ describe('AwsMetricService unit test', () => {
         putMetricData = CloudWatch.prototype.putMetricData;
         putMetricDataMock = jest.fn().mockImplementation(() => ({ promise: () => Promise.resolve() }));
         CloudWatch.prototype.putMetricData = putMetricDataMock;
-        metricService = new AwsMetricService(null);
+        metricService = new AwsMetricTransport();
     });
 
     beforeEach(() => {

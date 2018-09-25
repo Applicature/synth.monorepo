@@ -2,15 +2,17 @@ import { MultivestError, PluginManager, Service } from '@applicature-private/mul
 import * as config from 'config';
 import * as logger from 'winston';
 import { Errors } from '../errors';
+import {
+    AwsMetricTransport,
+    MetricStubTransport,
+    MetricTransport,
+    PrometheusMetricTransport
+} from '../metric.transports';
 import { MetricTypes } from '../types';
-import { AwsMetricService } from './aws.metric.service';
-import { MetricService } from './metric.service';
-import { MetricStubService } from './metric.stub.service';
-import { PrometheusMetricService } from './prometheus.metric.service';
 
-export class MetricBuilderService extends Service {
+export class MetricTransportBuilderService extends Service {
     private isMetricEnabled: boolean;
-    private metricService: MetricService;
+    private metricTransport: MetricTransport;
 
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
@@ -18,20 +20,20 @@ export class MetricBuilderService extends Service {
         this.isMetricEnabled = config.has('multivest.metrics.enabled')
             ? config.get('multivest.metrics.enabled')
             : false;
-        this.metricService = null;
+        this.metricTransport = null;
     }
 
     public getServiceId(): string {
         return 'metric.builder.service';
     }
 
-    public getMetricService(): MetricService {
+    public getMetricTransport(): MetricTransport {
         if (this.isMetricEnabled) {
-            this.metricService = this.pluginManager.getServiceByClass(MetricStubService) as MetricStubService;
+            this.metricTransport = new MetricStubTransport();
         }
         
-        if (this.metricService) {
-            return this.metricService;
+        if (this.metricTransport) {
+            return this.metricTransport;
         }
 
         if (!config.has('multivest.metrics.type')) {
@@ -40,15 +42,14 @@ export class MetricBuilderService extends Service {
 
         const metricType = config.get<MetricTypes>('multivest.metrics.type');
         if (metricType === MetricTypes.CloudWatch) {
-            this.metricService = this.pluginManager.getServiceByClass(AwsMetricService) as AwsMetricService;
+            this.metricTransport = new AwsMetricTransport();
         } else if (metricType === MetricTypes.Prometheus) {
-            this.metricService =
-                this.pluginManager.getServiceByClass(PrometheusMetricService) as PrometheusMetricService;
+            this.metricTransport = new PrometheusMetricTransport();
         } else {
             logger.warn(`metrics are enabled but specified type is not supported: ${ metricType }`);
-            this.metricService = this.pluginManager.getServiceByClass(MetricStubService) as MetricStubService;
+            this.metricTransport = new MetricStubTransport();
         }
 
-        return this.metricService;
+        return this.metricTransport;
     }
 }

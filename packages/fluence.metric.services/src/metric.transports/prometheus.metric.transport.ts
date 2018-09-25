@@ -1,23 +1,19 @@
-import { Hashtable, PluginManager } from '@applicature-private/multivest.core';
+import { Hashtable } from '@applicature-private/multivest.core';
 import { Counter, Registry } from 'prom-client';
-import { MetricService } from './metric.service';
+import { CollectableMetricTransport } from './collectable.metric.transport';
 
-export class PrometheusMetricService extends MetricService {
+export class PrometheusMetricTransport extends CollectableMetricTransport {
     private metrics: Hashtable<Counter>;
     private registry: Registry;
 
-    constructor(pluginManager: PluginManager) {
-        super(pluginManager);
+    constructor() {
+        super();
 
         this.metrics = {};
         this.registry = new Registry();
     }
 
-    public getServiceId() {
-        return 'prometheus.metric.service';
-    }
-
-    public collectAndResetMetrics(): string {
+    public collectMetrics(): string {
         const collectedData = this.registry.metrics();
         this.registry.resetMetrics();
 
