@@ -37,7 +37,7 @@ export abstract class MetricService extends Service {
         name: string,
         value: number,
         timestamp: Date = new Date(),
-        dimensions: Hashtable<string>
+        dimensions?: Hashtable<string>
     ) {
         const defaultDimensions = {
             env: this.env,
