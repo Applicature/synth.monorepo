@@ -36,7 +36,7 @@ export abstract class Plugin<T> {
         }
     }
 
-    public registerDao<K extends Dao<any>>(daoClass: Constructable<K>): void {
+    public registerDao<DaoT extends Dao<any>>(daoClass: Constructable<DaoT>): void {
         this.daoClasses.push(daoClass);
     }
 
@@ -52,7 +52,7 @@ export abstract class Plugin<T> {
         return this.jobs;
     }
 
-    public registerService<K extends Service>(serviceClass: Constructable<K>): void {
+    public registerService<ServiceT extends Service>(serviceClass: Constructable<ServiceT>): void {
         this.serviceClasses.push(serviceClass);
     }
 

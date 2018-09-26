@@ -4,7 +4,6 @@ import { compile, registerHelper, registerPartial, SafeString, Utils } from 'han
 import { Service } from '../../entities/service';
 import { PluginManager } from '../../plugin.manager';
 import { Hashtable } from '../../structure';
-import HelperDelegate = Handlebars.HelperDelegate;
 
 function walkSync(parentDir: string, directory: string, filelist: Array<Array<string>>) {
     directory = directory || '';
@@ -43,7 +42,7 @@ export class TemplateService extends Service {
     }
 
     // because helpers could have any signature
-    public addHelper(helperId: string, fn: HelperDelegate) {
+    public addHelper(helperId: string, fn: () => void) {
         this.helpersRegistry[helperId] = fn;
     }
 
