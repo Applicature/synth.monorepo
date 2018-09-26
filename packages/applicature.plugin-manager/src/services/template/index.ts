@@ -1,6 +1,6 @@
 import { get as getConfig } from 'config';
 import * as fs from 'fs';
-import { compile, registerHelper, registerPartial, SafeString, Utils } from 'handlebars';
+import { compile, registerHelper, registerPartial, SafeString, Utils, HelperDelegate } from 'handlebars';
 import { Service } from '../../entities/service';
 import { PluginManager } from '../../plugin.manager';
 import { Hashtable } from '../../structure';
