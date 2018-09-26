@@ -1,23 +1,10 @@
 import { get as getConfig } from 'config';
 import * as fs from 'fs';
-import { compile, registerHelper, registerPartial, SafeString } from 'handlebars';
+import { compile, registerHelper, registerPartial, SafeString, Utils } from 'handlebars';
 import { Service } from '../../entities/service';
 import { PluginManager } from '../../plugin.manager';
 import { Hashtable } from '../../structure';
-import * as i18next from 'i18next';
-
-var resources = {
-    dev: { translation: { 'EMAIL_FAQ_BODY': 'User Name: {{username}}<br>User Email: {{email}}<br>Question: {{question}}' } },
-    en: { translation: { 'EMAIL_FAQ_BODY': 'User Name: {{username}}<br>User Email: {{email}}<br>Question: {{question}}' } },
-    'en-US': { translation: { 'EMAIL_FAQ_BODY': 'User Name: {{username}}<br>User Email: {{email}}<br>Question: {{question}}' } }
-};
-
-i18next.init({ resStore: resources });
-
-registerHelper('i18next', (key: string, question: any) => {
-    const result = i18next.t(key, {question});
-    return new SafeString(result);
-});
+import HelperDelegate = Handlebars.HelperDelegate;
 
 function walkSync(parentDir: string, directory: string, filelist: Array<Array<string>>) {
     directory = directory || '';
@@ -40,14 +27,15 @@ function walkSync(parentDir: string, directory: string, filelist: Array<Array<st
 
 export class TemplateService extends Service {
     private compiledTemplates: Hashtable<HandlebarsTemplateDelegate>;
-    // because helpers could have any signature
-    private helpersRegistry: Hashtable<Function>;
+    private templatesStrings: Hashtable<string>;
+    private helpersRegistry: Hashtable<HelperDelegate>;
 
     constructor(protected pluginManager: PluginManager) {
         super(pluginManager);
 
         this.compiledTemplates = {};
         this.helpersRegistry = {};
+        this.templatesStrings = {};
     }
 
     public getServiceId(): string {
@@ -55,7 +43,7 @@ export class TemplateService extends Service {
     }
 
     // because helpers could have any signature
-    public addHelper(helperId: string, fn: Function) {
+    public addHelper(helperId: string, fn: HelperDelegate) {
         this.helpersRegistry[helperId] = fn;
     }
 
@@ -90,6 +78,7 @@ export class TemplateService extends Service {
             const content = await this.getContent(file[0] + '/' +  file[1], file[2]);
             const compiledTemplate = compile(content);
             this.compiledTemplates[file[2]] = compiledTemplate;
+            this.templatesStrings[file[2]] = content;
         }
     }
 
@@ -97,8 +86,15 @@ export class TemplateService extends Service {
         return this.compiledTemplates[templateId](data);
     }
 
-    public renderFromString(template: string, data: Hashtable<any>): string {
+    public getTemplate(templateId: string): string {
+        return this.templatesStrings[templateId];
+    }
+
+    public renderFromString(template: string, data: Hashtable<any>, lng?: string): string {
         const compiledTemplate = compile(template);
+        if (lng) {
+            Utils.extend(data, {lng});
+        }
         return compiledTemplate(data);
     }
 
