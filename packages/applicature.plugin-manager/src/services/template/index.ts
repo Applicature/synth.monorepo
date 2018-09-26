@@ -1,6 +1,6 @@
 import { get as getConfig } from 'config';
 import * as fs from 'fs';
-import { compile, registerHelper, registerPartial } from 'handlebars';
+import { compile, HelperDelegate, registerHelper, registerPartial, SafeString, Utils} from 'handlebars';
 import { Service } from '../../entities/service';
 import { PluginManager } from '../../plugin.manager';
 import { Hashtable } from '../../structure';
@@ -26,14 +26,15 @@ function walkSync(parentDir: string, directory: string, filelist: Array<Array<st
 
 export class TemplateService extends Service {
     private compiledTemplates: Hashtable<HandlebarsTemplateDelegate>;
-    // because helpers could have any signature
-    private helpersRegistry: Hashtable<() => void>;
+    private templatesStrings: Hashtable<string>;
+    private helpersRegistry: Hashtable<HelperDelegate>;
 
     constructor(protected pluginManager: PluginManager) {
         super(pluginManager);
 
         this.compiledTemplates = {};
         this.helpersRegistry = {};
+        this.templatesStrings = {};
     }
 
     public getServiceId(): string {
@@ -74,10 +75,9 @@ export class TemplateService extends Service {
 
         for (const file of templatesFiles) {
             const content = await this.getContent(file[0] + '/' +  file[1], file[2]);
-
             const compiledTemplate = compile(content);
-
             this.compiledTemplates[file[2]] = compiledTemplate;
+            this.templatesStrings[file[2]] = content;
         }
     }
 
@@ -85,8 +85,15 @@ export class TemplateService extends Service {
         return this.compiledTemplates[templateId](data);
     }
 
-    public renderFromString(template: string, data: Hashtable<any>): string {
+    public getTemplate(templateId: string): string {
+        return this.templatesStrings[templateId];
+    }
+
+    public renderFromString(template: string, data: Hashtable<any>, lng?: string): string {
         const compiledTemplate = compile(template);
+        if (lng) {
+            Utils.extend(data, {lng});
+        }
         return compiledTemplate(data);
     }
 
