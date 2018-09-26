@@ -27,7 +27,7 @@ export abstract class MetricService extends Service {
 
     public collectMetrics(): any {
         if (this.transport instanceof CollectableMetricTransport) {
-            return this.transport.collectMetrics();
+            return this.transport.getCollectedMetrics();
         } else {
             return null;
         }

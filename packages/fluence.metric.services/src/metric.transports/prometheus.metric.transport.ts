@@ -13,7 +13,7 @@ export class PrometheusMetricTransport extends CollectableMetricTransport {
         this.registry = new Registry();
     }
 
-    public collectMetrics(): string {
+    public getCollectedMetrics(): string {
         const collectedData = this.registry.metrics();
         this.registry.resetMetrics();
 
