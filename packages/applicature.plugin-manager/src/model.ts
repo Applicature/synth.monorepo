@@ -1,3 +1,7 @@
+import {Constructable} from "./structure";
+import {Plugin} from "./plugin";
+
 export interface PluginOptions {
-    path: string;
+    path?: string;
+    pluginClass?: Constructable<Plugin<any>>;
 }
