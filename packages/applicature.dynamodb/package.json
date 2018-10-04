@@ -1,0 +1,93 @@
+{
+  "name": "multivest.dynamodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp build",
+    "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
+    "precommit": "npm run lint ; npm run test:coverage ; npm run test:security",
+    "test": "jest test/unit",
+    "test:coverage": "jest test/unit --coverage --collectCoverageFrom=*/**/*.ts",
+    "test:integration": "jest test/integration",
+    "test:ci": "jest test/unit --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts",
+    "test:security": "nsp check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://michael_applicature@bitbucket.org/michael_applicature/multivest.dynamodb.git"
+  },
+  "author": "Michael Sukhroukov <mikhail.sukhorukov@applicature.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/michael_applicature/multivest.dynamodb#readme",
+  "dependencies": {
+    "@applicature-private/multivest.core": "^2.0.4",
+    "aws-sdk": "^2.324.0",
+    "dynamodb": "^1.1.2",
+    "joi": "^13.7.0",
+    "uuid": "^3.3.2",
+    "winston": "^3.1.0"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "index.d.ts",
+    "index.js"
+  ],
+  "devDependencies": {
+    "@aws/dynamodb-data-mapper": "^0.7.3",
+    "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/config": "0.0.34",
+    "@types/jest": "^23.3.2",
+    "@types/joi": "^13.6.0",
+    "@types/node": "^10.11.2",
+    "@types/uuid": "^3.4.4",
+    "@types/winston": "^2.4.4",
+    "agenda": "^2.0.2",
+    "faker": "^4.1.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-tslint": "^8.1.3",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "jest-junit": "^5.1.0",
+    "jest-multi-test-result-processor": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "ts-jest": "^23.10.2",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.1"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/.*?\\.d\\.ts$"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover",
+      "cobertura"
+    ]
+  },
+  "moduleDirectories": [
+    "node_modules",
+    "bower_components",
+    "shared",
+    "@types"
+  ],
+  "jest-junit": {
+    "output": "./coverage/junit.xml"
+  }
+}
