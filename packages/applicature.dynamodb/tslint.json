@@ -5,14 +5,8 @@
     "interface-name": false,
     "no-trailing-whitespace": [true, "ignore-blank-lines"],
     "one-line": false,
-    "ordered-imports": false,
-    "forin": false,
-    "member-ordering": false,
-    "no-empty": false,
-    "member-access": false,
-    "curly": true,
-    "arrow-parens": false,
     "quotemark": [true, "single"],
+    "curly": false,
     "trailing-comma": [
       true,
       {
@@ -20,8 +14,6 @@
           "functions": "never"
         }
       }
-    ],
-    "semicolon": [true, "always", "ignore-bound-class-methods"],
-    "object-literal-sort-keys": false
+    ]
   }
 }

@@ -1,25 +1,20 @@
-import {
-  Constructable,
-  Dao,
-  MultivestError,
-  Plugin,
-  PluginManager
-} from '@applicature-private/multivest.core';
-import * as config from 'config';
+import { Plugin, PluginManager } from '@applicature-private/multivest.core';
 import * as logger from 'winston';
-import { Errors } from './errors';
-import { DynamoDBDao } from './dynamodb.dao';
-import { DynamoWrapperClient } from '../@types/dynamodb-wrapper';
+import { DynamoWrapperClient } from './dynamoClient';
 
 class DynamodbPlugin extends Plugin<any> {
   protected connection: any;
   protected connectionPromise: any;
-  protected options: object;
+  protected options: any;
 
   constructor(pluginManager: PluginManager) {
     super(pluginManager);
 
-    this.options = config.get('multivest.dynamodb');
+    this.options = {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      region: process.env.region || 'us-east-2',
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    };
   }
 
   public getPluginId() {
@@ -40,37 +35,9 @@ class DynamodbPlugin extends Plugin<any> {
     return this.connection;
   }
 
-  public addDao(DaoConstructor: Constructable<DynamoDBDao<any>>) {
-    const instance = new DaoConstructor(this.connection);
-
-    this.daos[instance.getDaoId()] = instance;
-  }
-
-  public getDaos() {
-    return this.connection
-      .get({
-        TableName: 'table',
-        Key: {}
-      })
-      .promise()
-      .then(() => this.daos);
-  }
-
-  public async getDao(daoId: string) {
-    const daos = await this.getDaos();
-    if (!daos[daoId]) {
-      throw new MultivestError(Errors.DAO_NOT_FOUND);
-    }
-    return daos[daoId];
-  }
-
   protected initConnection() {
-    const instance = new DynamoWrapperClient(config.get('multivest.dynamodb'));
+    const instance = new DynamoWrapperClient(this.options);
     return instance.setDaoModel();
-  }
-
-  protected invokeDao(DaoConstructor: Constructable<Dao<any>>) {
-    return new DaoConstructor(this.connection);
   }
 }
 

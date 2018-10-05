@@ -1,21 +1,16 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es6",
     "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
+    "declaration": true,
     "sourceMap": true,
     "rootDir": "./src",
     "outDir": "./dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "mapRoot": "./dist",
-    "declaration": true,
     "baseUrl": "./",
-    "paths": {
-      "dynamodb-wrapper": [
-        "@types/dynamodb-wrapper/index.ts"
-      ],
-    },
   }
 }

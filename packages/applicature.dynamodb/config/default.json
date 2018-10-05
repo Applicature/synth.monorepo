@@ -1,9 +1,0 @@
-{
-  "multivest": {
-    "dynamodb": {
-      ***REMOVED***,
-      "accessKeyId": "***REMOVED***",
-      "secretAccessKey": "***REMOVED***/74BIiT"
-    }
-  }
-}

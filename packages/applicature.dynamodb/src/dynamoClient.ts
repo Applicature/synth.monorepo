@@ -1,6 +1,6 @@
-import { DaoMapped } from './model';
-import { DynamoDB } from 'aws-sdk';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
+import { DynamoDB } from 'aws-sdk';
+import { DaoMapped } from './model';
 
 export class DynamoWrapperClient {
   protected client: any;
@@ -18,10 +18,7 @@ export class DynamoWrapperClient {
           readCapacityUnits: 5,
           writeCapacityUnits: 5
         })
-        .then(value => {
-          console.log('Created: ', value);
-        })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
       resolve(this.mapper);

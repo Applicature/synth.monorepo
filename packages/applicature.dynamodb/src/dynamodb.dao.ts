@@ -1,6 +1,7 @@
 import { Dao } from '@applicature-private/multivest.core';
-import { DynamoDB } from 'aws-sdk';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
+import { DynamoDB } from 'aws-sdk';
+import serialize from './utils';
 
 export abstract class DynamoDBDao<T> extends Dao<T> {
   protected connection: DynamoDB.DocumentClient;
@@ -15,14 +16,14 @@ export abstract class DynamoDBDao<T> extends Dao<T> {
   public create(needle: Partial<T>): Promise<any> {
     return new Promise((resolve, reject) => {
       return this.schema
-        .put(needle)
+        .put(serialize(needle))
         .then((value: any) => resolve(value))
         .catch((err: any) => reject(err));
     });
   }
 
   public async fill(needle: Array<Partial<T>>): Promise<Array<T>> {
-    const iterator = this.schema.batchPut(needle);
+    const iterator = this.schema.batchPut(serialize(needle));
     const products = await this.proccessAsyncIterator(iterator);
 
     return Promise.all(products);
@@ -31,7 +32,7 @@ export abstract class DynamoDBDao<T> extends Dao<T> {
   public get(query: Partial<T>): Promise<any> {
     return new Promise((resolve, reject) => {
       return this.schema
-        .get(query)
+        .get(serialize(query))
         .then((value: any) => resolve(value))
         .catch((err: any) => reject(err));
     });
@@ -40,14 +41,14 @@ export abstract class DynamoDBDao<T> extends Dao<T> {
   public async update(needle: Partial<T>): Promise<any> {
     return new Promise((resolve, reject) => {
       return this.schema
-        .update(needle)
+        .update(serialize(needle))
         .then((value: any) => resolve(value))
         .catch((err: any) => reject(err));
     });
   }
 
-  public async listGet(needle: Array<Partial<T>>): Promise<Array<T>> {
-    const iterator = this.schema.batchGet(needle);
+  public async list(needle: Array<Partial<T>> | Partial<T>): Promise<Array<T>> {
+    const iterator = this.schema.batchGet(serialize(needle));
     const products = await this.proccessAsyncIterator(iterator);
 
     return Promise.all(products);
@@ -56,7 +57,7 @@ export abstract class DynamoDBDao<T> extends Dao<T> {
   public async remove(needle: Partial<T>): Promise<any> {
     return new Promise((resolve, reject) => {
       return this.schema
-        .delete(needle)
+        .delete(serialize(needle))
         .then((value: any) => resolve(value))
         .catch((err: any) => reject(err));
     });
