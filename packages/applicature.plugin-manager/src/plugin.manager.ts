@@ -144,9 +144,15 @@ export class PluginManager {
                 logger.debug(`loading plugin ${pluginOptions.path}`);
 
                 try {
-                    const PluginClass = require(pluginOptions.path).Plugin;
-                    const PluginConstructor = PluginClass as Constructable<Plugin<any>>;
-                    const pluginInstance = new PluginConstructor(this);
+                    let pluginInstance;
+                    if (pluginOptions && pluginOptions.path) {
+                        const PluginClass = require(pluginOptions.path).Plugin;
+                        const PluginConstructor = PluginClass as Constructable<Plugin<any>>;
+                        pluginInstance = new PluginConstructor(this);
+                    } else if(pluginOptions && pluginOptions.pluginClass) {
+                        pluginInstance = new pluginOptions.pluginClass(this);
+                    }
+
                     this.plugins[pluginInstance.getPluginId()] = pluginInstance;
                 }
                 catch (error) {
