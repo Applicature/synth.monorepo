@@ -5,6 +5,7 @@ import * as config from 'config';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
+import {ValidationError} from 'express-validation';
 import * as helmet from 'helmet';
 import * as http from 'http';
 import * as methodOverride from 'method-override';
@@ -77,18 +78,20 @@ class WebPlugin extends Plugin<void> implements IWeb {
             error: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction,
         ) => {
             let status;
-
+            let message = error.message;
             if (error instanceof WebMultivestError) {
                 const webError = error as WebMultivestError;
-
                 status = webError.status;
             }
-            else {
+            else if (error instanceof ValidationError) {
+                message = 'VALIDATION_ERROR';
+                status = 400;
+            } else {
                 status = 500;
             }
 
             res.status(status).json({
-                message: error.message,
+                message,
                 stack: config.get('env') && config.get('env') === 'test' ? error.stack : null,
             });
         });
