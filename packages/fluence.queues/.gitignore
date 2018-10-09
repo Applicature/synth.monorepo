@@ -65,3 +65,7 @@ typings/
 
 # vs code folder
 .vscode
+
+/.history
+/dist
+/test-reports

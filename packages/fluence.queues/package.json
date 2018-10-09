@@ -1,59 +1,102 @@
 {
-  "name": "@applicature/queue-service",
-  "version": "1.0.0",
+  "name": "@applicature-private/queue-service",
+  "version": "1.0.0-beta.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm run build-ts && npm run tslint",
-    "watch-node": "nodemon dist/index.js",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
-    "test": "mocha -r ts-node/register test/**/*.test.ts --ui qunit --exit",
-    "test:ci": "nyc npm run test -- --reporter mocha-junit-reporter --reporter-options mochaFile=./coverage/junit.xml ",
-    "test:watch": "mocha -r ts-node/register test/**/*.test.ts --ui qunit --exit --watch --watch-extensions ts",
-    "build-ts": "tsc  --declaration",
-    "watch-ts": "tsc -w  --declaration",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "copy-static-assets": "ts-node copyStaticAssets.ts",
-    "debug": "npm run build && npm run watch-debug",
-    "serve-debug": "nodemon --inspect dist/server.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
-    "nsp": "nsp check ."
+    "build": "gulp clean && gulp build",
+    "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
+    "precommit": "npm run lint ; npm run test:ci",
+    "test": "jest test/unit",
+    "test:integration": "jest test/integration --forceExit --runInBand",
+    "test:ci": "jest --coverage --forceExit --runInBand",
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_TOKEN",
+    "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
-  "author": "",
+  "author": "Andrew Zubko",
   "license": "ISC",
-  "devDependencies": {
-    "@types/aws-sdk": "^2.7.0",
-    "@types/mocha": "^5.0.0",
-    "@types/node": "^10.1.2",
-    "chai": "^4.1.2",
-    "concurrently": "^3.5.1",
-    "mocha": "^5.2.0",
-    "mocha-junit-reporter": "^1.17.0",
-    "nodemon": "^1.15.1",
-    "nsp": "^3.1.0",
-    "nyc": "^11.6.0",
-    "shelljs": "^0.8.1",
-    "source-map-support": "^0.5.4",
-    "supertest": "^3.0.0",
-    "ts-node": "^4.0.2",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.2"
-  },
   "dependencies": {
-    "aws-sdk": "^2.291.0"
+    "@applicature-private/multivest.core": "^2.1.0-beta.0",
+    "@google-cloud/pubsub": "^0.20.1",
+    "aws-sdk": "^2.319.0",
+    "config": "^1.31.0",
+    "winston": "^2.4.4"
   },
-  "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
+  "devDependencies": {
+    "@types/agenda": "^2.0.3",
+    "@types/config": "0.0.33",
+    "@types/jest": "^23.3.2",
+    "@types/lodash": "^4.14.116",
+    "@types/node": "^8.10.11",
+    "@types/winston": "^2.4.4",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.3",
+    "gulp-tslint": "^8.1.2",
+    "gulp-typescript": "^3.2.3",
+    "jest": "^21.2.1",
+    "jest-junit": "^3.7.0",
+    "jest-multi-test-result-processor": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "nsp": "^3.1.0",
+    "sonarqube-scanner": "^2.1.0",
+    "source-map-support": "^0.5.5",
+    "ts-jest": "^21.2.4",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.8.3"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "index.d.ts",
+    "index.js"
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.ts"
     ],
-    "exclude": [
-      "**/*.d.ts"
+    "testEnvironment": "node",
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
+    "testResultsProcessor": "jest-multi-test-result-processor",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
     ],
-    "reporter": [
-      "cobertura",
-      "html"
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/.*?\\.d\\.ts$",
+      "<rootDir>/.*?\\.mock\\.ts$"
     ],
-    "all": true
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover",
+      "cobertura"
+    ]
+  },
+  "jest-multi-test-result-processor": {
+    "processors": [
+      "jest-junit",
+      "jest-sonar-reporter"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "./test-reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
+  "jest-junit": {
+    "output": "./test-reports/junit.xml"
   }
 }
