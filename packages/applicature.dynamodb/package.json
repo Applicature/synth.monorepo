@@ -24,6 +24,7 @@
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
     "aws-sdk": "^2.328.0",
+    "config": "^2.0.1",
     "dynamodb": "^1.1.2",
     "joi": "^13.7.0",
     "uuid": "^3.3.2",

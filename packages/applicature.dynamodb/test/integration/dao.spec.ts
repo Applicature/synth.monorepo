@@ -1,7 +1,7 @@
 import { PluginManager } from '@applicature-private/multivest.core';
-import { DaoMock } from '../../src/dao.mock';
 import { Plugin as DynamodbPlugin } from '../../src/dynamodb.plugin';
 import { DaoMapped } from '../../src/model';
+import { DaoMock } from '../mock/dao.mock';
 
 describe('dao data accessing', () => {
   let dao: any;
@@ -13,7 +13,7 @@ describe('dao data accessing', () => {
   });
 
   it('should insert and get a record', async () => {
-    const formattedValue = Object.assign(new DaoMapped(), {
+    const formattedValue = {
       clientId: 'qwe',
       projectId: 'id',
       blockchainId: 'id',
@@ -29,19 +29,17 @@ describe('dao data accessing', () => {
       refId: 'id',
       eventId: 'id',
       params: {}
-    });
+    };
     const result = await dao.create(formattedValue);
-    const got = await dao.get(
-      Object.assign(new DaoMapped(), {
-        clientId: 'qwe'
-      })
-    );
+    const got = await dao.get({
+      clientId: 'qwe'
+    });
     expect(result.clientId).toEqual(got.clientId);
   });
 
   it('should insert and get several records', async () => {
     const formattedValue = [
-      Object.assign(new DaoMapped(), {
+      {
         clientId: 'i3d',
         projectId: 'id',
         blockchainId: 'id',
@@ -57,8 +55,8 @@ describe('dao data accessing', () => {
         refId: 'id',
         eventId: 'id',
         params: 5
-      }),
-      Object.assign(new DaoMapped(), {
+      },
+      {
         clientId: 'id2',
         projectId: 'id',
         blockchainId: 'id',
@@ -74,35 +72,28 @@ describe('dao data accessing', () => {
         refId: 'id',
         eventId: 'id',
         params: 5
-      })
+      }
     ];
     const result = await dao.fill(formattedValue);
 
-    const got = await dao.list([
-      Object.assign(new DaoMapped(), { clientId: 'i3d' }),
-      Object.assign(new DaoMapped(), { clientId: 'id2' })
-    ]);
+    const got = await dao.list([{ clientId: 'i3d' }, { clientId: 'id2' }]);
     expect(got.length).toEqual(2);
   });
 
   it('should modify existing record', async () => {
-    const gotBefore = await dao.get(
-      Object.assign(new DaoMapped(), {
-        clientId: 'id2'
-      })
-    );
+    const gotBefore = await dao.get({
+      clientId: 'id2'
+    });
     gotBefore.blockTime = 10;
     await dao.update(gotBefore);
-    const gotAfter = await dao.get(
-      Object.assign(new DaoMapped(), {
-        clientId: 'id2'
-      })
-    );
+    const gotAfter = await dao.get({
+      clientId: 'id2'
+    });
     expect(gotAfter.blockTime).toEqual(10);
   });
 
   it('should remove single record', async () => {
-    const formattedValue = Object.assign(new DaoMapped(), {
+    const formattedValue = {
       clientId: 'qwe',
       projectId: 'id',
       blockchainId: 'id',
@@ -118,19 +109,15 @@ describe('dao data accessing', () => {
       refId: 'id',
       eventId: 'id',
       params: {}
-    });
+    };
     const result = await dao.create(formattedValue);
-    await dao.remove(
-      Object.assign(new DaoMapped(), {
-        clientId: 'qwe'
-      })
-    );
+    await dao.remove({
+      clientId: 'qwe'
+    });
     try {
-      const list = await dao.get(
-        Object.assign(new DaoMapped(), {
-          clientId: 'qwe'
-        })
-      );
+      const list = await dao.get({
+        clientId: 'qwe'
+      });
     } catch (err) {
       expect(result.length).toBeUndefined();
     }

@@ -1,4 +1,4 @@
-import { DynamoDBDao } from './dynamodb.dao';
+import { DynamoDBDao } from '../../src/dynamodb.dao';
 
 export interface DaoMockScheme {
   field: string;

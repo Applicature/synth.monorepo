@@ -1,4 +1,5 @@
 import { Plugin, PluginManager } from '@applicature-private/multivest.core';
+import * as config from 'config';
 import * as logger from 'winston';
 import { DynamoWrapperClient } from './dynamoClient';
 
@@ -10,11 +11,7 @@ class DynamodbPlugin extends Plugin<any> {
   constructor(pluginManager: PluginManager) {
     super(pluginManager);
 
-    this.options = {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      region: process.env.region || 'us-east-2',
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    };
+    this.options = config.get('multivest.dynamodb');
   }
 
   public getPluginId() {
