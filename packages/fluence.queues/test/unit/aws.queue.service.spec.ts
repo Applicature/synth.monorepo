@@ -1,4 +1,4 @@
-import AwsQueueService from '../../src/services/aws.queue.service';
+import { AwsQueueService } from '../../src/services/aws.queue.service';
 import { AwsQueueAttributes, AwsReceiveAttributes } from '../../src/types';
 import { SqsMock } from '../mock';
 
