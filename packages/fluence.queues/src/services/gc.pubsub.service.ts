@@ -10,7 +10,6 @@ import { QueueService } from './queue.service';
 // https://cloud.google.com/nodejs/docs/reference/pubsub/0.20.x/PubSub
 // https://cloud.google.com/nodejs/docs/reference/pubsub/0.20.x/v1.PublisherClient
 // https://cloud.google.com/nodejs/docs/reference/pubsub/0.20.x/v1.SubscriberClient
-
 export class GcPubsubService extends QueueService {
     private publisher: any;
     private subscriber: any;
