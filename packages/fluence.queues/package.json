@@ -14,7 +14,7 @@
     "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
   "author": "Andrew Zubko",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "dependencies": {
     "@applicature-private/multivest.core": "^2.1.0-beta.0",
     "@google-cloud/pubsub": "^0.20.1",

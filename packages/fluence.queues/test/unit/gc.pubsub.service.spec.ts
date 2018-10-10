@@ -1,5 +1,6 @@
-import { GcPubsubService } from '../../src';
+import { GcPubsubService, Errors } from '../../src';
 import { GcPublisherMock, GcSubscriberMock, publisherProjectIdMock, subscriberProjectIdMock } from '../mock';
+import { MultivestError } from '@applicature-private/multivest.core';
 
 describe('gc.pubsub.service spec', () => {
     let service: GcPubsubService;
@@ -61,16 +62,12 @@ describe('gc.pubsub.service spec', () => {
     });
 
     it('receiveMessage() should transfer correct params', async () => {
-        const queueName = 'queueName';
-        const subscriptionName = 'subscriptionName';
-
-        await service.receiveMessage(queueName, subscriptionName, null);
-
-        expect(GcSubscriberMock.createSubscription).toHaveBeenCalledWith({
-            name: publisherProjectIdMock + subscriptionName,
-            topic: publisherProjectIdMock + queueName
-        });
-        expect(GcSubscriberMock.createSubscription).toHaveBeenCalledTimes(1);
+        try {
+            await service.receiveMessage();
+        } catch (ex) {
+            expect(ex).toBeInstanceOf(MultivestError);
+            expect(ex.message).toEqual(Errors.GC_PUBSUB_METHOD_NOT_SUPPORTED);
+        }
     });
 
     it('createSubscription() should transfer correct params', async () => {

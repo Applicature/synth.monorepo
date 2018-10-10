@@ -1,11 +1,15 @@
 import { Service } from '@applicature-private/multivest.core';
-import { Message } from '../types';
+import { Message, Queue } from '../types';
 
 export abstract class QueueService extends Service {
-    public abstract receiveMessage(...args: Array<any>): Promise<any>;
-    public abstract sendMessage(...args: Array<any>): Promise<any>;
+    public abstract receiveMessage(queueUniqueTag: string): Promise<Message>;
 
-    public abstract createQueue(...args: Array<any>): Promise<any>;
-    public abstract listQueues(...args: Array<any>): Promise<any>;
-    public abstract deleteQueue(...args: Array<any>): Promise<any>;
+    /** Returns message's ID */
+    public abstract sendMessage(queueUniqueTag: string, data: any): Promise<string>;
+
+    /** Creates queue and returns `queueUniqueTag` */
+    public abstract createQueue(queueName: string): Promise<Queue>;
+
+    public abstract listQueues(filterQuery?: string): Promise<Array<Queue>>;
+    public abstract deleteQueue(queueUniqueTag: string): Promise<void>;
 }

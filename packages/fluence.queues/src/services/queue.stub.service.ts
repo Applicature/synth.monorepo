@@ -5,23 +5,22 @@ export class QueueStubService extends QueueService {
         return 'queue.stub.service';
     }
 
-    public createQueue(): Promise<void> {
+    public receiveMessage(queueUniqueTag: string): Promise<any> {
         return Promise.resolve();
     }
 
-    public deleteQueue(): Promise<void> {
+    public sendMessage(queueUniqueTag: string, data: any): Promise<any> {
         return Promise.resolve();
     }
 
-    public listQueues(): Promise<void> {
+    public createQueue(queueName: string): Promise<any> {
         return Promise.resolve();
     }
 
-    public sendMessage(): Promise<void> {
+    public listQueues(filterQuery?: string): Promise<any> {
         return Promise.resolve();
     }
-
-    public receiveMessage(): Promise<void> {
+    public deleteQueue(queueUniqueTag: string): Promise<void> {
         return Promise.resolve();
     }
 }
