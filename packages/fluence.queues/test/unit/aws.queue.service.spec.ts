@@ -50,11 +50,9 @@ describe('aws.queue.service spec', () => {
     it('listQueues() should transfer correct params', async () => {
         const namePrefix = 'namePrefix';
 
-        await service.listQueues(namePrefix);
+        await service.listQueues();
 
-        expect(SqsMock.listQueues).toHaveBeenCalledWith({
-            QueueNamePrefix: namePrefix,
-        });
+        expect(SqsMock.listQueues).toHaveBeenCalledWith();
         expect(SqsMock.listQueues).toHaveBeenCalledTimes(1);
     });
 

@@ -20,13 +20,14 @@
     "@google-cloud/pubsub": "^0.20.1",
     "aws-sdk": "^2.319.0",
     "config": "^1.31.0",
+    "lodash": "^4.17.11",
     "winston": "^2.4.4"
   },
   "devDependencies": {
     "@types/agenda": "^2.0.3",
     "@types/config": "0.0.33",
     "@types/jest": "^23.3.2",
-    "@types/lodash": "^4.14.116",
+    "@types/lodash": "^4.14.117",
     "@types/node": "^8.10.11",
     "@types/winston": "^2.4.4",
     "gulp": "^3.9.1",

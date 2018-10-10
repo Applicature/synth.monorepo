@@ -87,7 +87,7 @@ export class AwsQueueService extends QueueService {
         }
     }
 
-    public async createQueue(name: string): Promise<Queue> {
+    public async createQueue(queueName: string): Promise<Queue> {
         if (!this.sqs) {
             logger.error(
                 'Settings for sqs was not found. Service was not inited. '
@@ -98,14 +98,14 @@ export class AwsQueueService extends QueueService {
         }
 
         const params = {
-            QueueName: name,
+            QueueName: queueName,
         } as SQS.CreateQueueRequest;
 
         try {
             const response = await this.sqs.createQueue(params).promise();
 
             return {
-                name,
+                name: queueName,
                 uniqueTag: response.QueueUrl
             };
         } catch (ex) {
@@ -133,7 +133,7 @@ export class AwsQueueService extends QueueService {
         }
     }
 
-    public async getQueueUrl(name: string, queueOwnerAwsAccountId?: string): Promise<string> {
+    public async getQueueUrl(queueName: string, queueOwnerAwsAccountId?: string): Promise<string> {
         if (!this.sqs) {
             logger.error(
                 'Settings for sqs was not found. Service was not inited. '
@@ -144,7 +144,7 @@ export class AwsQueueService extends QueueService {
         }
 
         const params = {
-            QueueName: name,
+            QueueName: queueName,
         } as SQS.GetQueueUrlRequest;
 
         if (queueOwnerAwsAccountId) {
@@ -161,7 +161,7 @@ export class AwsQueueService extends QueueService {
         }
     }
 
-    public async listQueues(namePrefix: string): Promise<Array<Queue>> {
+    public async listQueues(): Promise<Array<Queue>> {
         if (!this.sqs) {
             logger.error(
                 'Settings for sqs was not found. Service was not inited. '
@@ -171,12 +171,8 @@ export class AwsQueueService extends QueueService {
             throw new MultivestError(Errors.AWS_SQS_SETTINGS_WAS_NOT_SPECIFIED);
         }
 
-        const params = {
-            QueueNamePrefix: namePrefix,
-        } as SQS.ListQueuesRequest;
-
         try {
-            const response = await this.sqs.listQueues(params).promise();
+            const response = await this.sqs.listQueues().promise();
 
             return response.QueueUrls.map((url) => ({ uniqueTag: url } as Queue));
         } catch (ex) {

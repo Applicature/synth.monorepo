@@ -10,6 +10,6 @@ export abstract class QueueService extends Service {
     /** Creates queue and returns `queueUniqueTag` */
     public abstract createQueue(queueName: string): Promise<Queue>;
 
-    public abstract listQueues(filterQuery?: string): Promise<Array<Queue>>;
+    public abstract listQueues(): Promise<Array<Queue>>;
     public abstract deleteQueue(queueUniqueTag: string): Promise<void>;
 }

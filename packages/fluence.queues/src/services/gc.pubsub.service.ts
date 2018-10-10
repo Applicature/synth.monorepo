@@ -1,7 +1,8 @@
-import { MultivestError, PluginManager } from '@applicature-private/multivest.core';
+import { Hashtable, MultivestError, PluginManager } from '@applicature-private/multivest.core';
 // NOTICE: definitions are in progress https://github.com/googleapis/google-cloud-node/issues/952
 import * as PubSub from '@google-cloud/pubsub';
 import * as config from 'config';
+import { get } from 'lodash';
 import * as logger from 'winston';
 import { Errors } from '../errors';
 import { Message, Queue } from '../types';
@@ -15,6 +16,8 @@ export class GcPubsubService extends QueueService {
     private publisher: any;
     private subscriber: any;
 
+    private subscriptionsNamesMap: Hashtable<{ name: string, subscription: any }>;
+
     constructor(pluginManager: PluginManager) {
         super(pluginManager);
 
@@ -27,6 +30,8 @@ export class GcPubsubService extends QueueService {
                 const subscriberCfg = config.get('gc.pubsub.subscriber');
                 this.subscriber = new PubSub.v1.SubscriberClient(subscriberCfg);
             }
+
+            this.subscriptionsNamesMap = {};
         }
     }
     
@@ -34,7 +39,7 @@ export class GcPubsubService extends QueueService {
         return 'gc.pubsub.service';
     }
 
-    public async createQueue(name: string): Promise<Queue> {
+    public async createQueue(topicName: string): Promise<Queue> {
         if (!this.publisher) {
             logger.error(
                 'Settings for pubsub publisher was not found. Service was not inited. '
@@ -46,7 +51,7 @@ export class GcPubsubService extends QueueService {
 
         const projectId = await this.getPublisherProjectId();
         const params = {
-            name: this.publisher.topicPath(projectId, name)
+            name: this.publisher.topicPath(projectId, topicName)
         };
 
         try {
@@ -82,12 +87,12 @@ export class GcPubsubService extends QueueService {
             const response = await this.publisher.listTopics(params);
             return (response[0] || []).map((topic: any) => ({ name: topic.name, uniqueTag: topic.name } as Queue));
         } catch (ex) {
-            logger.error(`Cant create queue. Reason: ${ ex.message }`);
+            logger.error(`Cant get list of queues. Reason: ${ ex.message }`);
             throw new Error(Errors.GC_PUBSUB_LIST_TOPIC_FAILED);
         }
     }
 
-    public async deleteQueue(name: string): Promise<void> {
+    public async deleteQueue(topicName: string): Promise<void> {
         if (!this.publisher) {
             logger.error(
                 'Settings for pubsub publisher was not found. Service was not inited. '
@@ -100,18 +105,18 @@ export class GcPubsubService extends QueueService {
         const projectId = await this.getPublisherProjectId();
 
         const params = {
-            topic: this.publisher.topicPath(projectId, name)
+            topic: this.publisher.topicPath(projectId, topicName)
         };
 
         try {
             await this.publisher.deleteTopic(params);
         } catch (ex) {
-            logger.error(`Cant create queue. Reason: ${ ex.message }`);
+            logger.error(`Cant delete queue. Reason: ${ ex.message }`);
             throw new Error(Errors.GC_PUBSUB_DELETE_TOPIC_FAILED);
         }
     }
 
-    public async sendMessage(queueName: string, data: any): Promise<string> {
+    public async sendMessage(topicName: string, data: any): Promise<string> {
         if (!this.publisher) {
             logger.error(
                 'Settings for pubsub publisher was not found. Service was not inited. '
@@ -124,7 +129,7 @@ export class GcPubsubService extends QueueService {
         const projectId = await this.getPublisherProjectId();
         const params = {
             messages: [ { data } ],
-            topic: this.publisher.topicPath(projectId, queueName),
+            topic: this.publisher.topicPath(projectId, topicName),
         };
 
         try {
@@ -132,21 +137,56 @@ export class GcPubsubService extends QueueService {
             const messageId = response[0];
             return messageId;
         } catch (ex) {
-            logger.error(`Cant create queue. Reason: ${ ex.message }`);
-            throw new Error(Errors.GC_PUBSUB_DELETE_TOPIC_FAILED);
+            logger.error(`Cant send message. Reason: ${ ex.message }`);
+            throw new Error(Errors.GC_PUBSUB_SEND_MESSAGE_FAILED);
         }
     }
 
-    public async receiveMessage(): Promise<Message> {
-        logger.warn('Method `receiveMessage` is invalid for GC PubSub. instead use `createSubscription`');
-        throw new MultivestError(Errors.GC_PUBSUB_METHOD_NOT_SUPPORTED);
+    public async receiveMessage(topicName: string): Promise<Message> {
+        if (!this.publisher) {
+            logger.error(
+                'Settings for pubsub publisher was not found. Service was not inited. '
+                + 'Specify settings in `gc.pubsub.publisher` for using service'
+            );
+
+            throw new MultivestError(Errors.GC_PUBSUB_PUBLISHER_SETTINGS_WAS_NOT_SPECIFIED);
+        }
+
+        if (!this.subscriptionsNamesMap[topicName]) {
+            const subscriptionName = this.generateSubscriptionName(topicName);
+            const subscription = await this.createSubscription(topicName, subscriptionName);
+            this.subscriptionsNamesMap[topicName] = { name: subscriptionName, subscription };
+        }
+
+        const subscriptionData = this.subscriptionsNamesMap[topicName];
+
+        const projectId = this.getSubscriberProjectId();
+        try {
+            const response = await this.subscriber.pull({
+                maxMessages: 1,
+                subscription: this.subscriber.subscriptionPath(projectId, subscriptionData.name),
+            });
+
+            const message = get(response, 'received_messages[0].message', null);
+
+            if (message) {
+                return {
+                    data: message.data,
+                    messageId: message.message_id
+                };
+            }
+
+            return null;
+        } catch (ex) {
+            logger.error(`Cant pull messages from queue. Reason: ${ ex.message }`);
+            throw new Error(Errors.GC_PUBSUB_RECEIVING_MESSAGE_FAILED);
+        }
     }
 
     public async createSubscription(
-        queueName: string,
+        topicName: string,
         subscriptionName: string,
-        handler: (msg: any) => void
-    ): Promise<void> {
+    ): Promise<any> {
         if (!this.subscriber) {
             logger.error(
                 'Settings for pubsub subscriber was not found. Service was not inited. '
@@ -159,16 +199,15 @@ export class GcPubsubService extends QueueService {
         const projectId = await this.getSubscriberProjectId();
         const params = {
             name: this.subscriber.subscriptionPath(projectId, subscriptionName),
-            topic: this.subscriber.topicPath(projectId, queueName),
+            topic: this.subscriber.topicPath(projectId, topicName),
         };
 
         try {
             const response = await this.subscriber.createSubscription(params);
-            const subscription = response[0];
-            subscription.on('message', handler);
+            return response[0];
         } catch (ex) {
             logger.error(`Cant create queue. Reason: ${ ex.message }`);
-            throw new Error(Errors.GC_PUBSUB_RECEIVING_MESSAGE_FAILED);
+            throw new MultivestError(Errors.GC_PUBSUB_CREATE_SUBSCRIPTION_FAILED);
         }
     }
 
@@ -194,5 +233,9 @@ export class GcPubsubService extends QueueService {
                 }
             });
         });
+    }
+
+    private generateSubscriptionName(topicName: string) {
+        return `${ topicName }-subscription`;
     }
 }

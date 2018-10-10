@@ -9,4 +9,5 @@ export const GcSubscriberMock = {
     topicPath: jest.fn().mockImplementation((projectId: string, topicName: string) => projectId + topicName),
 
     createSubscription: jest.fn().mockImplementation(() => [ { on: (): undefined => undefined } ]),
+    pull:  jest.fn().mockImplementation(() => ({}))
 } as any;
