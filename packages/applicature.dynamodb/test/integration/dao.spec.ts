@@ -1,6 +1,5 @@
 import { PluginManager } from '@applicature-private/multivest.core';
 import { Plugin as DynamodbPlugin } from '../../src/dynamodb.plugin';
-import { DaoMapped } from '../../src/model';
 import { DaoMock } from '../mock/dao.mock';
 
 describe('dao data accessing', () => {

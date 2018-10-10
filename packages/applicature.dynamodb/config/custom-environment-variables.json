@@ -2,14 +2,8 @@
   "multivest": {
     "dynamodb": {
       ***REMOVED***,
-      "accessKeyId": {
-        "__name": "AWS_ACCESS_KEY_ID",
-        "__format": "json"
-      },
-      "secretAccessKey": {
-        "__name": "AWS_SECRET_ACCESS_KEY",
-        "__format": "json"
-      }
+      "accessKeyId": "AWS_ACCESS_KEY_ID",
+      "secretAccessKey": "AWS_SECRET_ACCESS_KEY"
     }
   }
 }
