@@ -6,15 +6,13 @@ export abstract class Job {
     public enabled: boolean = false;
     public inited: boolean = false;
     protected jobExecutor: Agenda;
-    protected job: Agenda.Job;
 
     constructor(protected pluginManager: PluginManager) {
         this.jobExecutor = this.pluginManager.getJobExecutor();
         this.jobExecutor.define(this.getJobId(), async (job, done) => {
-            this.job = job;
             logger.info(`${this.getJobId()}: executing job`);
 
-            if (! this.inited) {
+            if (!this.inited) {
                 logger.warn(`${this.getJobId()}: was not initialized, initializing`);
 
                 await this.init();
@@ -25,7 +23,7 @@ export abstract class Job {
             }
 
             try {
-                await this.execute();
+                await this.execute(job);
                 logger.info(`Job '${this.getJobId()}' executed`);
                 done();
             }
@@ -37,15 +35,15 @@ export abstract class Job {
     }
 
     public abstract getJobId(): string;
-    public abstract async execute(): Promise<void>;
+    public abstract async execute(job: Agenda.Job): Promise<void>;
 
     public async init(): Promise<void> {
         this.inited = true;
     }
 
-    public async touch(): Promise<any> {
+    public async touch(job: Agenda.Job): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.job.touch((err) => {
+            job.touch((err) => {
                 if (err) {
                     reject(err);
                 } else {

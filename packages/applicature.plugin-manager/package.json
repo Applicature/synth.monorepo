@@ -1,6 +1,6 @@
 {
   "name": "@applicature-private/multivest.core",
-  "version": "2.0.6",
+  "version": "2.1.0",
   "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
@@ -28,7 +28,9 @@
   "dependencies": {
     "config": "^1.30.0",
     "handlebars": "^4.0.11",
-    "winston": "^2.4.1"
+    "minimatch": "^3.0.4",
+    "i18n": "^0.8.3",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "@types/agenda": "^1.0.2",
