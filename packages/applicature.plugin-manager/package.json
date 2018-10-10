@@ -26,12 +26,10 @@
     "url": "git@bitbucket.org:applicature/multivest.plugin-manager.git"
   },
   "dependencies": {
-    "agenda": "^1.0.3",
-    "bignumber.js": "^6.0.0",
     "config": "^1.30.0",
     "handlebars": "^4.0.11",
-    "i18n": "^0.8.3",
     "minimatch": "^3.0.4",
+    "i18n": "^0.8.3",
     "winston": "^3.1.0"
   },
   "devDependencies": {
@@ -42,6 +40,8 @@
     "@types/mongodb": "^2.2.20",
     "@types/node": "^8.10.1",
     "@types/winston": "^2.3.8",
+    "agenda": "^1.0.3",
+    "bignumber.js": "^6.0.0",
     "gulp": "^4.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-sourcemaps": "^2.6.4",
