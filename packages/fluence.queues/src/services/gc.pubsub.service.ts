@@ -67,6 +67,10 @@ export class GcPubsubService extends QueueService {
         }
     }
 
+    public getUniqueTag(topicName: string) {
+        return Promise.resolve(topicName);
+    }
+
     public async listQueues(): Promise<Array<Queue>> {
         if (!this.publisher) {
             logger.error(

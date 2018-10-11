@@ -133,7 +133,7 @@ export class AwsQueueService extends QueueService {
         }
     }
 
-    public async getQueueUrl(queueName: string, queueOwnerAwsAccountId?: string): Promise<string> {
+    public async getUniqueTag(queueName: string): Promise<string> {
         if (!this.sqs) {
             logger.error(
                 'Settings for sqs was not found. Service was not inited. '
@@ -146,10 +146,6 @@ export class AwsQueueService extends QueueService {
         const params = {
             QueueName: queueName,
         } as SQS.GetQueueUrlRequest;
-
-        if (queueOwnerAwsAccountId) {
-            params.QueueOwnerAWSAccountId = queueOwnerAwsAccountId;
-        }
 
         try {
             const response = await this.sqs.getQueueUrl(params).promise();

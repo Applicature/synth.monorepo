@@ -6,7 +6,7 @@ export class QueueStubService extends QueueService {
     }
 
     public receiveMessage(queueUniqueTag: string): Promise<any> {
-        return Promise.resolve();
+        return Promise.resolve({});
     }
 
     public sendMessage(queueUniqueTag: string, data: any): Promise<any> {
@@ -14,12 +14,17 @@ export class QueueStubService extends QueueService {
     }
 
     public createQueue(queueName: string): Promise<any> {
-        return Promise.resolve();
+        return Promise.resolve({});
+    }
+
+    public getUniqueTag(queueName: string): Promise<any> {
+        return Promise.resolve(queueName);
     }
 
     public listQueues(filterQuery?: string): Promise<any> {
-        return Promise.resolve();
+        return Promise.resolve([]);
     }
+
     public deleteQueue(queueUniqueTag: string): Promise<void> {
         return Promise.resolve();
     }
