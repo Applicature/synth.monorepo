@@ -36,10 +36,10 @@ describe('aws.queue.service spec', () => {
         expect(SqsMock.deleteQueue).toHaveBeenCalledTimes(1);
     });
 
-    it('getQueueUrl() should transfer correct params', async () => {
+    it('getUniqueTag() should transfer correct params', async () => {
         const queueName = 'queueName';
 
-        await service.getQueueUrl(queueName);
+        await service.getUniqueTag(queueName);
 
         expect(SqsMock.getQueueUrl).toHaveBeenCalledWith({
             QueueName: queueName,
