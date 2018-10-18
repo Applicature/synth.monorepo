@@ -1,6 +1,6 @@
+import { WebhookDaoActionItem } from '@applicature-private/multivest.services.blockchain';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
 import { DynamoDB } from 'aws-sdk';
-import { WebhookDaoActionItem } from './model';
 
 export interface DaoModelOptions {
     readCapacityUnits: number;
