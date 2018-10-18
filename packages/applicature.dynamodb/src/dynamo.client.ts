@@ -2,6 +2,11 @@ import { DataMapper } from '@aws/dynamodb-data-mapper';
 import { DynamoDB } from 'aws-sdk';
 import { WebhookDaoActionItem } from './model';
 
+export interface DaoModelOptions {
+    readCapacityUnits: number;
+    writeCapacityUnits: number;
+}
+
 export class DynamoWrapperClient {
     protected client: DynamoDB;
     protected mapper: DataMapper;
@@ -11,11 +16,8 @@ export class DynamoWrapperClient {
         this.mapper = new DataMapper({ client: this.client });
     }
 
-    public setDaoModel(): DataMapper {
-        this.mapper.ensureTableExists(WebhookDaoActionItem, {
-            readCapacityUnits: 5,
-            writeCapacityUnits: 5
-        });
+    public setDaoModel(options: DaoModelOptions): DataMapper {
+        this.mapper.ensureTableExists(WebhookDaoActionItem, options);
         return this.mapper;
     }
 }

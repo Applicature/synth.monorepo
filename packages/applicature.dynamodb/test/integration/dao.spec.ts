@@ -7,7 +7,10 @@ describe('dao data accessing', () => {
 
     beforeAll(async () => {
         const pluginManager = new PluginManager([]);
-        const plugin = new DynamodbPlugin(pluginManager);
+        const plugin = new DynamodbPlugin(pluginManager, {
+            readCapacityUnits: 5,
+            writeCapacityUnits: 5
+        });
         dao = new DaoMock(await plugin.init());
     });
 
@@ -73,7 +76,7 @@ describe('dao data accessing', () => {
                 params: 5
             }
         ];
-        const result = await dao.fill(formattedValue);
+        await dao.fill(formattedValue);
 
         const got = await dao.list([{ clientId: 'i3d' }, { clientId: 'id2' }]);
         expect(got.length).toEqual(2);
@@ -114,7 +117,7 @@ describe('dao data accessing', () => {
             clientId: 'qwe'
         });
         try {
-            const list = await dao.get({
+            await dao.get({
                 clientId: 'qwe'
             });
         } catch (err) {
