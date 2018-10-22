@@ -1,8 +1,6 @@
-import {EmailOpts} from '@applicature/multivest.email.abstract/src/service';
+import { PluginManager } from '@applicature-private/multivest.core';
+import { EmailOpts, EmailService } from '@applicature-private/multivest.email.abstract';
 import * as nodemailer from 'nodemailer';
-
-import { PluginManager } from '@applicature/multivest.core';
-import { EmailService } from '@applicature/multivest.email.abstract';
 
 import * as config from 'config';
 
@@ -31,8 +29,8 @@ export class NodeMailerEmailService extends EmailService {
             inReplyTo: emailOpts.inReplyTo,
             replyTo: emailOpts.replyTo,
 
-            messageId: emailOpts.messageId,
             attachments: emailOpts.attachments,
+            messageId: emailOpts.messageId,
         };
 
         return new Promise((resolve, reject) => {
