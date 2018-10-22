@@ -1,9 +1,16 @@
 
-export class PluginManagerMock {
+import {PluginManager} from '../../src/plugin.manager';
 
-    constructor(private defineFunction: () => void) {}
+export class PluginManagerMock extends PluginManager{
+    constructor(private defineFunction: () => void) {
+        super();
+    }
 
-    public getJobExecutor() {
+    public getJobExecutor(): any {
         return { define: this.defineFunction };
     }
+    public setJobExecutor() {
+        return { define: this.defineFunction };
+    }
+
 }

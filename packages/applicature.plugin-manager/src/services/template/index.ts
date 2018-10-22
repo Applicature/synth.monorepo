@@ -1,6 +1,6 @@
 import { get as getConfig } from 'config';
 import * as fs from 'fs';
-import { compile, registerHelper, registerPartial } from 'handlebars';
+import { compile, HelperDelegate, registerHelper, registerPartial, SafeString, Utils} from 'handlebars';
 import { Service } from '../../entities/service';
 import { PluginManager } from '../../plugin.manager';
 import { Hashtable } from '../../structure';
@@ -26,14 +26,15 @@ function walkSync(parentDir: string, directory: string, filelist: Array<Array<st
 
 export class TemplateService extends Service {
     private compiledTemplates: Hashtable<HandlebarsTemplateDelegate>;
-    // because helpers could have any signature
-    private helpersRegistry: Hashtable<Function>;
+    private templatesStrings: Hashtable<string>;
+    private helpersRegistry: Hashtable<HelperDelegate>;
 
     constructor(protected pluginManager: PluginManager) {
         super(pluginManager);
 
         this.compiledTemplates = {};
         this.helpersRegistry = {};
+        this.templatesStrings = {};
     }
 
     public getServiceId(): string {
@@ -41,7 +42,7 @@ export class TemplateService extends Service {
     }
 
     // because helpers could have any signature
-    public addHelper(helperId: string, fn: Function) {
+    public addHelper(helperId: string, fn: () => void) {
         this.helpersRegistry[helperId] = fn;
     }
 
@@ -74,10 +75,9 @@ export class TemplateService extends Service {
 
         for (const file of templatesFiles) {
             const content = await this.getContent(file[0] + '/' +  file[1], file[2]);
-
             const compiledTemplate = compile(content);
-
             this.compiledTemplates[file[2]] = compiledTemplate;
+            this.templatesStrings[file[2]] = content;
         }
     }
 
@@ -85,13 +85,19 @@ export class TemplateService extends Service {
         return this.compiledTemplates[templateId](data);
     }
 
-    public renderFromString(template: string, data: Hashtable<any>): string {
-        const compiledTemplate = compile(template);
+    public getTemplate(templateId: string): string {
+        return this.templatesStrings[templateId];
+    }
 
+    public renderFromString(template: string, data: Hashtable<any>, lng?: string): string {
+        const compiledTemplate = compile(template);
+        if (lng) {
+            Utils.extend(data, {lng});
+        }
         return compiledTemplate(data);
     }
 
-    private getContent(parentDir: string, name: string) {
+    private getContent(parentDir: string, name: string): Promise<string> {
         return new Promise((resolve, reject) => {
             fs.readFile(parentDir  + name, 'utf-8',
                 (error: Error, source: string) => {

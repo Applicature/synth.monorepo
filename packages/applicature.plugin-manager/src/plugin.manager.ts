@@ -8,7 +8,6 @@ import { Constructable, Hashtable } from './structure';
 
 export class PluginManager {
     private jobExecutor: Agenda = null;
-
     private plugins: Hashtable<Plugin<any>> = {};
     private jobs: Hashtable<Job> = {};
     private daos: Hashtable<Dao<any>> = {};
@@ -46,14 +45,14 @@ export class PluginManager {
         return this.daos[daoId];
     }
 
-    public getDaoByClass<T>(expectedDao: typeof Dao): Dao<T> {
+    public getDaoByClass<T extends Dao<any>>(expectedDao: Constructable<T>): T {
         const ids = Object.keys(this.daos);
 
         for (const id of ids) {
             const dao = this.daos[id];
 
             if (dao instanceof expectedDao) {
-                return dao;
+                return dao as T;
             }
         }
 
@@ -68,14 +67,14 @@ export class PluginManager {
         return this.services[serviceId];
     }
 
-    public getServiceByClass(expectedService: typeof Service): Service {
+    public getServiceByClass<T extends Service>(expectedService: Constructable<T>): T {
         const ids = Object.keys(this.services);
 
         for (const id of ids) {
             const service = this.services[id];
 
             if (service instanceof expectedService) {
-                return service;
+                return service as T;
             }
         }
 
@@ -92,6 +91,22 @@ export class PluginManager {
 
             if (service instanceof expectedService) {
                 filteredServices.push(service);
+            }
+        }
+
+        return filteredServices;
+    }
+
+    public getServicesTableByClass(expectedService: typeof Service): Hashtable<Service> {
+        const ids = Object.keys(this.services);
+
+        const filteredServices: Hashtable<Service> = {};
+
+        for (const id of ids) {
+            const service = this.services[id];
+
+            if (service instanceof expectedService) {
+                filteredServices[id] = service;
             }
         }
 
@@ -129,9 +144,15 @@ export class PluginManager {
                 logger.debug(`loading plugin ${pluginOptions.path}`);
 
                 try {
-                    const PluginClass = require(pluginOptions.path).Plugin;
-                    const PluginConstructor = PluginClass as Constructable<Plugin<any>>;
-                    const pluginInstance = new PluginConstructor(this);
+                    let pluginInstance;
+                    if (pluginOptions && pluginOptions.path) {
+                        const PluginClass = require(pluginOptions.path).Plugin;
+                        const PluginConstructor = PluginClass as Constructable<Plugin<any>>;
+                        pluginInstance = new PluginConstructor(this);
+                    } else if(pluginOptions && pluginOptions.pluginClass) {
+                        pluginInstance = new pluginOptions.pluginClass(this);
+                    }
+
                     this.plugins[pluginInstance.getPluginId()] = pluginInstance;
                 }
                 catch (error) {
@@ -145,7 +166,7 @@ export class PluginManager {
 
             for (const pluginId of pluginIds) {
                 const plugin = this.plugins[pluginId];
-                await plugin.init();
+                await plugin.init(); // registerService(), servicesClasses.push(ServiceConstructor)
             }
 
             for (const pluginId of pluginIds) {
@@ -153,12 +174,12 @@ export class PluginManager {
                 plugin.invoke();
                 Object.assign(this.jobs, plugin.getJobs());
                 Object.assign(this.daos, await plugin.getDaos());
-                Object.assign(this.services, plugin.getServices());
+                Object.assign(this.services, plugin.getServices()); // authService, userService ...
             }
 
             for (const serviceId in this.services) {
                 if (this.services[serviceId]) {
-                    await this.services[serviceId].init();
+                    await this.services[serviceId].init(); // userService calls authService
                 }
             }
 

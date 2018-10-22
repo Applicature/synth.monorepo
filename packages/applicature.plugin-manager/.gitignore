@@ -10,3 +10,5 @@ npm-debug.log
 coverage
 .nyc_output
 dist
+test-reports
+/.history
