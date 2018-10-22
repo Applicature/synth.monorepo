@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature/multivest.core';
+import { Hashtable } from '@applicature-private/multivest.core';
 import {NextFunction, Request, Response} from 'express';
 import * as validation from 'express-validation';
 import * as joi from 'joi';
@@ -9,7 +9,7 @@ export class ValidationDefaultService extends ValidationAbstractService {
     private validationSchemas: Hashtable<any> = {};
 
     public getServiceId() {
-        return 'validation.default.service';
+        return 'validation.service';
     }
     public setValidation(actionId: string, scheme: any): any {
         return this.validationSchemas[actionId] = scheme;

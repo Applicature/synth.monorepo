@@ -1,18 +1,19 @@
-import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/multivest.core';
+import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature-private/multivest.core';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as config from 'config';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
+import {ValidationError} from 'express-validation';
 import * as helmet from 'helmet';
 import * as http from 'http';
 import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
+import * as passport from 'passport';
 import * as raven from 'raven';
 import * as swStats from 'swagger-stats';
 import * as winston from 'winston';
-import * as passport from 'passport';
 import {WebMultivestError} from './error';
 import {IExpressMiddlewareConfig, IWeb} from './pluginInterface';
 import {ValidationDefaultService as ValidationService} from './services/validation/validation.default.service';
@@ -32,6 +33,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         compress: {},
         cookieParser: {},
         cors: {},
+        enableCompressing: false,
         helmet: {},
         methodOverride: '',
         morgan: 'common',
@@ -56,14 +58,14 @@ class WebPlugin extends Plugin<void> implements IWeb {
     }
 
     public init(): void {
-        this.serviceClasses.push(ValidationService);
+        this.registerService(ValidationService);
     }
 
     public getApp(): express.Application {
         return this.app;
     }
 
-    public startServer() {
+    public setupServer() {
         this.middleware();
 
         this.toEnable.forEach((id: string) => {
@@ -75,42 +77,56 @@ class WebPlugin extends Plugin<void> implements IWeb {
             error: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction,
         ) => {
             let status;
-            let details;
 
             if (error instanceof MultivestError) {
                 winston.warn(error.message, error.stack);
             }
-            else if (this.sentry) {
+
+            if (this.sentry) {
                 raven.errorHandler()(error, req, res, next);
             }
+
+            let message = error.message;
+            let details;
 
             if (error instanceof WebMultivestError) {
                 const webError = error as WebMultivestError;
 
+                message = error.message;
                 status = webError.status;
+            }
+            else if (error instanceof ValidationError) {
+                message = 'VALIDATION_ERROR';
+                status = 400;
+
+                details = error.errors;
+            }
+            else if (error.message === 'validation error') {
+                message = 'VALIDATION_ERROR';
+                status = 400;
+
+                details = error.errors;
             }
             else {
                 status = 500;
             }
 
-            if (error.message === 'validation error') {
-                if (Array.isArray(error.errors)) {
-                    if (error.errors[0].field[0] === 'email') {
-                        details = 'INVALID_EMAIL';
-                    }
-                }
+            let showStack = false;
 
-                error.message = 'VALIDATION_ERROR';
-                status = 400;
+            if (['test', 'development'].indexOf(config.get('env')) >= 0) {
+                showStack = true;
             }
 
             res.status(status).json({
+                message,
                 details,
-                message: error.message,
-                stack: config.get('env') && config.get('env') === 'development' ? error.stack : null,
+                stack: showStack ? error.stack : null,
             });
         });
+    }
 
+    public startServer() {
+        this.setupServer();
         // listen on port listen.port
         const listenPort = config.get('multivest.web.port');
         this.httpServer = new http.Server(this.app);
@@ -146,7 +162,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
         this.app.use(bodyParser.json(this.pluginMiddlewareConfig.bodyParserJson));
         this.app.use(bodyParser.urlencoded(this.pluginMiddlewareConfig.bodyParserUrlencoded));
         this.app.use(cookieParser(this.pluginMiddlewareConfig.cookieParser));
-        this.app.use(compress(this.pluginMiddlewareConfig.compress));
+        if (this.pluginMiddlewareConfig.enableCompressing) {
+            this.app.use(compress(this.pluginMiddlewareConfig.compress));
+        }
         this.app.use(methodOverride(this.pluginMiddlewareConfig.methodOverride));
         // secure apps by setting various HTTP headers
         this.app.use(helmet(this.pluginMiddlewareConfig.helmet));

@@ -1,6 +1,6 @@
 {
-  "name": "@applicature/multivest.web",
-  "version": "0.1.24",
+  "name": "@applicature-private/multivest.web",
+  "version": "0.2.8",
   "private": false,
   "license": "UNLICENSED",
   "description": "Web Plugin",
@@ -13,11 +13,11 @@
   "scripts": {
     "build": "gulp clean && gulp build",
     "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
-    "precommit": "npm run lint ; npm run test:coverage ; npm run test:security",
+    "precommit": "npm run lint ; npm run test:ci",
     "test": "jest",
-    "test:coverage": "jest --coverage --collectCoverageFrom=*/**/*.ts",
-    "test:ci": "jest --coverage --testResultsProcessor ./node_modules/jest-junit --collectCoverageFrom=*/**/*.ts",
-    "test:security": "nsp check"
+    "test:ci": "jest --coverage --forceExit",
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_TOKEN",
+    "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,7 +26,7 @@
     "url": "git@bitbucket.org:applicature/multivest.web.git"
   },
   "dependencies": {
-    "@applicature/multivest.core": "^0.1.0",
+    "@applicature-private/multivest.core": "^2.0.3",
     "@types/morgan": "^1.7.35",
     "compression": "^1.7.1",
     "config": "^1.29.2",
@@ -37,12 +37,17 @@
     "helmet": "^3.9.0",
     "hoek": "5.0.3",
     "http-status": "^1.0.1",
+    "istanbul-api": "1.2.2",
+    "istanbul-reports": "1.1.4",
+    "jest-multi-test-result-processor": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
     "joi": "13.1.1",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "raven": "^2.4.2",
-    "swagger-stats": "0.95.2",
+    "sonarqube-scanner": "^2.1.0",
+    "swagger-stats": "^0.95.6",
     "winston": "^2.1.1"
   },
   "devDependencies": {
@@ -57,6 +62,7 @@
     "@types/joi": "^13.0.5",
     "@types/method-override": "0.0.31",
     "@types/node": "^8.5.2",
+    "@types/passport": "^0.4.6",
     "@types/raven": "^2.1.6",
     "@types/winston": "^2.3.7",
     "gulp": "^3.9.1",
@@ -79,6 +85,15 @@
     "src/"
   ],
   "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
+    "testResultsProcessor": "jest-multi-test-result-processor",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -86,9 +101,7 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
-      "js",
-      "json",
-      "node"
+      "js"
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/.*?\\.d\\.ts$",
@@ -102,7 +115,18 @@
       "cobertura"
     ]
   },
+  "jest-multi-test-result-processor": {
+    "processors": [
+      "jest-junit",
+      "jest-sonar-reporter"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "./test-reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
   "jest-junit": {
-    "output": "./coverage/junit.xml"
+    "output": "./test-reports/junit.xml"
   }
 }

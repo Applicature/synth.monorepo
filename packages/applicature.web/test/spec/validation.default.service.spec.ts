@@ -1,4 +1,5 @@
 import * as joi from 'joi';
+import {ValidationAbstractService} from '../../src/services/validation/validation.abstract.service';
 import {ValidationDefaultService as ValidationService} from '../../src/services/validation/validation.default.service';
 import {PluginManagerMock} from '../mocks/plugin.manager';
 import {ValidationError} from 'express-validation';
@@ -9,7 +10,7 @@ describe('AuthDefaultService', () => {
 
     test('get serviceId', () => {
         const validationService = new ValidationService(pluginManager);
-        expect(validationService.getServiceId()).toBe('validation.default.service');
+        expect(validationService.getServiceId()).toBe('validation.service');
     });
     test('Should create new validation scheme', () => {
         const service = new ValidationService(pluginManager);
@@ -30,6 +31,12 @@ describe('AuthDefaultService', () => {
         const result = service.validate(actionId, {username: 'user', password: 'password'});
         expect(result).toHaveProperty('error', null);
     });
+
+    test('Should be instanceof ValidationAbstractService', () => {
+        const service = new ValidationService(pluginManager);
+        expect(service instanceof ValidationAbstractService).toBeTruthy();
+    });
+
     test('request validation', () => {
         const service = new ValidationService(pluginManager);
         const actionId = 'createUser';
