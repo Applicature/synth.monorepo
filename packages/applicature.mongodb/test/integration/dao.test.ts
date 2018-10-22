@@ -1,4 +1,4 @@
-import { MultivestError, PluginManager } from '@applicature/multivest.core';
+import { MultivestError, PluginManager } from '@applicature-private/multivest.core';
 import { Db, MongoClient } from 'mongodb';
 import { MongoDBDao } from '../../index';
 import { TestDao, TestDaoScheme } from '../mock/dao.mock';
@@ -23,7 +23,7 @@ describe('dao data accessing', () => {
             { field: 3, type: '1' },
             { field: 4, type: '2' },
         ]);
-        const result = await dao.aggregate([
+        const result = await dao.aggregateRaw([
             {
                 $group: { _id: '$type', total: { $sum: '$field ' } }
             }
