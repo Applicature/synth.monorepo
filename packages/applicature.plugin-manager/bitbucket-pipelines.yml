@@ -17,8 +17,6 @@ pipelines:
           - npm run test:ci
           - npm run test:lint
           - npm run test:sonar
-        services:
-          - mongo
     - step:
         name: Deploy beta version
         trigger: manual
@@ -44,13 +42,8 @@ pipelines:
           - npm run test:lint
           - npm run test:sonar
           - npm publish
-        services:
-          - mongo
 
 definitions:
   caches:
     sonarcloud: ~/.sonar/cache
     node-scanner: ~/.sonar/native-sonar-scanner
-  services:
-    mongo:
-      image: mongo
