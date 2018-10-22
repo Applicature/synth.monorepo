@@ -1,13 +1,13 @@
-import { EmailService } from '../../src/service';
+import { EmailOpts, EmailService } from '../../src/service';
 
-export class TestService extends EmailService<string> {
+export class TestService extends EmailService {
     public getServiceId(): string {
         return 'test.service';
     }
 
-    public async sendEmail(message: string, addressee: string): Promise<any> {
+    public async sendEmail(opts: EmailOpts): Promise<any> {
         return {
-            addressee: addressee,
+            addresses: opts.to,
             status: 'sent',
         };
     }
