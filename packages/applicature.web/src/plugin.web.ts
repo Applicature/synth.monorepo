@@ -10,18 +10,21 @@ import * as helmet from 'helmet';
 import * as http from 'http';
 import * as methodOverride from 'method-override';
 import * as morgan from 'morgan';
+import * as passport from 'passport';
 import * as raven from 'raven';
+import * as swStats from 'swagger-stats';
 import * as winston from 'winston';
 import {WebMultivestError} from './error';
 import {IExpressMiddlewareConfig, IWeb} from './pluginInterface';
-import {ValidationService} from './services/validation/validation.default.service';
-
+import {ValidationDefaultService as ValidationService} from './services/validation/validation.default.service';
+// onst apiSpec = require('swagger.json');
 class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
     private app: express.Application;
     private httpServer: http.Server;
     private routes: Hashtable<express.Router> = {};
     private toEnable: Array<string> = [];
+    private sentry: string;
     private pluginMiddlewareConfig: IExpressMiddlewareConfig = {
         bodyParserJson: {
             limit: '50mb',
@@ -34,7 +37,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
         helmet: {},
         methodOverride: '',
         morgan: 'common',
-        raven: '',
+        swStats: null,
     };
 
     constructor(pluginManager: PluginManager) {
@@ -69,30 +72,55 @@ class WebPlugin extends Plugin<void> implements IWeb {
             this.app.use(this.getRouter(id));
         });
 
-        if (this.pluginMiddlewareConfig.raven) {
-            this.app.use(raven.errorHandler());
-        }
-
         // error handler, send stacktrace only during development
         this.app.use((
             error: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction,
         ) => {
             let status;
+
+            if (error instanceof MultivestError) {
+                winston.warn(error.message, error.stack);
+            }
+
+            if (this.sentry) {
+                raven.errorHandler()(error, req, res, next);
+            }
+
             let message = error.message;
+            let details;
+
             if (error instanceof WebMultivestError) {
                 const webError = error as WebMultivestError;
+
+                message = error.message;
                 status = webError.status;
             }
             else if (error instanceof ValidationError) {
                 message = 'VALIDATION_ERROR';
                 status = 400;
-            } else {
+
+                details = error.errors;
+            }
+            else if (error.message === 'validation error') {
+                message = 'VALIDATION_ERROR';
+                status = 400;
+
+                details = error.errors;
+            }
+            else {
                 status = 500;
+            }
+
+            let showStack = false;
+
+            if (['test', 'development'].indexOf(config.get('env')) >= 0) {
+                showStack = true;
             }
 
             res.status(status).json({
                 message,
-                stack: config.get('env') && config.get('env') === 'test' ? error.stack : null,
+                details,
+                stack: showStack ? error.stack : null,
             });
         });
     }
@@ -117,6 +145,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
     // Configure Express middleware.
     private mergeMiddlewareConfiguration(): void {
+        if (config.has('logger.sentry')) {
+            this.sentry = config.get('logger.sentry');
+        }
         this.pluginMiddlewareConfig = {
             ...this.pluginMiddlewareConfig,
             ...config.get('multivest.web.middleware'),
@@ -141,10 +172,22 @@ class WebPlugin extends Plugin<void> implements IWeb {
         // enable CORS - Cross Origin Resource Sharing
         this.app.use(cors(this.pluginMiddlewareConfig.cors));
 
-        if (this.pluginMiddlewareConfig.raven) {
-            raven.config(this.pluginMiddlewareConfig.raven);
-
+        if (this.sentry) {
+            raven.config(this.sentry).install();
             this.app.use(raven.requestHandler());
+        }
+        this.app.use(passport.initialize());
+        // this.app.use(passport.serialize());
+        if (this.pluginMiddlewareConfig.swStats) {
+            this.app.use(swStats.getMiddleware({
+                authentication: true,
+                onAuthenticate: (req: any, username: string, password: string) => {
+                    // simple check for username and password
+                    return((username === this.pluginMiddlewareConfig.swStats.username)
+                        && (password === this.pluginMiddlewareConfig.swStats.password));
+                },
+                uriPath: `${config.get('api.namespace')}${this.pluginMiddlewareConfig.swStats.urlPath}`,
+            }));
         }
     }
 }
