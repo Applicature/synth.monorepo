@@ -13,6 +13,9 @@ class DaoMapper {
     public clientId: string;
     @attribute()
     public projectId?: string;
+
+    @attribute()
+    public blockTime?: number;
 }
 
 // tslint:disable-next-line:max-classes-per-file

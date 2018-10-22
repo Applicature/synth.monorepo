@@ -62,6 +62,7 @@ describe('dao data accessing', () => {
         const gotAfter = await dao.get({
             clientId: 'id2'
         });
+
         expect(gotAfter.blockTime).toEqual(10);
     });
 
