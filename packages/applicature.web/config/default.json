@@ -1,0 +1,20 @@
+{
+  "multivest": {
+    "web": {
+      "middleware": {
+        "bodyParserJson": {
+          "limit": "100mb"
+        },
+        "swStats": {
+          ***REMOVED***,
+          "password": "***REMOVED***",
+          ***REMOVED***
+        }
+      },
+      "port": 3000
+    }
+  },
+  "api": {
+    "namespace": "/api"
+  }
+}

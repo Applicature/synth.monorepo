@@ -1,0 +1,12 @@
+{
+  "multivest": {
+    "web": {
+      "middleware": {
+        "bodyParserJson": {
+          "limit": "100m"
+        }
+      },
+      "port": 3000
+    }
+  }
+}

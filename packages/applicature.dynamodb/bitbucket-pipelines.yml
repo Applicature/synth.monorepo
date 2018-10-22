@@ -1,0 +1,34 @@
+image: node:carbon
+
+clone:
+  depth: full
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+          - sonarcloud
+          - node-scanner
+        script:
+          - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
+          - npm install
+          - npm run build
+          - npm run test:integration
+          - npm run test:lint
+          - npm run test:sonar
+    - step:
+        name: Deploy beta version
+        trigger: manual
+        caches:
+          - node
+        script:
+          - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
+          - npm install
+          - npm run build
+          - npm publish --tag beta
+
+definitions:
+  caches:
+    sonarcloud: ~/.sonar/cache
+    node-scanner: ~/.sonar/native-sonar-scanner

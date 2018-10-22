@@ -1,0 +1,2 @@
+# multivest.dynamodb
+

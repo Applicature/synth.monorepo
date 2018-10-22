@@ -1,0 +1,955 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "",
+    "version" : "1.0.0",
+    "title" : "Multivest PRO",
+    "termsOfService" : "",
+    "contact" : {
+      "email" : "andrew@applicature.com"
+    },
+    "license" : {
+      "name" : "UNLICENSED"
+    }
+  },
+  "basePath" : "/",
+  "paths" : {
+    "/auth" : {
+      "get" : {
+        "description" : "Get info about authenticated user",
+        "operationId" : "getAuthenticatedUser",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "User",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          }
+        }
+      },
+      "post" : {
+        "description" : "OneFactorAuthorization",
+        "operationId" : "login",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "UserProperties",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/UserDefaultSignIn"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Authorization Token Created",
+            "schema" : {
+              "$ref" : "#/definitions/Authorization"
+            }
+          }
+        }
+      }
+    },
+    "/user/restore-request" : {
+      "post" : {
+        "description" : "UserRestorePasswordRequest",
+        "operationId" : "UserRestorePasswordRequest",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "UserEmail",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/UserEmail"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Email Send"
+          }
+        }
+      }
+    },
+    "/user/restore" : {
+      "post" : {
+        "description" : "Set New Password",
+        "operationId" : "RestorePassword",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "SetPassword",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/SetPassword"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Password Changed"
+          }
+        }
+      }
+    },
+    "/user/activate" : {
+      "post" : {
+        "description" : "Confirm Email",
+        "operationId" : "ConfirmEmail",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Confirmation",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Confirmation"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User confirmed"
+          }
+        }
+      }
+    },
+    "/users" : {
+      "get" : {
+        "description" : "Get investors list",
+        "operationId" : "getUsers",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "search",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "statusFilter",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "CONFIRMED", "PENDING", "NOT_VERIFIED", "FAILED", "MANUAL_CHECKING" ]
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "sortField",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "asc", "desc" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "users",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/User"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "description" : "Sign Up",
+        "operationId" : "createUser",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "UserProperties",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "User created",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}" : {
+      "get" : {
+        "description" : "get authenticated user",
+        "operationId" : "getUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "users",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          }
+        }
+      },
+      "put" : {
+        "description" : "update user",
+        "operationId" : "updateUser",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PersonalInformation"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "user",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/status" : {
+      "put" : {
+        "description" : "update user status",
+        "operationId" : "updateUserStatus",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/UserStatus"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "operation succeed"
+          }
+        }
+      }
+    },
+    "/contributions" : {
+      "get" : {
+        "description" : "get contributions",
+        "operationId" : "getContributions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "contributions",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Contribution"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/faq" : {
+      "get" : {
+        "description" : "get faq",
+        "operationId" : "getFaq",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "faq list",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/FAQ"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "description" : "request answer for question",
+        "operationId" : "createFaq",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "204" : {
+            "description" : "operation succeed"
+          }
+        }
+      }
+    },
+    "/ico/stats" : {
+      "get" : {
+        "description" : "get ico stats",
+        "operationId" : "getIcoStats",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "get ico stats",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
+            }
+          }
+        }
+      }
+    },
+    "/ico/calc/{crypto}" : {
+      "get" : {
+        "description" : "get potential tokens",
+        "operationId" : "getPotentialTokens",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crypto",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "SPARK", "ETH", "BTC", "LTC", "USD" ]
+        }, {
+          "name" : "count",
+          "in" : "query",
+          "description" : "number of tokens",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "calculate potential tokens",
+            "schema" : {
+              "$ref" : "#/definitions/CalcTokens"
+            }
+          }
+        }
+      }
+    },
+    "/ico/contribute/{crypto}" : {
+      "get" : {
+        "description" : "check if user contributed since specific date",
+        "operationId" : "hasContributionSince",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crypto",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "ETH", "BTC", "LTC" ]
+        }, {
+          "name" : "since",
+          "in" : "query",
+          "description" : "date in ISO format",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "return contribution ids received after date",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "description" : "get contribution data",
+        "operationId" : "getContributionData",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crypto",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "ETH", "BTC", "LTC" ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "return contribution data",
+            "schema" : {
+              "$ref" : "#/definitions/ContributionData"
+            }
+          }
+        }
+      }
+    },
+    "/ico/stats/daily" : {
+      "get" : {
+        "description" : "get daily contributions stats",
+        "operationId" : "getContributionStats",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "return contribution stats",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_1"
+            }
+          }
+        }
+      }
+    },
+    "/ico/balance" : {
+      "get" : {
+        "description" : "get user's token balance",
+        "operationId" : "getCurrentUserBalance",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "return balance",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_2"
+            }
+          }
+        }
+      }
+    },
+    "/ico/balance/userId" : {
+      "get" : {
+        "description" : "get user's token balance by userId",
+        "operationId" : "getUserBalance",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "returns balance",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_3"
+            }
+          }
+        }
+      }
+    },
+    "/ico/referral/bonuses" : {
+      "post" : {
+        "description" : "get data for referral bonuses claiming",
+        "operationId" : "getReferralBonusesData",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "return data for referral bonuses claiming",
+            "schema" : {
+              "$ref" : "#/definitions/ContributionData"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Authorization" : {
+      "type" : "object",
+      "properties" : {
+        "Authorization" : {
+          "type" : "string",
+          "example" : "2v3quk4v34r3ytfv3quk4fyk34f8fq3oif3qofj8394fh"
+        }
+      },
+      "example" : {
+        "Authorization" : "2v3quk4v34r3ytfv3quk4fyk34f8fq3oif3qofj8394fh"
+      }
+    },
+    "User" : {
+      "type" : "object",
+      "properties" : {
+        "email" : {
+          "type" : "string",
+          "format" : "email",
+          "example" : "jon.doe@test.test"
+        },
+        "password" : {
+          "type" : "string",
+          "example" : "qwe123!@#"
+        },
+        "id" : {
+          "type" : "string"
+        },
+        "userAddress" : {
+          "type" : "string"
+        },
+        "role" : {
+          "type" : "string",
+          "enum" : [ "CLIENT", "ADMIN" ]
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "CONFIRMED", "PENDING", "NOT_VERIFIED", "FAILED", "MANUAL_CHECKING" ]
+        },
+        "balance" : {
+          "type" : "object",
+          "properties" : { }
+        },
+        "params" : {
+          "$ref" : "#/definitions/PersonalInformation"
+        }
+      },
+      "example" : {
+        "userAddress" : "userAddress",
+        "password" : "qwe123!@#",
+        "role" : "CLIENT",
+        "balance" : "{}",
+        "id" : "id",
+        "params" : {
+          "birthday" : "birthday",
+          "lastName" : "lastName",
+          "country" : "country",
+          "zipCode" : "zipCode",
+          "gender" : "gender",
+          "cryptoAddress" : "cryptoAddress",
+          "city" : "city",
+          "firstName" : "firstName",
+          "phone" : "phone",
+          "street" : "street",
+          "middleName" : "middleName",
+          "state" : "state",
+          "apartment" : "apartment"
+        },
+        "email" : "jon.doe@test.test",
+        "status" : "CONFIRMED"
+      }
+    },
+    "UserStatus" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "string",
+          "enum" : [ "CONFIRMED", "PENDING", "NOT_VERIFIED", "FAILED", "MANUAL_CHECKING" ]
+        }
+      },
+      "example" : {
+        "status" : "CONFIRMED"
+      }
+    },
+    "PersonalInformation" : {
+      "type" : "object",
+      "properties" : {
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "middleName" : {
+          "type" : "string"
+        },
+        "birthday" : {
+          "type" : "string"
+        },
+        "phone" : {
+          "type" : "string"
+        },
+        "gender" : {
+          "type" : "string"
+        },
+        "cryptoAddress" : {
+          "type" : "string"
+        },
+        "country" : {
+          "type" : "string"
+        },
+        "zipCode" : {
+          "type" : "string"
+        },
+        "city" : {
+          "type" : "string"
+        },
+        "state" : {
+          "type" : "string"
+        },
+        "street" : {
+          "type" : "string"
+        },
+        "apartment" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "birthday" : "birthday",
+        "lastName" : "lastName",
+        "country" : "country",
+        "zipCode" : "zipCode",
+        "gender" : "gender",
+        "cryptoAddress" : "cryptoAddress",
+        "city" : "city",
+        "firstName" : "firstName",
+        "phone" : "phone",
+        "street" : "street",
+        "middleName" : "middleName",
+        "state" : "state",
+        "apartment" : "apartment"
+      }
+    },
+    "UserDefaultSignIn" : {
+      "type" : "object",
+      "required" : [ "email", "password" ],
+      "properties" : {
+        "email" : {
+          "type" : "string",
+          "format" : "email",
+          "example" : "jon.doe@test.test"
+        },
+        "password" : {
+          "type" : "string",
+          "example" : "qwe123!@"
+        }
+      },
+      "example" : {
+        "password" : "qwe123!@",
+        "email" : "jon.doe@test.test"
+      }
+    },
+    "Contribution" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "uniqId" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "CONFIRMED", "PENDING", "NOT_VERIFIED", "FAILED", "MANUAL_CHECKING" ]
+        },
+        "ref" : {
+          "$ref" : "#/definitions/Contribution_ref"
+        }
+      },
+      "example" : {
+        "ref" : {
+          "userAddress" : "userAddress",
+          "symbol" : "symbol",
+          "amount" : 0.80082819046101150206595775671303272247314453125,
+          "blockchain" : "blockchain",
+          "params" : "{}",
+          "txHash" : "txHash"
+        },
+        "uniqId" : "uniqId",
+        "id" : "id",
+        "status" : "CONFIRMED"
+      }
+    },
+    "FAQ" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "title" : {
+          "type" : "string"
+        },
+        "question" : {
+          "type" : "string"
+        },
+        "author" : {
+          "type" : "string"
+        },
+        "answer" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "CONFIRMED", "PENDING", "REJECTED" ]
+        }
+      },
+      "example" : {
+        "question" : "question",
+        "answer" : "answer",
+        "author" : "author",
+        "id" : "id",
+        "title" : "title",
+        "status" : "CONFIRMED"
+      }
+    },
+    "CalcTokens" : {
+      "type" : "object",
+      "properties" : {
+        "tokens" : {
+          "type" : "number"
+        },
+        "eth" : {
+          "type" : "number"
+        },
+        "btc" : {
+          "type" : "number"
+        },
+        "ltc" : {
+          "type" : "number"
+        }
+      },
+      "example" : {
+        "btc" : 1.46581298050294517310021547018550336360931396484375,
+        "eth" : 6.02745618307040320615897144307382404804229736328125,
+        "tokens" : 0.80082819046101150206595775671303272247314453125,
+        "ltc" : 5.962133916683182377482808078639209270477294921875
+      }
+    },
+    "ContributionData" : {
+      "type" : "object",
+      "properties" : {
+        "address" : {
+          "type" : "string"
+        },
+        "data" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "address" : "address",
+        "data" : "data"
+      }
+    },
+    "UserEmail" : {
+      "type" : "object",
+      "properties" : {
+        "email" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "email" : "email"
+      }
+    },
+    "SetPassword" : {
+      "type" : "object",
+      "properties" : {
+        "password" : {
+          "type" : "string"
+        },
+        "token" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "password" : "password",
+        "token" : "token"
+      }
+    },
+    "Confirmation" : {
+      "type" : "object",
+      "properties" : {
+        "token" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "token" : "token"
+      }
+    },
+    "inline_response_200_tokensPrice" : {
+      "properties" : {
+        "eth" : {
+          "type" : "number"
+        },
+        "btc" : {
+          "type" : "number"
+        },
+        "ltc" : {
+          "type" : "number"
+        }
+      },
+      "example" : {
+        "btc" : 5.63737665663332876420099637471139430999755859375,
+        "eth" : 5.962133916683182377482808078639209270477294921875,
+        "ltc" : 2.3021358869347654518833223846741020679473876953125
+      }
+    },
+    "inline_response_200_collected" : {
+      "properties" : {
+        "eth" : {
+          "type" : "number"
+        },
+        "btc" : {
+          "type" : "number"
+        },
+        "ltc" : {
+          "type" : "number"
+        },
+        "spark" : {
+          "type" : "number"
+        }
+      },
+      "example" : {
+        "btc" : 9.301444243932575517419536481611430644989013671875,
+        "spark" : 2.027123023002321833274663731572218239307403564453125,
+        "eth" : 7.061401241503109105224211816675961017608642578125,
+        "ltc" : 3.61607674925191080461672754609026014804840087890625
+      }
+    },
+    "inline_response_200" : {
+      "properties" : {
+        "startTime" : {
+          "type" : "string"
+        },
+        "endTime" : {
+          "type" : "string"
+        },
+        "tokensSold" : {
+          "type" : "number"
+        },
+        "tokensSoldToday" : {
+          "type" : "number"
+        },
+        "tokensForSale" : {
+          "type" : "number"
+        },
+        "tokensPrice" : {
+          "$ref" : "#/definitions/inline_response_200_tokensPrice"
+        },
+        "collected" : {
+          "$ref" : "#/definitions/inline_response_200_collected"
+        }
+      },
+      "example" : {
+        "tokensForSale" : 1.46581298050294517310021547018550336360931396484375,
+        "tokensSold" : 0.80082819046101150206595775671303272247314453125,
+        "startTime" : "startTime",
+        "collected" : {
+          "btc" : 9.301444243932575517419536481611430644989013671875,
+          "spark" : 2.027123023002321833274663731572218239307403564453125,
+          "eth" : 7.061401241503109105224211816675961017608642578125,
+          "ltc" : 3.61607674925191080461672754609026014804840087890625
+        },
+        "endTime" : "endTime",
+        "tokensSoldToday" : 6.02745618307040320615897144307382404804229736328125,
+        "tokensPrice" : {
+          "btc" : 5.63737665663332876420099637471139430999755859375,
+          "eth" : 5.962133916683182377482808078639209270477294921875,
+          "ltc" : 2.3021358869347654518833223846741020679473876953125
+        }
+      }
+    },
+    "inline_response_200_1" : {
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "type" : "number"
+          }
+        },
+        "labels" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "example" : {
+        "data" : [ 0.80082819046101150206595775671303272247314453125, 0.80082819046101150206595775671303272247314453125 ],
+        "labels" : [ "labels", "labels" ]
+      }
+    },
+    "inline_response_200_2" : {
+      "properties" : {
+        "balance" : {
+          "type" : "string",
+          "example" : "47541571141704850930500"
+        },
+        "formattedBalance" : {
+          "type" : "string",
+          "example" : "47541.571141"
+        }
+      },
+      "example" : {
+        "balance" : "47541571141704850930500",
+        "formattedBalance" : "47541.571141"
+      }
+    },
+    "inline_response_200_3" : {
+      "properties" : {
+        "balance" : {
+          "$ref" : "#/definitions/inline_response_200_2"
+        }
+      },
+      "example" : {
+        "balance" : {
+          "balance" : "47541571141704850930500",
+          "formattedBalance" : "47541.571141"
+        }
+      }
+    },
+    "Contribution_ref" : {
+      "properties" : {
+        "blockchain" : {
+          "type" : "string"
+        },
+        "symbol" : {
+          "type" : "string"
+        },
+        "txHash" : {
+          "type" : "string"
+        },
+        "amount" : {
+          "type" : "number"
+        },
+        "params" : {
+          "type" : "object",
+          "properties" : { }
+        },
+        "userAddress" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "userAddress" : "userAddress",
+        "symbol" : "symbol",
+        "amount" : 0.80082819046101150206595775671303272247314453125,
+        "blockchain" : "blockchain",
+        "params" : "{}",
+        "txHash" : "txHash"
+      }
+    }
+  }
+}
