@@ -1,5 +1,6 @@
 import { attribute, hashKey, table } from '@aws/dynamodb-data-mapper-annotations';
 import { DynamoDBDao } from '../../src/dynamodb.dao';
+import {Dao} from '@applicature-private/multivest.core';
 
 export interface DaoMockScheme {
     clientId: string;
@@ -30,5 +31,9 @@ export class DaoMock extends DynamoDBDao<DaoMockScheme> {
 
     public getMapper() {
         return new DaoMapper();
+    }
+
+    public getMapperClass() {
+        return DaoMapper;
     }
 }

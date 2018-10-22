@@ -17,7 +17,7 @@ describe('dao data accessing', () => {
 
         const client = new AWS.DynamoDB(config.get('multivest.dynamodb'));
         mapper = new DataMapper({ client });
-        mapper.ensureTableExists(dao.getMapper(), {
+        mapper.ensureTableExists(dao.getMapperClass(), {
             readCapacityUnits: 5,
             writeCapacityUnits: 5
         });

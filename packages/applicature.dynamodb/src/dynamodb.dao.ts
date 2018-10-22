@@ -64,4 +64,5 @@ export abstract class DynamoDBDao<T> extends Dao<T> {
 
     public abstract getDefaultValue(): T;
     public abstract getMapper(): any;
+    public abstract getMapperClass(): any;
 }
