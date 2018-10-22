@@ -30,7 +30,7 @@ pipelines:
           - npm run build
           - npm publish --tag beta
   branches:
-    v2.dev:
+    master:
       - step:
           caches:
             - node
