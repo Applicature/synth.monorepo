@@ -1,4 +1,6 @@
 import { PluginManager } from '@applicature-private/multivest.core';
+import * as AWS from 'aws-sdk';
+import * as config from 'config';
 import { Plugin as DynamodbPlugin } from '../../src/dynamodb.plugin';
 import { DaoMock } from '../mock/dao.mock';
 
@@ -7,11 +9,34 @@ describe('dao data accessing', () => {
 
     beforeAll(async () => {
         const pluginManager = new PluginManager([]);
-        const plugin = new DynamodbPlugin(pluginManager, {
-            readCapacityUnits: 5,
-            writeCapacityUnits: 5
-        });
+        const plugin = new DynamodbPlugin(pluginManager);
         dao = new DaoMock(await plugin.init());
+        AWS.config.update(config.get('multivest.dynamodb'));
+    });
+
+    it('should create table', async () => {
+        const dynamo = new AWS.DynamoDB();
+
+        const params = {
+            TableName: 'Dao',
+            KeySchema: [{ AttributeName: 'year', KeyType: 'HASH' }, { AttributeName: 'title', KeyType: 'RANGE' }],
+            AttributeDefinitions: [
+                { AttributeName: 'year', AttributeType: 'N' },
+                { AttributeName: 'title', AttributeType: 'S' }
+            ],
+            ProvisionedThroughput: {
+                ReadCapacityUnits: 10,
+                WriteCapacityUnits: 10
+            }
+        };
+
+        dynamo.createTable(params, (err, data) => {
+            if (err) {
+                throw err;
+            } else {
+                expect(data).toBeTruthy();
+            }
+        });
     });
 
     it('should insert and get a record', async () => {

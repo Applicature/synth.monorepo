@@ -1,4 +1,3 @@
-import { WebhookDaoActionItem } from '@applicature-private/multivest.services.blockchain';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
 import { DynamoDB } from 'aws-sdk';
 
@@ -16,8 +15,7 @@ export class DynamoWrapperClient {
         this.mapper = new DataMapper({ client: this.client });
     }
 
-    public setDaoModel(options: DaoModelOptions): DataMapper {
-        this.mapper.ensureTableExists(WebhookDaoActionItem, options);
+    public getMapper(): DataMapper {
         return this.mapper;
     }
 }

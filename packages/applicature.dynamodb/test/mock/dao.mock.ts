@@ -16,4 +16,8 @@ export class DaoMock extends DynamoDBDao<DaoMockScheme> {
     public getDefaultValue() {
         return {} as DaoMockScheme;
     }
+
+    public getMapper() {
+        return {};
+    }
 }

@@ -1,19 +1,17 @@
 import { Plugin, PluginManager } from '@applicature-private/multivest.core';
 import * as config from 'config';
 import * as logger from 'winston';
-import { DaoModelOptions, DynamoWrapperClient } from './dynamo.client';
+import { DynamoWrapperClient } from './dynamo.client';
 
 class DynamodbPlugin extends Plugin<any> {
     protected connection: any;
     protected connectionPromise: any;
     protected options: object;
-    protected daoOptions: DaoModelOptions;
 
-    constructor(pluginManager: PluginManager, daoOptions: DaoModelOptions) {
+    constructor(pluginManager: PluginManager) {
         super(pluginManager);
 
         this.options = config.get('multivest.dynamodb');
-        this.daoOptions = daoOptions;
     }
 
     public getPluginId() {
@@ -24,7 +22,7 @@ class DynamodbPlugin extends Plugin<any> {
         if (this.connection) {
             return this.connection;
         }
-        this.connectionPromise = this.initConnection(this.daoOptions);
+        this.connectionPromise = this.initConnection();
         try {
             this.connection = await this.connectionPromise;
         } catch (err) {
@@ -34,9 +32,9 @@ class DynamodbPlugin extends Plugin<any> {
         return this.connection;
     }
 
-    protected initConnection(daoOptions: DaoModelOptions) {
+    protected initConnection() {
         const instance = new DynamoWrapperClient(this.options);
-        return instance.setDaoModel(daoOptions);
+        return instance.getMapper();
     }
 }
 
