@@ -1,9 +1,20 @@
+import { attribute, hashKey, table } from '@aws/dynamodb-data-mapper-annotations';
 import { DynamoDBDao } from '../../src/dynamodb.dao';
 
 export interface DaoMockScheme {
-    field: string;
+    clientId: string;
+    projectId: string;
 }
 
+@table('Dao')
+class DaoMapper {
+    @hashKey()
+    public clientId: string;
+    @attribute()
+    public projectId?: string;
+}
+
+// tslint:disable-next-line:max-classes-per-file
 export class DaoMock extends DynamoDBDao<DaoMockScheme> {
     public getCollectionName() {
         return 'mock.dao';
@@ -18,6 +29,6 @@ export class DaoMock extends DynamoDBDao<DaoMockScheme> {
     }
 
     public getMapper() {
-        return {};
+        return new DaoMapper();
     }
 }

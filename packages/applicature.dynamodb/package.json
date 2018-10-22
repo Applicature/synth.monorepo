@@ -37,6 +37,7 @@
     "index.js"
   ],
   "devDependencies": {
+    "@aws/dynamodb-data-marshaller": "^0.7.3",
     "@types/aws-sdk": "^2.7.0",
     "@types/config": "0.0.34",
     "@types/jest": "^23.3.3",

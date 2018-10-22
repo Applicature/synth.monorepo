@@ -1,62 +1,34 @@
 import { PluginManager } from '@applicature-private/multivest.core';
+import { DataMapper } from '@aws/dynamodb-data-mapper';
 import * as AWS from 'aws-sdk';
 import * as config from 'config';
 import { Plugin as DynamodbPlugin } from '../../src/dynamodb.plugin';
 import { DaoMock } from '../mock/dao.mock';
 
 describe('dao data accessing', () => {
-    let dao: any;
+    let dao: DaoMock;
+    let mapper: DataMapper;
 
     beforeAll(async () => {
         const pluginManager = new PluginManager([]);
         const plugin = new DynamodbPlugin(pluginManager);
         dao = new DaoMock(await plugin.init());
         AWS.config.update(config.get('multivest.dynamodb'));
-    });
 
-    it('should create table', async () => {
-        const dynamo = new AWS.DynamoDB();
-
-        const params = {
-            TableName: 'Dao',
-            KeySchema: [{ AttributeName: 'year', KeyType: 'HASH' }, { AttributeName: 'title', KeyType: 'RANGE' }],
-            AttributeDefinitions: [
-                { AttributeName: 'year', AttributeType: 'N' },
-                { AttributeName: 'title', AttributeType: 'S' }
-            ],
-            ProvisionedThroughput: {
-                ReadCapacityUnits: 10,
-                WriteCapacityUnits: 10
-            }
-        };
-
-        dynamo.createTable(params, (err, data) => {
-            if (err) {
-                throw err;
-            } else {
-                expect(data).toBeTruthy();
-            }
+        const client = new AWS.DynamoDB(config.get('multivest.dynamodb'));
+        mapper = new DataMapper({ client });
+        mapper.ensureTableExists(dao.getMapper(), {
+            readCapacityUnits: 5,
+            writeCapacityUnits: 5
         });
     });
 
     it('should insert and get a record', async () => {
         const formattedValue = {
             clientId: 'qwe',
-            projectId: 'id',
-            blockchainId: 'id',
-            networkId: 'id',
-            blockHash: 'id',
-            blockHeight: 4,
-            blockTime: 3,
-            minConfirmations: 5,
-            confirmations: 2,
-            txHash: 'id',
-            address: 'id',
-            type: 'id',
-            refId: 'id',
-            eventId: 'id',
-            params: {}
+            projectId: 'id'
         };
+
         const result = await dao.create(formattedValue);
         const got = await dao.get({
             clientId: 'qwe'
@@ -68,37 +40,11 @@ describe('dao data accessing', () => {
         const formattedValue = [
             {
                 clientId: 'i3d',
-                projectId: 'id',
-                blockchainId: 'id',
-                networkId: 'id',
-                blockHash: 'id',
-                blockHeight: 4,
-                blockTime: 3,
-                minConfirmations: 5,
-                confirmations: 2,
-                txHash: 'id',
-                address: 'id',
-                type: 'id',
-                refId: 'id',
-                eventId: 'id',
-                params: 5
+                projectId: 'id'
             },
             {
                 clientId: 'id2',
-                projectId: 'id',
-                blockchainId: 'id',
-                networkId: 'id',
-                blockHash: 'id',
-                blockHeight: 4,
-                blockTime: 3,
-                minConfirmations: 5,
-                confirmations: 2,
-                txHash: 'id',
-                address: 'id',
-                type: 'id',
-                refId: 'id',
-                eventId: 'id',
-                params: 5
+                projectId: 'id'
             }
         ];
         await dao.fill(formattedValue);
@@ -122,20 +68,7 @@ describe('dao data accessing', () => {
     it('should remove single record', async () => {
         const formattedValue = {
             clientId: 'qwe',
-            projectId: 'id',
-            blockchainId: 'id',
-            networkId: 'id',
-            blockHash: 'id',
-            blockHeight: 4,
-            blockTime: 3,
-            minConfirmations: 5,
-            confirmations: 2,
-            txHash: 'id',
-            address: 'id',
-            type: 'id',
-            refId: 'id',
-            eventId: 'id',
-            params: {}
+            projectId: 'id'
         };
         const result = await dao.create(formattedValue);
         await dao.remove({
