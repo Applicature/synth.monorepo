@@ -132,7 +132,7 @@ export class PluginManager {
         if (Object.prototype.hasOwnProperty.call(this.plugins, pluginId)) {
             return this.plugins[pluginId];
         }
-        throw new MultivestError(`PluginManager: Unknown plugin ${pluginId}`);
+        throw new MultivestError(`Unknown plugin ${pluginId}`);
     }
 
     public async init() {

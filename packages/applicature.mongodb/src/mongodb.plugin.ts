@@ -13,9 +13,9 @@ import {
 import * as config from 'config';
 import {connect, Db, MongoClient, MongoClientOptions} from 'mongodb';
 import * as logger from 'winston';
-import { Errors } from './errors';
-import { ConnectionState } from './model';
-import { MongoDBDao } from './mongodb.dao';
+import {Errors} from './errors';
+import {ConnectionState} from './model';
+import {MongoDBDao} from './mongodb.dao';
 
 class MongodbPlugin extends Plugin<any> {
     public state: ConnectionState = ConnectionState.Disconnected;
@@ -113,16 +113,22 @@ class MongodbPlugin extends Plugin<any> {
         return daos[daoId];
     }
 
-    public disconnect() {
+    public async disconnect() {
         if (this.state === ConnectionState.Disconnected) {
             return Promise.reject(new MultivestError(Errors.NO_CONNECTION));
         }
         else if (this.state === ConnectionState.Connected) {
-            return this.client.close();
+            await this.client.close();
+
+            this.state = ConnectionState.Disconnected;
         }
         else if (this.state === ConnectionState.Connecting) {
             return this.connectionPromise
-                .then(() => this.client.close());
+                .then(async () => {
+                    await this.client.close();
+
+                    this.state = ConnectionState.Disconnected;
+                });
         }
         else {
             return Promise.reject(new MultivestError(Errors.UNRESOLVED_STATE));

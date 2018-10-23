@@ -1,4 +1,3 @@
-
 import { MultivestError } from '../../src/error';
 import { PluginManager } from '../../src/plugin.manager';
 import {Plugin as TestPl} from './../../test/mocks/plugin';

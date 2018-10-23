@@ -1,11 +1,11 @@
 import { TestPlugin } from '../mocks/plugin';
 import { TestService } from '../mocks/service';
 
-import { Constructable, Service } from '@applicature-private/applicature-sdk.plugin-manager';
+import {Constructable, PluginManager, Service} from '@applicature-private/applicature-sdk.plugin-manager';
 
 describe('email abstract plugin', () => {
     it('should create plugin', () => {
-        const plugin = new TestPlugin(null);
+        const plugin = new TestPlugin({} as PluginManager);
         plugin.registerService(TestService as Constructable<Service>);
         plugin.init();
         plugin.invoke();

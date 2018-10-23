@@ -1,23 +1,15 @@
 {
   "compilerOptions": {
-    "removeComments": true,
+    "target": "es6",
     "module": "commonjs",
-    "target": "es5",
-    "lib": ["es2015", "es6", "es2017"],
-    "experimentalDecorators": true,
-    "downlevelIteration": true,
-    "noImplicitReturns": true,
-    "pretty": true,
-    "skipLibCheck": true,
-    "strict": true,
-    // These settings are required for TypeScript project references
-    "declaration": true,
+    "noImplicitAny": true,
+    "removeComments": true,
     "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false
+    "declaration": true,
+    "sourceRoot": "",
+    "outDir": "./dist"
   },
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    "node_modules"
   ]
 }

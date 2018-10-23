@@ -1,4 +1,5 @@
 import { MultivestError, PluginManager } from '@applicature-private/applicature-sdk.plugin-manager';
+import { Db } from 'mongodb';
 import { Plugin as MongodbPlugin } from '../../src/mongodb.plugin';
 import { TestDao } from '../mock/dao.mock';
 import { MongodbPluginMock } from '../mock/plugin.mock';
@@ -7,8 +8,8 @@ describe('plugin connection', () => {
     let plugin: MongodbPlugin;
 
     beforeAll(() => {
-        const pluginManager = new PluginManager();
-        plugin = new MongodbPlugin(pluginManager);
+        const pluginManager = new PluginManager([]);
+        plugin = new MongodbPluginMock(pluginManager);
     });
 
     it('should connect to mongo', async () => {
