@@ -19,9 +19,9 @@ import {MongoDBDao} from './mongodb.dao';
 
 class MongodbPlugin extends Plugin<any> {
     public state: ConnectionState = ConnectionState.Disconnected;
-    protected connection: Db;
+    protected db: Db;
     protected client: MongoClient;
-    protected connectionPromise: Promise<Db>;
+    protected dbPromise: Promise<Db>;
     protected urls: string;
     protected options: MongoClientOptions;
     protected dbName: string;
@@ -45,14 +45,15 @@ class MongodbPlugin extends Plugin<any> {
     }
 
     public async init() {
-        if (this.connection) {
-            return Promise.resolve(this.connection);
+        if (this.db) {
+            return Promise.resolve(this.db);
         }
 
         this.state = ConnectionState.Connecting;
-        this.connectionPromise = this.initConnection();
+        this.dbPromise = this.initConnection();
+
         try {
-            this.connection = await this.connectionPromise;
+            this.db = await this.dbPromise;
             this.state = ConnectionState.Connected;
         }
         catch (err) {
@@ -60,12 +61,12 @@ class MongodbPlugin extends Plugin<any> {
             process.exit(1);
         }
 
-        return this.connectionPromise;
+        return this.dbPromise;
     }
 
     public addDao(DaoConstructor: Constructable<MongoDBDao<any>>) {
         if (this.state === ConnectionState.Connected) {
-            const instance = new DaoConstructor(this.connection);
+            const instance = new DaoConstructor(this.db);
 
             this.daos[instance.getDaoId()] = instance;
         }
@@ -80,11 +81,11 @@ class MongodbPlugin extends Plugin<any> {
         }
 
         if (this.state === ConnectionState.Connected) {
-            return Promise.resolve(this.connection);
+            return Promise.resolve(this.db);
         }
 
         if (this.state === ConnectionState.Connecting) {
-            return this.connectionPromise;
+            return this.dbPromise;
         }
 
         throw new MultivestError(Errors.UNRESOLVED_STATE);
@@ -98,7 +99,7 @@ class MongodbPlugin extends Plugin<any> {
             return Promise.resolve(this.daos);
         }
         else if (this.state === ConnectionState.Connecting) {
-            return this.connectionPromise
+            return this.dbPromise
                 .then(() => this.daos);
         }
 
@@ -107,9 +108,11 @@ class MongodbPlugin extends Plugin<any> {
 
     public async getDao(daoId: string) {
         const daos = await this.getDaos();
+
         if (!daos[daoId]) {
             throw new MultivestError(Errors.DAO_NOT_FOUND);
         }
+
         return daos[daoId];
     }
 
@@ -123,7 +126,7 @@ class MongodbPlugin extends Plugin<any> {
             this.state = ConnectionState.Disconnected;
         }
         else if (this.state === ConnectionState.Connecting) {
-            return this.connectionPromise
+            return this.dbPromise
                 .then(async () => {
                     await this.client.close();
 
@@ -152,7 +155,7 @@ class MongodbPlugin extends Plugin<any> {
     }
 
     protected invokeDao(DaoConstructor: Constructable<Dao<any>>) {
-        return new DaoConstructor(this.connection);
+        return new DaoConstructor(this.db);
     }
 }
 

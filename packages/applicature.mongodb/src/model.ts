@@ -1,7 +1,7 @@
 export enum ConnectionState {
-    Connected,
-    Connecting,
-    Disconnected,
+    Connected = 1,
+    Connecting = 2,
+    Disconnected = 3,
 }
 
 export interface MongoScheme {
