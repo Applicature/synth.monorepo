@@ -14,20 +14,6 @@
     "test": "lerna run test",
     "test:ci": "lerna run test:ci",
     "test:lint": "lerna run test:lint",
-    "test:lint": "lerna run test:lint"
-  },
-  "jest-multi-test-result-processor": {
-    "processors": [
-      "jest-junit",
-      "jest-sonar-reporter"
-    ]
-  },
-  "jestSonar": {
-    "reportPath": "./test-reports",
-    "reportFile": "test-report.xml",
-    "indent": 4
-  },
-  "jest-junit": {
-    "output": "./test-reports/junit.xml"
+    "test:sonar": "lerna run test:sonar"
   }
 }
