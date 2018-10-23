@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature-private/multivest.core';
+import { Hashtable } from '@applicature-private/applicature-sdk.plugin-manager';
 import {NextFunction, Request, Response} from 'express';
 import * as validation from 'express-validation';
 import * as joi from 'joi';

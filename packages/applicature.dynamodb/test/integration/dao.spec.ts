@@ -1,4 +1,4 @@
-import { PluginManager } from '@applicature-private/multivest.core';
+import { PluginManager } from '@applicature-private/applicature-sdk.plugin-manager';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
 import * as AWS from 'aws-sdk';
 import * as config from 'config';

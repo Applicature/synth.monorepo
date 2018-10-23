@@ -3,6 +3,7 @@ import { PluginManager } from './plugin.manager';
 import { Constructable, Hashtable } from './structure';
 
 export abstract class Plugin<T> {
+    // @ts-ignore
     public path: string;
     protected jobClasses: Array<Constructable<Job>> = [];
     protected jobs: Hashtable<Job> = {};

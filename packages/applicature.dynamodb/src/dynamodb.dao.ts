@@ -1,8 +1,9 @@
-import { Dao } from '@applicature-private/multivest.core';
+import { Dao } from '@applicature-private/applicature-sdk.plugin-manager';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
 import { DynamoDB } from 'aws-sdk';
 
 export abstract class DynamoDBDao<T> extends Dao<T> {
+    // @ts-ignore
     protected connection: DynamoDB.DocumentClient;
     protected schema: DataMapper;
 

@@ -9,12 +9,12 @@ export interface DaoMockScheme {
 @table('Dao')
 class DaoMapper {
     @hashKey()
-    public clientId: string;
+    public clientId: string = '';
     @attribute()
-    public projectId?: string;
+    public projectId?: string = '';
 
     @attribute()
-    public blockTime?: number;
+    public blockTime?: number = 0;
 }
 
 // tslint:disable-next-line:max-classes-per-file

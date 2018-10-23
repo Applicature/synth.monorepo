@@ -1,4 +1,4 @@
-import { Plugin, PluginManager } from '@applicature-private/multivest.core';
+import { Plugin, PluginManager } from '@applicature-private/applicature-sdk.plugin-manager';
 import * as config from 'config';
 import * as logger from 'winston';
 import { DynamoWrapperClient } from './dynamo.client';

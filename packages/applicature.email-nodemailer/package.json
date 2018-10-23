@@ -1,6 +1,6 @@
 {
-  "name": "@applicature-private/multivest.email.nodemailer",
-  "version": "0.1.4",
+  "name": "@applicature-private/applicature-sdk.email-nodemailer",
+  "version": "2.0.0",
   "private": false,
   "license": "UNLICENSED",
   "description": "Nodemailer Email Plugin",
@@ -14,87 +14,52 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp clean && gulp build",
-    "lint": "tslint '{src/**/*.ts,test/**/*.ts}'",
+    "lint": "tslint '{index.ts,src/**/*.ts,test/**/*.ts}'",
     "precommit": "npm run lint ; npm run test:ci",
-    "test": "jest test/unit",
-    "test:integration": "jest test/integration --forceExit --runInBand",
-    "test:ci": "jest --coverage --forceExit --runInBand",
+    "test": "jest",
+    "test:ci": "jest --coverage --forceExit",
     "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_TOKEN",
-    "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json 'src/**/*.{ts,tsx}'"
+    "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json '{index.ts,src/**/*.ts,test/**/*.ts}'"
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:applicature/multivest.email.nodemailer.git"
+    "url": "git@bitbucket.org:applicature/applicature.email-nodemailer.git"
   },
   "dependencies": {
-    "@applicature-private/multivest.core": "^0.1.27",
-    "@applicature-private/multivest.email.abstract": "^0.1.5",
+    "@applicature-private/applicature-sdk.plugin-manager": "^2.0.0",
+    "@applicature-private/applicature-sdk.email-abstract": "^2.0.0",
     "config": "^1.26.1",
     "nodemailer": "^4.4.2",
     "winston": "^2.1.1"
   },
   "devDependencies": {
-    "@types/agenda": "^1.0.1",
-    "@types/config": "0.0.33",
-    "@types/jest": "^22.0.1",
-    "@types/node": "^8.5.2",
-    "@types/nodemailer": "^4.3.2",
-    "@types/winston": "^2.3.7",
+    "@types/config": "0.0.34",
+    "@types/jest": "^23.3.3",
+    "@types/joi": "^13.6.0",
+    "@types/node": "^10.11.4",
+    "@types/uuid": "^3.4.4",
+    "@types/winston": "^2.4.4",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
-    "gulp-sourcemaps": "^2.6.3",
-    "gulp-tslint": "^8.1.2",
-    "gulp-typescript": "^3.2.3",
-    "husky": "^0.14.3",
-    "ts-jest": "^21.2.4",
-    "ts-node": "^4.1.0",
-    "tslint": "^5.9.1",
-    "typescript": "^2.6.2",
-    "jest": "^22.1.4",
-    "jest-junit": "^3.4.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-tslint": "^8.1.3",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "husky": "^1.1.2",
+    "jest": "^23.6.0",
+    "jest-cli": "^20.0.4",
+    "jest-junit": "^5.2.0",
     "jest-multi-test-result-processor": "^1.0.0",
     "jest-sonar-reporter": "^2.0.0",
-    "mongo-mock": "^3.0.0",
-    "nsp": "^3.1.0",
-    "sonarqube-scanner": "^2.1.0",
-    "source-map-support": "^0.5.0"
+    "sonarqube-scanner": "^2.1.1",
+    "ts-jest": "^23.10.3",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.1"
   },
   "files": [
     "dist/",
     "src/"
   ],
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.ts"
-    ],
-    "testEnvironment": "node",
-    "globals": {
-      "ts-jest": {
-        "skipBabel": true
-      }
-    },
-    "testResultsProcessor": "jest-multi-test-result-processor",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/.*?\\.d\\.ts$",
-      "<rootDir>/.*?\\.mock\\.ts$"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "text",
-      "clover",
-      "cobertura"
-    ]
-  },
   "jest-multi-test-result-processor": {
     "processors": [
       "jest-junit",

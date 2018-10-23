@@ -8,8 +8,8 @@ describe('service', () => {
         const service = new PdfService();
 
         const options = {
+            height: '50mm',
             width: '50mm',
-            height: '50mm'
         };
 
         const buffer = await service.generateBuffer(testHtml.toString('utf-8'), options);
@@ -21,8 +21,8 @@ describe('service', () => {
         const service = new PdfService();
 
         const options = {
+            height: '50mm',
             width: '50mm',
-            height: '50mm'
         };
 
         const buffer = await service.generateBuffer(testHtml.toString('utf-8'), options);

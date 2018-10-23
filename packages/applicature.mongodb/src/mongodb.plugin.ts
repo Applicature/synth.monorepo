@@ -9,9 +9,9 @@ import {
     MultivestError,
     Plugin,
     PluginManager
-} from '@applicature-private/multivest.core';
+} from '@applicature-private/applicature-sdk.plugin-manager';
 import * as config from 'config';
-import { connect, Db, MongoClientOptions } from 'mongodb';
+import {connect, Db, MongoClient, MongoClientOptions} from 'mongodb';
 import * as logger from 'winston';
 import { Errors } from './errors';
 import { ConnectionState } from './model';
@@ -20,6 +20,7 @@ import { MongoDBDao } from './mongodb.dao';
 class MongodbPlugin extends Plugin<any> {
     public state: ConnectionState = ConnectionState.Disconnected;
     protected connection: Db;
+    protected client: MongoClient;
     protected connectionPromise: Promise<Db>;
     protected urls: string;
     protected options: MongoClientOptions;
@@ -35,8 +36,8 @@ class MongodbPlugin extends Plugin<any> {
             : { autoReconnect: true, reconnectTries: 10 };
 
         this.dbName = config.has('multivest.mongodb.dbName')
-            ? config.get<MongoClientOptions>('multivest.mongodb.dbName')
-            : null;
+            ? config.get('multivest.mongodb.dbName')
+            : '';
     }
 
     public getPluginId() {
@@ -113,11 +114,19 @@ class MongodbPlugin extends Plugin<any> {
     }
 
     public disconnect() {
-        return this.getDB()
-            .then((db) => {
-                db.close();
-                this.state = ConnectionState.Disconnected;
-            });
+        if (this.state === ConnectionState.Disconnected) {
+            return Promise.reject(new MultivestError(Errors.NO_CONNECTION));
+        }
+        else if (this.state === ConnectionState.Connected) {
+            return this.client.close();
+        }
+        else if (this.state === ConnectionState.Connecting) {
+            return this.connectionPromise
+                .then(() => this.client.close());
+        }
+        else {
+            return Promise.reject(new MultivestError(Errors.UNRESOLVED_STATE));
+        }
     }
 
     public isConnected() {
@@ -125,14 +134,15 @@ class MongodbPlugin extends Plugin<any> {
     }
 
     protected async initConnection() {
-        const connection = await connect(this.urls, this.options);
-        
-        if (this.dbName) {
-            const db = await connection.db(this.dbName);
-            return db;
+        this.client = await connect(this.urls, this.options);
+
+        if (!this.dbName) {
+            this.dbName = 'test';
         }
 
-        return connection;
+        const db = await this.client.db(this.dbName);
+
+        return db;
     }
 
     protected invokeDao(DaoConstructor: Constructable<Dao<any>>) {

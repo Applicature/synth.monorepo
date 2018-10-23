@@ -1,5 +1,5 @@
-import { PluginManager } from '@applicature-private/multivest.core';
-import { EmailOpts, EmailService } from '@applicature-private/multivest.email.abstract';
+import { EmailOpts, EmailService } from '@applicature-private/applicature-sdk.email-abstract';
+import { PluginManager } from '@applicature-private/applicature-sdk.plugin-manager';
 import * as nodemailer from 'nodemailer';
 
 import * as config from 'config';

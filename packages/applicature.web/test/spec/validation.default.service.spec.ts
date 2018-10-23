@@ -2,7 +2,6 @@ import * as joi from 'joi';
 import {ValidationAbstractService} from '../../src/services/validation/validation.abstract.service';
 import {ValidationDefaultService as ValidationService} from '../../src/services/validation/validation.default.service';
 import {PluginManagerMock} from '../mocks/plugin.manager';
-import {ValidationError} from 'express-validation';
 
 describe('AuthDefaultService', () => {
 

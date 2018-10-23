@@ -1,4 +1,3 @@
-import { EmailOpts } from '../../src';
 import { TestService } from '../mocks/service';
 
 describe('email abstract service', () => {

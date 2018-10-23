@@ -107,7 +107,7 @@ export class TemplateService extends Service {
                     else {
                         resolve(source);
                     }
-                },
+                }
             );
         });
     }

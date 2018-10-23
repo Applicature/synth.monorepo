@@ -1,4 +1,4 @@
-import { Plugin } from '@applicature-private/multivest.core';
+import { Plugin } from '@applicature-private/applicature-sdk.plugin-manager';
 import { NodeMailerEmailService } from './service';
 
 class NodeMailerEmailPlugin extends Plugin<any> {

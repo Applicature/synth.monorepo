@@ -1,0 +1,40 @@
+{
+  "crypt": {
+    "algo": "aes192",
+    "secret": "testsecret"
+  },
+  "multivest": {
+    "dynamodb": {
+      ***REMOVED***,
+      "accessKeyId": "",
+      "secretAccessKey": ""
+    },
+    "mongodb": {
+      "url": "mongodb://localhost/multivest",
+      "dbName": "multivest",
+      "options": null
+    },
+    "web": {
+      "middleware": {
+        "bodyParserJson": {
+          "limit": "100m"
+        }
+      },
+      "port": 3000
+    }
+  },
+  "email": {
+    "nodemailer": {
+      "host": "smtp.ethereal.email",
+      "port": 587,
+      "secure": false,
+      // true for 465, false for other ports
+      "auth": {
+        "user": "***REMOVED***",
+        // generated ethereal user
+        "pass": "***REMOVED***"
+        // generated ethereal password
+      }
+    }
+  }
+}

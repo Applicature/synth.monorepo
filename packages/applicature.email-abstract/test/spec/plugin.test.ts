@@ -1,7 +1,7 @@
 import { TestPlugin } from '../mocks/plugin';
 import { TestService } from '../mocks/service';
 
-import { Constructable, Service } from '@applicature/multivest.core';
+import { Constructable, Service } from '@applicature-private/applicature-sdk.plugin-manager';
 
 describe('email abstract plugin', () => {
     it('should create plugin', () => {

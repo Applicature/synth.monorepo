@@ -1,4 +1,4 @@
-import { Hashtable, PluginManager, Service } from '@applicature-private/multivest.core';
+import { Hashtable, PluginManager, Service } from '@applicature-private/applicature-sdk.plugin-manager';
 
 export interface EmailBodies {
     textBody: string;

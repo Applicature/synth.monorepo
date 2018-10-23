@@ -1,5 +1,7 @@
 export class Cache<T> {
+    // @ts-ignore
     private value: T;
+    // @ts-ignore
     private time: number;
 
     public getValue(): T {

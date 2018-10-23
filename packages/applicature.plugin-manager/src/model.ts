@@ -1,5 +1,5 @@
-import {Constructable} from "./structure";
-import {Plugin} from "./plugin";
+import {Plugin} from './plugin';
+import {Constructable} from './structure';
 
 export interface PluginOptions {
     path?: string;

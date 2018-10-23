@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature-private/multivest.core';
+import { Hashtable } from '@applicature-private/applicature-sdk.plugin-manager';
 import { BigNumber } from 'bignumber.js';
 import { get } from 'lodash';
 import { Decimal128, ObjectID } from 'mongodb';

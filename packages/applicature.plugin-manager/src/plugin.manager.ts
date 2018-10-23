@@ -7,7 +7,8 @@ import { Plugin } from './plugin';
 import { Constructable, Hashtable } from './structure';
 
 export class PluginManager {
-    private jobExecutor: Agenda = null;
+    // @ts-ignore
+    protected jobExecutor: Agenda = null;
     private plugins: Hashtable<Plugin<any>> = {};
     private jobs: Hashtable<Job> = {};
     private daos: Hashtable<Dao<any>> = {};
@@ -56,7 +57,7 @@ export class PluginManager {
             }
         }
 
-        return null;
+        throw new MultivestError('UNKNOWN_DAO');
     }
 
     public registerService(service: Service) {
@@ -78,7 +79,7 @@ export class PluginManager {
             }
         }
 
-        return null;
+        throw new MultivestError('UNKNOWN_DAO');
     }
 
     public getServicesByClass(expectedService: typeof Service): Array<Service> {
@@ -149,10 +150,11 @@ export class PluginManager {
                         const PluginClass = require(pluginOptions.path).Plugin;
                         const PluginConstructor = PluginClass as Constructable<Plugin<any>>;
                         pluginInstance = new PluginConstructor(this);
-                    } else if(pluginOptions && pluginOptions.pluginClass) {
+                    } else if (pluginOptions && pluginOptions.pluginClass) {
                         pluginInstance = new pluginOptions.pluginClass(this);
                     }
 
+                    // @ts-ignore
                     this.plugins[pluginInstance.getPluginId()] = pluginInstance;
                 }
                 catch (error) {

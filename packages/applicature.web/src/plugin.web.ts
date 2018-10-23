@@ -1,4 +1,4 @@
-import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature-private/multivest.core';
+import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature-private/applicature-sdk.plugin-manager';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as config from 'config';
@@ -74,7 +74,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
 
         // error handler, send stacktrace only during development
         this.app.use((
-            error: MultivestError, req: express.Request, res: express.Response, next: express.NextFunction,
+            error: Error, req: express.Request, res: express.Response, next: express.NextFunction
         ) => {
             let status;
 
@@ -105,7 +105,10 @@ class WebPlugin extends Plugin<void> implements IWeb {
                 message = 'VALIDATION_ERROR';
                 status = 400;
 
-                details = error.errors;
+                // @ts-ignore
+                const validationError = <ValidationError> error;
+
+                details = validationError.errors;
             }
             else {
                 status = 500;
@@ -118,8 +121,8 @@ class WebPlugin extends Plugin<void> implements IWeb {
             }
 
             res.status(status).json({
-                message,
                 details,
+                message,
                 stack: showStack ? error.stack : null,
             });
         });
@@ -183,7 +186,9 @@ class WebPlugin extends Plugin<void> implements IWeb {
                 authentication: true,
                 onAuthenticate: (req: any, username: string, password: string) => {
                     // simple check for username and password
+                    // @ts-ignore
                     return((username === this.pluginMiddlewareConfig.swStats.username)
+                    // @ts-ignore
                         && (password === this.pluginMiddlewareConfig.swStats.password));
                 },
                 uriPath: `${config.get('api.namespace')}${this.pluginMiddlewareConfig.swStats.urlPath}`,

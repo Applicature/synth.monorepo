@@ -1,0 +1,38 @@
+{
+  "logPath": "./logs",
+  "plugins": [],
+  "templates": {
+    "path": {
+      "partials": [],
+      "templates": []
+    }
+  },
+  "multivest": {
+    "dynamodb": {
+      ***REMOVED***,
+      "accessKeyId": "",
+      "secretAccessKey": ""
+    },
+    "mongodb": {
+      "url": "mongodb://localhost/multivest",
+      "dbName": "multivest",
+      "options": null
+    },
+    "web": {
+      "middleware": {
+        "bodyParserJson": {
+          "limit": "100mb"
+        },
+        "swStats": {
+          ***REMOVED***,
+          "password": "***REMOVED***",
+          ***REMOVED***
+        }
+      },
+      "port": 3000
+    }
+  },
+  "api": {
+    "namespace": "/api"
+  }
+}

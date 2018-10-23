@@ -1,15 +1,18 @@
-import { MultivestError, PluginManager } from '@applicature-private/multivest.core';
 import { Db, MongoClient } from 'mongodb';
 import { MongoDBDao } from '../../index';
 import { TestDao, TestDaoScheme } from '../mock/dao.mock';
 
 describe('dao data accessing', () => {
     let dao: MongoDBDao<TestDaoScheme>;
-    let connection: Db;
+    let db: Db;
+    let connection: MongoClient;
 
     beforeAll(async () => {
         connection = await MongoClient.connect('mongodb://localhost/multivest', {});
-        dao = new TestDao(connection);
+
+        db = connection.db('multivest');
+
+        dao = new TestDao(db);
     });
 
     afterAll(async () => {
