@@ -106,7 +106,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
                 status = 400;
 
                 // @ts-ignore
-                const validationError = <ValidationError> error;
+                const validationError = error as ValidationError;
 
                 details = validationError.errors;
             }
