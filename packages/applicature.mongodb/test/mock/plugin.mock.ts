@@ -10,7 +10,7 @@ export class MongodbPluginMock extends MongodbPlugin {
     protected async initConnection() {
         this.client = {
             close: () => {
-
+                return Promise.resolve();
             }
         };
 
