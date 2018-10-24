@@ -2,5 +2,14 @@
   "packages": [
     "packages/*"
   ],
+  "command": {
+    "publish": {
+      "allowBranch": ["master", "JIRA/*"]
+    }
+  },
+  "ignoreChanges": [
+    "**/test/**",
+    "**/*.md"
+  ],
   "version": "independent"
 }
