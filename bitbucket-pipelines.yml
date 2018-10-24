@@ -22,16 +22,18 @@ pipelines:
     - step:
         name: Deploy beta version
         trigger: manual
+        deployment: staging
         caches:
           - node
         script:
           - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
           - npm install
           - npm run build -- --since master
-#          - npm publish --tag beta
+          - npm publish --tag beta
   branches:
     master:
       - step:
+          deployment: production
           caches:
             - node
             - sonarcloud
@@ -43,7 +45,7 @@ pipelines:
             - npm run test:ci -- --since master
             - npm run test:lint -- --since master
             - npm run test:sonar -- --since master
-#            - npm publish
+            - npm publish
           services: 
             - mongo 
 
