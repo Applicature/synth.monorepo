@@ -25,6 +25,7 @@
     "url": "git@bitbucket.com:applicature/applicature.monorepo.git"
   },
   "devDependencies": {
-    "lerna": "^3.4.3"
+    "lerna": "^3.4.3",
+    "husky": "^1.1.2"
   }
 }
