@@ -13,8 +13,8 @@
   "scripts": {
     "lint": "lerna run lint",
     "build": "lerna run build",
-    "bootstrap-deps": "lerna init; lerna bootstrap",
-    "precommit": "npm run lint ; npm run build; npm run test:ci",
+    "bootstrap-deps": "lerna init && lerna bootstrap --ci",
+    "precommit": "npm run lint && npm run build && npm run test:ci",
     "test": "lerna run test",
     "test:ci": "lerna run test:ci",
     "test:lint": "lerna run test:lint",
