@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.com:applicature/applicature.monorepo.git"
+    "url": "git@bitbucket.com:applicature/core.monorepo.git"
   },
   "devDependencies": {
     "lerna": "^3.4.3",

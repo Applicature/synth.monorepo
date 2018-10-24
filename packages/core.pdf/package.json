@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:applicature/multivest.plugin-pdf.git"
+    "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.pdf"
   },
   "dependencies": {
     "config": "^1.26.1",

@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.com:applicature/multivest.mongodb.git"
+    "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.mongodb"
   },
   "dependencies": {
     "@applicature/synth.plugin-manager": "^2.0.0",

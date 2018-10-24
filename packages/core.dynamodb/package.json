@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/applicature/multivest.dynamodb.git"
+    "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.dynamodb"
   },
   "author": "Michael Sukhroukov <mikhail.sukhorukov@applicature.com>",
   "license": "UNLICENSED",

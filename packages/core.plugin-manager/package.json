@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:applicature/multivest.plugin-manager.git"
+    "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.plugin-manager"
   },
   "dependencies": {
     "config": "^1.30.0",
