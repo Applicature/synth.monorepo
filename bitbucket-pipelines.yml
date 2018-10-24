@@ -33,7 +33,7 @@ pipelines:
       - npm run bootstrap-deps
       - npm install -g gulp
       - npm run build
-      - npm run lerna-publish -- --canary --preid beta
+      - npm run lerna-publish -- "--canary" "--preid beta"
   branches:
     master:
     - step:
@@ -51,7 +51,7 @@ pipelines:
         - npm run test:ci
         - npm run test:lint
         - npm run test:sonar
-        - npm run lerna-publish -- --since master
+        - npm run lerna-publish -- "--since master"
         services:
         - mongo
 
