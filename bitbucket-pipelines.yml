@@ -13,10 +13,10 @@ pipelines:
         script:
           - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
           - npm install
-          - npm run build -- --since master
-          - npm run test:ci -- --since master
-          - npm run test:lint -- --since master
-          - npm run test:sonar -- --since master
+          - npm run build
+          - npm run test:ci
+          - npm run test:lint
+          - npm run test:sonar
         services: 
           - mongo
     - step:
@@ -28,8 +28,8 @@ pipelines:
         script:
           - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
           - npm install
-          - npm run build -- --since master
-          - npm publish --tag beta
+          - npm run build
+          - npm run lerna-publish -- --canary --preid beta
   branches:
     master:
       - step:
@@ -41,11 +41,12 @@ pipelines:
           script:
             - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
             - npm install
-            - npm run build -- --since master
-            - npm run test:ci -- --since master
-            - npm run test:lint -- --since master
-            - npm run test:sonar -- --since master
-            - npm publish
+            - npm run build
+            - npm run test:ci
+            - npm run test:lint
+            - npm run test:sonar
+            - npm publish -- --since master
+            - npm run lerna-publish
           services: 
             - mongo 
 
