@@ -1,4 +1,4 @@
-import { Plugin } from '@applicature-private/applicature-sdk.plugin-manager';
+import { Plugin } from '@applicature/synth.plugin-manager';
 import { NodeMailerEmailService } from './service';
 
 class NodeMailerEmailPlugin extends Plugin<any> {

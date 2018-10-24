@@ -1,5 +1,5 @@
 {
-  "name": "@applicature-private/applicature-sdk.plugin-manager",
+  "name": "@applicature/synth.plugin-manager",
   "version": "2.0.0",
   "private": false,
   "license": "UNLICENSED",

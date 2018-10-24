@@ -9,7 +9,7 @@ import {
     MultivestError,
     Plugin,
     PluginManager
-} from '@applicature-private/applicature-sdk.plugin-manager';
+} from '@applicature/synth.plugin-manager';
 import * as config from 'config';
 import {connect, Db, MongoClient, MongoClientOptions} from 'mongodb';
 import * as logger from 'winston';

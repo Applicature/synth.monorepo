@@ -1,3 +1,3 @@
-import { Plugin } from '@applicature-private/applicature-sdk.plugin-manager';
+import { Plugin } from '@applicature/synth.plugin-manager';
 
 export abstract class EmailPlugin extends Plugin<void> {}

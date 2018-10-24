@@ -1,4 +1,4 @@
-import { Dao, Hashtable } from '@applicature-private/applicature-sdk.plugin-manager';
+import { Dao, Hashtable } from '@applicature/synth.plugin-manager';
 import {Collection, Db, MongoClient} from 'mongodb';
 import { v1 as generateId } from 'uuid';
 import {parseDecimals} from './utils';

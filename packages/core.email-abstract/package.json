@@ -1,5 +1,5 @@
 {
-  "name": "@applicature-private/applicature-sdk.email-abstract",
+  "name": "@applicature/synth.email-abstract",
   "version": "2.0.0",
   "private": false,
   "license": "UNLICENSED",
@@ -25,7 +25,7 @@
     "url": "git@bitbucket.org:applicature/multivest.email.abstract.git"
   },
   "dependencies": {
-    "@applicature-private/applicature-sdk.plugin-manager": "^2.0.0",
+    "@applicature/synth.plugin-manager": "^2.0.0",
     "config": "^1.26.1",
     "winston": "^2.1.1"
   },

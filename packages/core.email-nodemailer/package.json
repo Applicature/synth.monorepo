@@ -1,5 +1,5 @@
 {
-  "name": "@applicature-private/applicature-sdk.email-nodemailer",
+  "name": "@applicature/synth.email-nodemailer",
   "version": "2.0.0",
   "private": false,
   "license": "UNLICENSED",
@@ -26,8 +26,8 @@
     "url": "git@bitbucket.org:applicature/applicature.email-nodemailer.git"
   },
   "dependencies": {
-    "@applicature-private/applicature-sdk.plugin-manager": "^2.0.0",
-    "@applicature-private/applicature-sdk.email-abstract": "^2.0.0",
+    "@applicature/synth.plugin-manager": "^2.0.0",
+    "@applicature/synth.email-abstract": "^2.0.0",
     "config": "^1.26.1",
     "nodemailer": "^4.4.2",
     "winston": "^2.1.1"

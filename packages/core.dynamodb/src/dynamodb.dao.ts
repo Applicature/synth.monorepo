@@ -1,4 +1,4 @@
-import { Dao } from '@applicature-private/applicature-sdk.plugin-manager';
+import { Dao } from '@applicature/synth.plugin-manager';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
 import { DynamoDB } from 'aws-sdk';
 

@@ -1,4 +1,4 @@
-import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature-private/applicature-sdk.plugin-manager';
+import {Hashtable, MultivestError, Plugin, PluginManager} from '@applicature/synth.plugin-manager';
 import * as bodyParser from 'body-parser';
 import * as compress from 'compression';
 import * as config from 'config';

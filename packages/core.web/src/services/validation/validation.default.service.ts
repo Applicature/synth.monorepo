@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature-private/applicature-sdk.plugin-manager';
+import { Hashtable } from '@applicature/synth.plugin-manager';
 import {NextFunction, Request, Response} from 'express';
 import * as validation from 'express-validation';
 import * as joi from 'joi';

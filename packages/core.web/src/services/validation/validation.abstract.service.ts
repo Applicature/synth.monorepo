@@ -1,4 +1,4 @@
-import {PluginManager, Service} from '@applicature-private/applicature-sdk.plugin-manager';
+import {PluginManager, Service} from '@applicature/synth.plugin-manager';
 
 export type ProcessType = string | void;
 
