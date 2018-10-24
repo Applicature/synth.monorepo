@@ -19,7 +19,7 @@
     "test:ci": "lerna run test:ci",
     "test:lint": "lerna run test:lint",
     "test:sonar": "lerna run test:sonar",
-    "lerna-publish": "lerna publish"
+    "lerna-publish": "lerna publish --no-git-tag-version --no-push"
   },
   "repository": {
     "type": "git",
