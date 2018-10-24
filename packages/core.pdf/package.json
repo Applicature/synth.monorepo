@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.pdf",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "license": "UNLICENSED",
   "description": "Pdf Generation",
@@ -28,16 +28,16 @@
   "dependencies": {
     "config": "^1.26.1",
     "html-pdf": "^2.2.0",
-    "winston": "^2.1.1",
+    "istanbul-api": "1.2.2",
+    "istanbul-reports": "1.1.4",
     "jest-multi-test-result-processor": "^1.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "sonarqube-scanner": "^2.1.0",
-    "istanbul-api": "1.2.2",
-    "istanbul-reports": "1.1.4"
+    "winston": "^2.1.1"
   },
   "devDependencies": {
-    "@types/html-pdf": "^2.1.2",
     "@types/config": "0.0.34",
+    "@types/html-pdf": "^2.1.2",
     "@types/jest": "^23.3.3",
     "@types/joi": "^13.6.0",
     "@types/node": "^10.11.4",

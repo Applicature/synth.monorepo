@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.plugin-manager",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "license": "UNLICENSED",
   "description": "Plugin manager",
@@ -26,17 +26,17 @@
     "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.plugin-manager"
   },
   "dependencies": {
+    "bignumber.js": "^6.0.0",
     "config": "^1.30.0",
     "handlebars": "^4.0.11",
-    "minimatch": "^3.0.4",
     "i18n": "^0.8.3",
-    "winston": "^3.1.0",
-    "bignumber.js": "^6.0.0"
+    "minimatch": "^3.0.4",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "@types/agenda": "^1.0.2",
-    "@types/handlebars": "^4.0.39",
     "@types/config": "0.0.34",
+    "@types/handlebars": "^4.0.39",
     "@types/jest": "^23.3.3",
     "@types/joi": "^13.6.0",
     "@types/node": "^10.11.4",
