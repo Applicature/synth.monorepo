@@ -6,10 +6,10 @@
     "removeComments": true,
     "sourceMap": true,
     "declaration": true,
-    "sourceRoot": "",
-    "outDir": "./dist"
-  },
-  "exclude": [
-    "node_modules"
-  ]
+    "outDir": "./dist",
+    "typeRoots": [
+      "./node_modules/@types",
+      "@types"
+    ]
+  }
 }
