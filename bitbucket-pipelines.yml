@@ -51,8 +51,7 @@ pipelines:
         - npm run test:ci
         - npm run test:lint
         - npm run test:sonar
-        - npm publish -- --since master
-        - npm run lerna-publish
+        - npm run lerna-publish -- --since master
         services:
         - mongo
 
