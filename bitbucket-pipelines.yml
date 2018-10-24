@@ -13,6 +13,7 @@ pipelines:
       script:
       - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
       - npm install
+      - npm install -g gulp
       - npm run build
       - npm run test:ci
       - npm run test:lint
@@ -28,6 +29,7 @@ pipelines:
       script:
       - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
       - npm install
+      - npm install -g gulp
       - npm run build
       - npm run lerna-publish -- --canary --preid beta
   branches:
@@ -41,6 +43,7 @@ pipelines:
         script:
         - printf "//`node -p \"require('url').parse(process.env.NPM_REGISTRY_URL || 'https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\n" >> ~/.npmrc
         - npm install
+        - npm install -g gulp
         - npm run build
         - npm run test:ci
         - npm run test:lint
