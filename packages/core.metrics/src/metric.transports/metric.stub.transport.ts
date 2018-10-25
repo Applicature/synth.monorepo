@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature-private/multivest.core';
+import { Hashtable } from '@applicature/synth.plugin-manager';
 import { MetricTransport } from './metric.transport';
 
 export class MetricStubTransport extends MetricTransport {

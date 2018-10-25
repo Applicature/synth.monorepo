@@ -1,4 +1,4 @@
-import { Hashtable, PluginManager, Service } from '@applicature-private/multivest.core';
+import { Hashtable, PluginManager, Service } from '@applicature/synth.plugin-manager';
 import * as config from 'config';
 import { hostname } from 'os';
 import { CollectableMetricTransport, MetricTransport } from '../metric.transports';

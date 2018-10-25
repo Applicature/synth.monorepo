@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature-private/multivest.core';
+import { Hashtable } from '@applicature/synth.plugin-manager';
 
 export abstract class MetricTransport {
     public abstract saveMetric(

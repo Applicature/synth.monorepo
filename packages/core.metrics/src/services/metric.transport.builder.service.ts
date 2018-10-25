@@ -1,4 +1,4 @@
-import { MultivestError, PluginManager, Service } from '@applicature-private/multivest.core';
+import { MultivestError, PluginManager, Service } from '@applicature/synth.plugin-manager';
 import * as config from 'config';
 import * as logger from 'winston';
 import { Errors } from '../errors';

@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature-private/multivest.core';
+import { Hashtable } from '@applicature/synth.plugin-manager';
 import * as CloudWatch from 'aws-sdk/clients/cloudwatch';
 import * as config from 'config';
 import * as logger from 'winston';

@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature-private/multivest.core';
+import { Hashtable } from '@applicature/synth.plugin-manager';
 import { Gauge, Registry } from 'prom-client';
 import { CollectableMetricTransport } from './collectable.metric.transport';
 

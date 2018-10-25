@@ -1,4 +1,4 @@
-import { Plugin } from '@applicature-private/multivest.core';
+import { Plugin } from '@applicature/synth.plugin-manager';
 
 import {
     MetricTransportBuilderService,
