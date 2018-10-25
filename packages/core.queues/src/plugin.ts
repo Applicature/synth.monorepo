@@ -1,4 +1,4 @@
-import { Plugin } from '@applicature-private/multivest.core';
+import { Plugin } from '@applicature/synth.plugin-manager';
 import { AwsQueueService, GcPubsubService, QueueStubService } from './services';
 import {  } from './services/queue.stub.service';
 

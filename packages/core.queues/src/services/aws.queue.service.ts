@@ -1,4 +1,4 @@
-import { MultivestError, PluginManager } from '@applicature-private/multivest.core';
+import { MultivestError, PluginManager } from '@applicature/synth.plugin-manager';
 import { SQS } from 'aws-sdk';
 import * as config from 'config';
 import * as logger from 'winston';
@@ -57,7 +57,7 @@ export class AwsQueueService extends QueueService {
 
     public async sendMessage(
         queueUrl: string,
-        messageBody: any,
+        messageBody: any
     ): Promise<string> {
         if (!this.sqs) {
             logger.error(

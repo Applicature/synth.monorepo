@@ -1,4 +1,4 @@
-import { Service } from '@applicature-private/multivest.core';
+import { Service } from '@applicature/synth.plugin-manager';
 import * as config from 'config';
 import * as logger from 'winston';
 import { QueueServiceType } from '../types';

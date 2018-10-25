@@ -1,4 +1,4 @@
-import { Hashtable, MultivestError, PluginManager } from '@applicature-private/multivest.core';
+import { Hashtable, MultivestError, PluginManager } from '@applicature/synth.plugin-manager';
 // NOTICE: definitions are in progress https://github.com/googleapis/google-cloud-node/issues/952
 import * as PubSub from '@google-cloud/pubsub';
 import * as config from 'config';
@@ -189,7 +189,7 @@ export class GcPubsubService extends QueueService {
 
     public async createSubscription(
         topicName: string,
-        subscriptionName: string,
+        subscriptionName: string
     ): Promise<any> {
         if (!this.subscriber) {
             logger.error(

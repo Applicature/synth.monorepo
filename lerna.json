@@ -4,7 +4,10 @@
   ],
   "command": {
     "publish": {
-      "allowBranch": ["master", "JIRA/*"]
+      "allowBranch": [
+        "master",
+        "JIRA/*"
+      ]
     }
   },
   "ignoreChanges": [

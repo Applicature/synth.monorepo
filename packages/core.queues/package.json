@@ -1,0 +1,68 @@
+{
+  "name": "@applicature/synth.queues",
+  "version": "2.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "gulp build",
+    "lint": "tslint '{index.ts,src/**/*.ts,test/**/*.ts}'",
+    "precommit": "npm run lint ; npm run test:integration",
+    "test": "jest",
+    "test:ci": "jest --coverage --forceExit",
+    "test:lint": "tslint --force -t json --project ./tsconfig.json '{index.ts,src/**/*.ts,test/**/*.ts}'",
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN"
+  },
+  "author": "Andrew Zubko",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@applicature/synth.plugin-manager": "^2.0.0",
+    "@google-cloud/pubsub": "^0.20.1",
+    "aws-sdk": "^2.319.0",
+    "config": "^1.31.0",
+    "lodash": "^4.17.11",
+    "winston": "^2.4.4"
+  },
+  "devDependencies": {
+    "@types/agenda": "^2.0.3",
+    "@types/config": "0.0.33",
+    "@types/jest": "^23.3.2",
+    "@types/lodash": "^4.14.117",
+    "@types/node": "^8.10.11",
+    "@types/winston": "^2.4.4",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-tslint": "^8.1.3",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "jest": "^23.6.0",
+    "jest-cli": "^20.0.4",
+    "jest-junit": "^5.2.0",
+    "jest-multi-test-result-processor": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "sonarqube-scanner": "^2.1.1",
+    "ts-jest": "^21.2.4",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.6.2"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "index.d.ts",
+    "index.js"
+  ],
+  "jest-multi-test-result-processor": {
+    "processors": [
+      "jest-junit",
+      "jest-sonar-reporter"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "./test-reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
+  "jest-junit": {
+    "output": "./test-reports/junit.xml"
+  }
+}

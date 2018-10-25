@@ -1,4 +1,4 @@
-import { Service } from '@applicature-private/multivest.core';
+import { Service } from '@applicature/synth.plugin-manager';
 import { Message, Queue } from '../types';
 
 export abstract class QueueService extends Service {
