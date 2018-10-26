@@ -6,7 +6,8 @@
     "publish": {
       "allowBranch": [
         "master",
-        "JIRA/*"
+        "JIRA/*",
+        "NO-JIRA/*"
       ]
     }
   },
