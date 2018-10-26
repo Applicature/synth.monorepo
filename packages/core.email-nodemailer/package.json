@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.email-nodemailer",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "private": false,
   "license": "UNLICENSED",
   "description": "Nodemailer Email Plugin",
@@ -26,8 +26,8 @@
     "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.email-nodemailer"
   },
   "dependencies": {
-    "@applicature/synth.email-abstract": "^2.0.1",
-    "@applicature/synth.plugin-manager": "^2.0.1",
+    "@applicature/synth.email-abstract": "^2.0.3",
+    "@applicature/synth.plugin-manager": "^2.0.3",
     "config": "^1.26.1",
     "nodemailer": "^4.4.2",
     "winston": "^2.1.1"

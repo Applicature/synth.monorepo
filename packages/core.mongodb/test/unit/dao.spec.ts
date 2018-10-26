@@ -11,7 +11,8 @@ describe('dao data accessing', () => {
     beforeAll(async () => {
         const pluginManager = new PluginManager([]);
         const plugin = new MongodbPluginMock(pluginManager);
-        dao = new TestDao(await plugin.init());
+        await plugin.init();
+        dao = new TestDao(await plugin.getDB());
     });
 
     afterEach(async () => {

@@ -11,3 +11,4 @@ coverage
 dist
 test-reports
 packages/*/lib
+/.history

@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.email-abstract",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "private": false,
   "license": "UNLICENSED",
   "author": "Andrew Zubko <andrew@applicature.com>",
@@ -25,7 +25,7 @@
     "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.email-abstract"
   },
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.1",
+    "@applicature/synth.plugin-manager": "^2.0.3",
     "config": "^1.26.1",
     "winston": "^2.1.1"
   },
