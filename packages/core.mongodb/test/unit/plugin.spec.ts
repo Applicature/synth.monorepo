@@ -1,15 +1,13 @@
 import { MultivestError, PluginManager } from '@applicature/synth.plugin-manager';
-import { Db } from 'mongodb';
 import { Plugin as MongodbPlugin } from '../../src/mongodb.plugin';
 import { TestDao } from '../mock/dao.mock';
-import { MongodbPluginMock } from '../mock/plugin.mock';
 
 describe('plugin connection', () => {
     let plugin: MongodbPlugin;
 
     beforeAll(() => {
-        const pluginManager = new PluginManager([]);
-        plugin = new MongodbPluginMock(pluginManager);
+        const pluginManager = new PluginManager();
+        plugin = new MongodbPlugin(pluginManager);
     });
 
     it('should connect to mongo', async () => {
@@ -29,7 +27,7 @@ describe('db access', () => {
 
     beforeAll(() => {
         const pluginManager = new PluginManager([]);
-        plugin = new MongodbPluginMock(pluginManager);
+        plugin = new MongodbPlugin(pluginManager);
     });
 
     it('should reject with error while disconnected', async () => {
@@ -48,7 +46,7 @@ describe('plugin dao actions', () => {
 
     beforeEach(() => {
         const pluginManager = new PluginManager([]);
-        plugin = new MongodbPluginMock(pluginManager);
+        plugin = new MongodbPlugin(pluginManager);
     });
 
     it('should throw error on getDaos() if disconnected', async () => {

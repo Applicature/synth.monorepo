@@ -1,4 +1,4 @@
-import { Hashtable } from '@applicature/synth.plugin-manager';
+import { Hashtable } from '@applicature-private/multivest.core';
 import { BigNumber } from 'bignumber.js';
 import { get } from 'lodash';
 import { Decimal128, ObjectID } from 'mongodb';
