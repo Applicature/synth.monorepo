@@ -1,7 +1,7 @@
 import { Dao, Hashtable } from '@applicature/synth.plugin-manager';
-import {Collection, Db, MongoClient} from 'mongodb';
+import { Collection, Db } from 'mongodb';
 import { v1 as generateId } from 'uuid';
-import {parseDecimals} from './utils';
+import { parseDecimals } from './utils';
 
 export abstract class MongoDBDao<T> extends Dao<T> {
     /*

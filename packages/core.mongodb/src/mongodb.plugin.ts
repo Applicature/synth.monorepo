@@ -11,17 +11,17 @@ import {
     PluginManager
 } from '@applicature/synth.plugin-manager';
 import * as config from 'config';
-import {connect, Db, MongoClient, MongoClientOptions} from 'mongodb';
+import { connect, Db, MongoClient, MongoClientOptions } from 'mongodb';
 import * as logger from 'winston';
-import {Errors} from './errors';
-import {ConnectionState} from './model';
-import {MongoDBDao} from './mongodb.dao';
+import { Errors } from './errors';
+import { ConnectionState } from './model';
+import { MongoDBDao } from './mongodb.dao';
 
 class MongodbPlugin extends Plugin<any> {
     public state: ConnectionState = ConnectionState.Disconnected;
+    protected connection: MongoClient;
+    protected connectionPromise: Promise<MongoClient>;
     protected db: Db;
-    protected client: MongoClient;
-    protected dbPromise: Promise<Db>;
     protected urls: string;
     protected options: MongoClientOptions;
     protected dbName: string;
@@ -36,8 +36,8 @@ class MongodbPlugin extends Plugin<any> {
             : { autoReconnect: true, reconnectTries: 10 };
 
         this.dbName = config.has('multivest.mongodb.dbName')
-            ? config.get('multivest.mongodb.dbName')
-            : '';
+            ? config.get<string>('multivest.mongodb.dbName')
+            : null;
     }
 
     public getPluginId() {
@@ -45,15 +45,14 @@ class MongodbPlugin extends Plugin<any> {
     }
 
     public async init() {
-        if (this.db) {
-            return Promise.resolve(this.db);
+        if (this.connection) {
+            return Promise.resolve(this.connection);
         }
 
         this.state = ConnectionState.Connecting;
-        this.dbPromise = this.initConnection();
-
+        this.connectionPromise = this.initConnection();
         try {
-            this.db = await this.dbPromise;
+            this.connection = await this.connectionPromise;
             this.state = ConnectionState.Connected;
         }
         catch (err) {
@@ -61,7 +60,7 @@ class MongodbPlugin extends Plugin<any> {
             process.exit(1);
         }
 
-        return this.dbPromise;
+        return this.connectionPromise;
     }
 
     public addDao(DaoConstructor: Constructable<MongoDBDao<any>>) {
@@ -75,17 +74,19 @@ class MongodbPlugin extends Plugin<any> {
         }
     }
 
-    public getDB() {
+    public async getDB() {
         if (this.state === ConnectionState.Disconnected) {
             return Promise.reject(new MultivestError(Errors.NO_CONNECTION));
         }
 
-        if (this.state === ConnectionState.Connected) {
-            return Promise.resolve(this.db);
-        }
+        if (this.state === ConnectionState.Connecting || this.state === ConnectionState.Connected) {
+            this.connection = this.connection || await this.connectionPromise;
 
-        if (this.state === ConnectionState.Connecting) {
-            return this.dbPromise;
+            if (!this.db) {
+                this.db = this.connection.db(this.dbName);
+            }
+
+            return this.db;
         }
 
         throw new MultivestError(Errors.UNRESOLVED_STATE);
@@ -99,7 +100,7 @@ class MongodbPlugin extends Plugin<any> {
             return Promise.resolve(this.daos);
         }
         else if (this.state === ConnectionState.Connecting) {
-            return this.dbPromise
+            return this.connectionPromise
                 .then(() => this.daos);
         }
 
@@ -108,34 +109,17 @@ class MongodbPlugin extends Plugin<any> {
 
     public async getDao(daoId: string) {
         const daos = await this.getDaos();
-
         if (!daos[daoId]) {
             throw new MultivestError(Errors.DAO_NOT_FOUND);
         }
-
         return daos[daoId];
     }
 
     public async disconnect() {
-        if (this.state === ConnectionState.Disconnected) {
-            return Promise.reject(new MultivestError(Errors.NO_CONNECTION));
-        }
-        else if (this.state === ConnectionState.Connected) {
-            await this.client.close();
+        const connection = await this.connectionPromise;
+        await connection.close();
 
-            this.state = ConnectionState.Disconnected;
-        }
-        else if (this.state === ConnectionState.Connecting) {
-            return this.dbPromise
-                .then(async () => {
-                    await this.client.close();
-
-                    this.state = ConnectionState.Disconnected;
-                });
-        }
-        else {
-            return Promise.reject(new MultivestError(Errors.UNRESOLVED_STATE));
-        }
+        this.state = ConnectionState.Disconnected;
     }
 
     public isConnected() {
@@ -143,15 +127,15 @@ class MongodbPlugin extends Plugin<any> {
     }
 
     protected async initConnection() {
-        this.client = await connect(this.urls, this.options);
+        const connection = await connect(this.urls, this.options);
 
-        if (!this.dbName) {
-            this.dbName = 'test';
-        }
+        await this.initDb(connection);
 
-        const db = await this.client.db(this.dbName);
+        return connection;
+    }
 
-        return db;
+    protected async initDb(connection: MongoClient): Promise<void> {
+        this.db = connection.db(this.dbName);
     }
 
     protected invokeDao(DaoConstructor: Constructable<Dao<any>>) {

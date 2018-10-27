@@ -6,7 +6,8 @@
     "publish": {
       "allowBranch": [
         "master",
-        "JIRA/*"
+        "JIRA/*",
+        "NO-JIRA/*"
       ]
     }
   },
@@ -14,5 +15,5 @@
     "**/test/**",
     "**/*.md"
   ],
-  "version": "2.0.2"
+  "version": "2.0.3"
 }
