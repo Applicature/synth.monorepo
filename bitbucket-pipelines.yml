@@ -33,6 +33,8 @@ pipelines:
       - npm run bootstrap-deps
       - npm install -g gulp
       - npm run build
+      - git config --global user.email "bitbucket-bot@applicature.com"
+      - git config --global user.name "Bitbucket Bot"
       - npm run lerna-publish -- "prerelease" "--yes"
   branches:
     master:
@@ -51,6 +53,8 @@ pipelines:
         - npm run test:ci
         - npm run test:lint
         - npm run test:sonar
+        - git config --global user.email "bitbucket-bot@applicature.com"
+        - git config --global user.name "Bitbucket Bot"
         - npm run lerna-publish -- "patch"  "--yes"
         services:
         - mongo
