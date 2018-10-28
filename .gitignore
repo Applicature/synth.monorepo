@@ -13,3 +13,4 @@ test-reports
 packages/*/lib
 /.history
 *.tgz
+*.log
