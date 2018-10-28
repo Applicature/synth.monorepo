@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.dynamodb",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   "author": "Michael Sukhroukov <mikhail.sukhorukov@applicature.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.3",
+    "@applicature/synth.plugin-manager": "^2.0.4",
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
     "aws-sdk": "^2.328.0",
@@ -37,10 +37,10 @@
     "index.js"
   ],
   "devDependencies": {
-    "@types/lodash": "^4.14.116",
     "@types/config": "0.0.34",
     "@types/jest": "^23.3.3",
     "@types/joi": "^13.6.0",
+    "@types/lodash": "^4.14.116",
     "@types/mongodb": "^3.1.12",
     "@types/node": "^10.11.4",
     "@types/uuid": "^3.4.4",
@@ -75,5 +75,6 @@
   },
   "jest-junit": {
     "output": "./test-reports/junit.xml"
-  }
+  },
+  "gitHead": "c53f15e816a326a5261dd3eaa90d5ec5f92da6ec"
 }
