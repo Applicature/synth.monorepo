@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.mongodb",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "private": false,
   "license": "UNLICENSED",
   "description": "MongoDB Plugin",
@@ -26,7 +26,7 @@
     "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.mongodb"
   },
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.4",
+    "@applicature/synth.plugin-manager": "^2.0.5",
     "bignumber.js": "^7.2.1",
     "config": "^1.30.0",
     "lodash": "^4.17.11",
@@ -83,5 +83,5 @@
   "jest-junit": {
     "output": "./test-reports/junit.xml"
   },
-  "gitHead": "c53f15e816a326a5261dd3eaa90d5ec5f92da6ec"
+  "gitHead": "5bd4034fc2f3c25d8e116a2c611f1ce96ec40f7b"
 }
