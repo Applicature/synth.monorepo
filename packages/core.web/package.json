@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.web",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "private": false,
   "license": "UNLICENSED",
   "description": "Web Plugin",
@@ -26,7 +26,7 @@
     "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.web.git"
   },
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.5",
+    "@applicature/synth.plugin-manager": "^2.0.6",
     "@types/morgan": "^1.7.35",
     "compression": "^1.7.1",
     "config": "^1.29.2",

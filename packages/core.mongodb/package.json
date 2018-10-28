@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.mongodb",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "private": false,
   "license": "UNLICENSED",
   "description": "MongoDB Plugin",
@@ -26,7 +26,7 @@
     "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.mongodb"
   },
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.5",
+    "@applicature/synth.plugin-manager": "^2.0.6",
     "bignumber.js": "^7.2.1",
     "config": "^1.30.0",
     "lodash": "^4.17.11",
