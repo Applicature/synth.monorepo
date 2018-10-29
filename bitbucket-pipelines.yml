@@ -35,7 +35,7 @@ pipelines:
       - npm run build
       - git config --global user.email "bitbucket-bot@applicature.com"
       - git config --global user.name "Bitbucket Bot"
-      - >
+      - >-
         npm run lerna-publish -- "prerelease" "--yes" "-m '[skip ci] chore(beta): publish %s'"
   branches:
     master:
@@ -56,7 +56,7 @@ pipelines:
         - npm run test:sonar
         - git config --global user.email "bitbucket-bot@applicature.com"
         - git config --global user.name "Bitbucket Bot"
-        - >
+        - >-
           npm run lerna-publish -- "patch"  "--yes" "-m '[skip ci] chore(release): publish %s'"
         services:
         - mongo
