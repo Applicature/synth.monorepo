@@ -5,7 +5,7 @@ import * as config from 'config';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
-import {ValidationError} from 'express-validation';
+import { ValidationError } from 'express-validation';
 import * as helmet from 'helmet';
 import * as http from 'http';
 import * as methodOverride from 'method-override';
@@ -17,7 +17,7 @@ import * as winston from 'winston';
 import {WebMultivestError} from './error';
 import {IExpressMiddlewareConfig, IWeb} from './pluginInterface';
 import {ValidationDefaultService as ValidationService} from './services/validation/validation.default.service';
-// onst apiSpec = require('swagger.json');
+
 class WebPlugin extends Plugin<void> implements IWeb {
     // ref to Express instance
     private app: express.Application;

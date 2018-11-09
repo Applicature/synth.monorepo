@@ -15,7 +15,10 @@ module.exports = {
     "moduleFileExtensions": [
         "ts",
         "tsx",
-        "js"
+        "js",
+        "json",
+        "jsx",
+        "node"
     ],
     "coveragePathIgnorePatterns": [
         "<rootDir>/.*?\\.d\\.ts$",
