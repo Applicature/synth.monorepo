@@ -16,7 +16,9 @@ module.exports = {
         "ts",
         "tsx",
         "js",
-        "json"
+        "json",
+        "jsx",
+        "node"
     ],
     "coveragePathIgnorePatterns": [
         "<rootDir>/.*?\\.d\\.ts$",
