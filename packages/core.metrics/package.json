@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.metrics",
-  "version": "2.0.12-alpha.0",
+  "version": "2.0.12",
   "private": false,
   "license": "UNLICENSED",
   "author": "Andrew Zubko <andrew@applicature.com>",
