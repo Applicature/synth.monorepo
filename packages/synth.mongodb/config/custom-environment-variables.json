@@ -1,0 +1,7 @@
+{
+  "multivest": {
+    "mongodb": {
+      "url": "MONGODN_URL"
+    }
+  }
+}

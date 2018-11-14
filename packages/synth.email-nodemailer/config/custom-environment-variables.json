@@ -1,0 +1,13 @@
+{
+  "email": {
+    "nodemailer": {
+      "host": "SMTP_HOST",
+      "port": "SMTP_PORT",
+      "secure": "SMTP_SECURED", // true for 465, false for other ports
+      "auth": {
+        "user": "SMTP_USERNAME", // generated ethereal user
+        "pass": "SMTP_PASSWORD"  // generated ethereal password
+      }
+    }
+  }
+}
