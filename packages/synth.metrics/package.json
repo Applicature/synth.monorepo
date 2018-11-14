@@ -1,33 +1,43 @@
 {
-  "name": "@applicature/synth.queues",
-  "version": "2.0.10",
-  "description": "",
+  "name": "@applicature/synth.metrics",
+  "version": "2.0.6",
+  "private": false,
+  "license": "Apache-2.0",
+  "author": "Andrew Zubko <andrew@applicature.com>",
+  "engines": {
+    "node": ">=4.8.0",
+    "npm": ">=2.15.11",
+    "yarn": ">=0.20.3"
+  },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp build",
     "lint": "tslint '{index.ts,src/**/*.ts,test/**/*.ts}'",
-    "precommit": "npm run lint ; npm run test:integration",
     "test": "jest",
     "test:ci": "jest --coverage --forceExit",
     "test:lint": "tslint --force -t json --project ./tsconfig.json '{index.ts,src/**/*.ts,test/**/*.ts}'",
     "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN"
   },
-  "author": "Andrew Zubko",
-  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Applicature/synth.monorepo.git"
+  },
   "dependencies": {
     "@applicature/synth.plugin-manager": "^2.0.6",
-    "@google-cloud/pubsub": "^0.20.1",
     "aws-sdk": "^2.319.0",
     "config": "^1.31.0",
     "lodash": "^4.17.11",
+    "prom-client": "^11.1.2",
     "winston": "^2.4.4"
   },
   "devDependencies": {
-    "@types/agenda": "^2.0.3",
-    "@types/config": "0.0.33",
-    "@types/jest": "^23.3.2",
-    "@types/lodash": "^4.14.117",
-    "@types/node": "^8.10.11",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/config": "0.0.34",
+    "@types/jest": "^23.3.3",
+    "@types/joi": "^13.6.0",
+    "@types/node": "^10.11.4",
+    "@types/uuid": "^3.4.4",
     "@types/winston": "^2.4.4",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",

@@ -1,16 +1,8 @@
 {
-  "name": "@applicature/synth.metrics",
-  "version": "2.0.6",
-  "private": false,
-  "license": "UNLICENSED",
-  "author": "Andrew Zubko <andrew@applicature.com>",
-  "engines": {
-    "node": ">=4.8.0",
-    "npm": ">=2.15.11",
-    "yarn": ">=0.20.3"
-  },
+  "name": "@applicature/synth.queues",
+  "version": "2.0.10",
+  "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp build",
     "lint": "tslint '{index.ts,src/**/*.ts,test/**/*.ts}'",
@@ -22,23 +14,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.metrics"
+    "url": "git@github.com:Applicature/synthesizer.monorepo.git"
   },
+  "author": "Andrew Zubko",
+  "license": "Apache-2.0",
   "dependencies": {
     "@applicature/synth.plugin-manager": "^2.0.6",
+    "@google-cloud/pubsub": "^0.20.1",
     "aws-sdk": "^2.319.0",
     "config": "^1.31.0",
     "lodash": "^4.17.11",
-    "prom-client": "^11.1.2",
     "winston": "^2.4.4"
   },
   "devDependencies": {
-    "@types/aws-sdk": "^2.7.0",
-    "@types/config": "0.0.34",
-    "@types/jest": "^23.3.3",
-    "@types/joi": "^13.6.0",
-    "@types/node": "^10.11.4",
-    "@types/uuid": "^3.4.4",
+    "@types/agenda": "^2.0.3",
+    "@types/config": "0.0.33",
+    "@types/jest": "^23.3.2",
+    "@types/lodash": "^4.14.117",
+    "@types/node": "^8.10.11",
     "@types/winston": "^2.4.4",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",

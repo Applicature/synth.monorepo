@@ -1,4 +1,4 @@
-import { Hashtable, MultivestError, PluginManager } from '@applicature/synth.plugin-manager';
+import { Hashtable, MultivestError, PluginManager } from '../../../synth.plugin-manager';
 // NOTICE: definitions are in progress https://github.com/googleapis/google-cloud-node/issues/952
 import * as PubSub from '@google-cloud/pubsub';
 import * as config from 'config';

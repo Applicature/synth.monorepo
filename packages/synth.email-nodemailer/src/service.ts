@@ -1,4 +1,4 @@
-import { EmailOpts, EmailService } from '@applicature/synth.email-abstract';
+import { EmailOpts, EmailService } from '../../synth.email-abstract';
 import { PluginManager } from '@applicature/synth.plugin-manager';
 import * as nodemailer from 'nodemailer';
 

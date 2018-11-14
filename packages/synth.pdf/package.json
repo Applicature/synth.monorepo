@@ -1,9 +1,9 @@
 {
-  "name": "@applicature/synth.email-nodemailer",
+  "name": "@applicature/synth.pdf",
   "version": "2.0.6",
   "private": false,
   "license": "UNLICENSED",
-  "description": "Nodemailer Email Plugin",
+  "description": "Pdf Generation",
   "author": "Andrew Zubko <andrew@applicature.com>",
   "engines": {
     "node": ">=4.8.0",
@@ -15,29 +15,26 @@
   "scripts": {
     "build": "gulp clean && gulp build",
     "lint": "tslint '{index.ts,src/**/*.ts,test/**/*.ts}'",
-    "precommit": "npm run lint ; npm run test:ci",
     "test": "jest",
     "test:ci": "jest --coverage --forceExit",
-    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_TOKEN",
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
     "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json '{index.ts,src/**/*.ts,test/**/*.ts}'"
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/applicature/core.monorepo/src/master/packages/core.email-nodemailer"
+    "url": "git@github.com:Applicature/synth.monorepo.git"
   },
   "dependencies": {
-    "@applicature/synth.email-abstract": "^2.0.6",
-    "@applicature/synth.plugin-manager": "^2.0.6",
     "config": "^1.26.1",
-    "nodemailer": "^4.4.2",
+    "html-pdf": "^2.2.0",
     "winston": "^2.1.1"
   },
   "devDependencies": {
     "@types/config": "0.0.34",
+    "@types/html-pdf": "^2.1.2",
     "@types/jest": "^23.3.3",
     "@types/joi": "^13.6.0",
     "@types/node": "^10.11.4",
-    "@types/nodemailer": "^4.6.5",
     "@types/uuid": "^3.4.4",
     "@types/winston": "^2.4.4",
     "gulp": "^3.9.1",
@@ -54,7 +51,12 @@
     "ts-jest": "^21.2.4",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
-    "typescript": "^2.6.2"
+    "typescript": "^2.6.2",
+    "istanbul-api": "1.2.2",
+    "istanbul-reports": "1.1.4",
+    "jest-multi-test-result-processor": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "sonarqube-scanner": "^2.1.0"
   },
   "files": [
     "dist/",
