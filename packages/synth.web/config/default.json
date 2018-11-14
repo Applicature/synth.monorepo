@@ -6,9 +6,9 @@
           "limit": "100mb"
         },
         "swStats": {
-          ***REMOVED***,
+          "username": "default-account",
           "password": "",
-          ***REMOVED***
+          "urlPath": "/swstats"
         }
       },
       "port": 3000
