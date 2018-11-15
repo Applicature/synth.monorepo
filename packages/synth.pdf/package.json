@@ -17,7 +17,7 @@
     "lint": "tslint '{index.ts,src/**/*.ts,test/**/*.ts}'",
     "test": "jest",
     "test:ci": "jest --coverage --forceExit",
-    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SYNTH_BACKEND_SONARCLOUD_TOKEN",
+    "test:sonar": "sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_TOKEN",
     "test:lint": "tslint --force --out ./test-reports/tslint.json -t json --project ./tsconfig.json '{index.ts,src/**/*.ts,test/**/*.ts}'"
   },
   "repository": {
