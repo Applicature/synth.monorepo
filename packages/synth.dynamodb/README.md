@@ -1,2 +1,2 @@
-# multivest.dynamodb
+# synth.dynamodb
 
