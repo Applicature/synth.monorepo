@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.dynamodb",
-  "version": "2.0.6",
+  "version": "2.0.13",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,7 +22,7 @@
   "author": "Michael Sukhroukov <mikhail.sukhorukov@applicature.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.6",
+    "@applicature/synth.plugin-manager": "^2.0.13",
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
     "aws-sdk": "^2.328.0",
