@@ -23,6 +23,9 @@
     "type": "git",
     "url": "git@github.com:Applicature/synth.monorepo.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@applicature/synth.plugin-manager": "^2.0.6",
     "aws-sdk": "^2.319.0",

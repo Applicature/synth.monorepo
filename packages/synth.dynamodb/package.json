@@ -16,6 +16,9 @@
     "type": "git",
     "url": "git@github.com:Applicature/synth.monorepo.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Michael Sukhroukov <mikhail.sukhorukov@applicature.com>",
   "license": "Apache-2.0",
   "dependencies": {

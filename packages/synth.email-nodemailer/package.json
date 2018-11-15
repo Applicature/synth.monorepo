@@ -25,6 +25,9 @@
     "type": "git",
     "url": "git@github.com:Applicature/synthesizer.monorepo.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@applicature/synth.email-abstract": "^2.0.6",
     "@applicature/synth.plugin-manager": "^2.0.6",

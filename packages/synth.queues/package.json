@@ -16,6 +16,9 @@
     "type": "git",
     "url": "git@github.com:Applicature/synthesizer.monorepo.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Andrew Zubko",
   "license": "Apache-2.0",
   "dependencies": {
