@@ -1,7 +1,7 @@
 {
   "multivest": {
     "dynamodb": {
-      ***REMOVED***,
+      "region": "us-east-2",
       "accessKeyId": "",
       "secretAccessKey": ""
     }

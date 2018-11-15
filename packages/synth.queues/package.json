@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.queues",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "author": "Andrew Zubko",
   "license": "Apache-2.0",
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.14",
+    "@applicature/synth.plugin-manager": "^2.0.16",
     "@google-cloud/pubsub": "^0.20.1",
     "aws-sdk": "^2.319.0",
     "config": "^1.31.0",

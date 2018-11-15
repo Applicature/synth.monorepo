@@ -1,6 +1,6 @@
 {
   "name": "@applicature/synth.web",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "private": false,
   "license": "Apache-2.0",
   "description": "Web Plugin",
@@ -28,7 +28,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@applicature/synth.plugin-manager": "^2.0.14",
+    "@applicature/synth.plugin-manager": "^2.0.16",
     "compression": "^1.7.1",
     "config": "^1.29.2",
     "cookie-parser": "^1.4.3",
