@@ -1,4 +1,4 @@
-import { Plugin } from '../../synth.plugin-manager';
+import { Plugin } from '@applicature/synth.plugin-manager';
 
 import {
     MetricTransportBuilderService,
