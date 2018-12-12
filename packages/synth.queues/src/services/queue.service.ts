@@ -7,7 +7,12 @@ export abstract class QueueService extends Service {
     public abstract receiveMessage(queueUniqueTag: string): Promise<Message>;
 
     /** Creates queue and returns `queueUniqueTag` */
-    public abstract createQueue(queueName: string): Promise<Queue>;
+    public abstract createQueue(
+        queueName: string,
+        numPartitions?: number,
+        replicationFactor?: number,
+        topicConfig?: object
+    ): Promise<Queue>;
     public abstract getUniqueTag(name: string): Promise<string>;
 
     public abstract listQueues(): Promise<Array<Queue>>;
