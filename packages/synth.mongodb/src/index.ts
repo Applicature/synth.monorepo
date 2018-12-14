@@ -1,3 +1,4 @@
+export * from './ensure.indexes';
 export * from './errors';
 export * from './model';
 export * from './mongodb.dao';
