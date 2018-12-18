@@ -1,7 +1,8 @@
 import { PluginManager } from '@applicature/synth.plugin-manager';
+import * as config from 'config';
 import * as kafka from 'node-rdkafka';
 import * as logger from 'winston';
-import { KafkaConfig, Message, Queue } from '../types';
+import { Message, Queue } from '../types';
 import { QueueService } from './queue.service';
 export class KafkaQueueService extends QueueService {
     private producerReady: any;
@@ -9,11 +10,17 @@ export class KafkaQueueService extends QueueService {
     private adminClient: kafka.InternalAdminClient;
     private topics: Set<string>;
 
-    // tslint:disable-next-line:no-shadowed-variable
-    constructor(pluginManager: PluginManager, config: KafkaConfig) {
+    constructor(pluginManager: PluginManager) {
         super(pluginManager);
 
-        const producer = new kafka.Producer(config.producerConfig, config.topicConfig);
+        this.init();
+    }
+
+    public async init() {
+        const producer = new kafka.Producer(
+            config.get('kafka.producer.config'),
+            config.get('kafka.producer.topicConfig')
+        );
         producer.connect(
             {},
             (err: any) => {
@@ -29,7 +36,10 @@ export class KafkaQueueService extends QueueService {
             });
         });
 
-        const consumer = new kafka.KafkaConsumer(config.consumerConfig, config.topicConfig);
+        const consumer = new kafka.KafkaConsumer(
+            config.get('kafka.consumer.config'),
+            config.get('kafka.consumer.topicConfig')
+        );
         consumer.connect(
             {},
             (err: any) => {
@@ -46,21 +56,16 @@ export class KafkaQueueService extends QueueService {
         });
 
         const client = new kafka.AdminClient();
-        this.adminClient = client.create(config.adminConfig);
+        this.adminClient = client.create(config.get('kafka.admin.config'));
     }
 
-    public async createQueue(
-        queueName: string,
-        numPartitions: number,
-        replicationFactor: number,
-        topicConfig: object
-    ): Promise<Queue> {
+    public async createQueue(queueName: string): Promise<Queue> {
         return new Promise<Queue>((resolve: any) => {
             this.adminClient.createTopic(
                 {
-                    config: topicConfig,
-                    num_partitions: numPartitions,
-                    replication_factor: replicationFactor,
+                    config: config.get('kafka.admin.topicConfig'),
+                    num_partitions: config.get('kafka.admin.numPartitions'),
+                    replication_factor: config.get('kafka.admin.replicationFactor'),
                     topic: queueName
                 },
                 (err: any, data: any) => {
@@ -113,6 +118,6 @@ export class KafkaQueueService extends QueueService {
     }
 
     public async getUniqueTag(queueName: string): Promise<string> {
-        return Promise.resolve('');
+        return Promise.resolve(queueName);
     }
 }
