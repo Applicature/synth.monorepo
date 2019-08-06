@@ -89,7 +89,7 @@ class WebPlugin extends Plugin<void> implements IWeb {
             let message = error.message;
             let details;
 
-            if (error instanceof WebMultivestError) {
+            if (error.hasOwnProperty('isWebMultivestError')) {
                 const webError = error as WebMultivestError;
 
                 message = error.message;
