@@ -30,7 +30,7 @@
     "@applicature/synth.plugin-manager": "^2.0.16",
     "aws-sdk": "^2.319.0",
     "config": "^1.31.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "prom-client": "^11.1.2",
     "winston": "^2.4.4"
   },
