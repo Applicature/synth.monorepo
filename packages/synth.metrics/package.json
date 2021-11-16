@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@applicature/synth.plugin-manager": "^2.0.16",
-    "aws-sdk": "^2.319.0",
+    "aws-sdk": "^2.814.0",
     "config": "^1.31.0",
     "lodash": "^4.17.11",
     "prom-client": "^11.1.2",
